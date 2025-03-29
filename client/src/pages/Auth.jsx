@@ -205,14 +205,14 @@ const Login = () => {
           localStorage.setItem("user", JSON.stringify(response.data.user));
           localStorage.setItem("tokenExpiresAt", JSON.stringify(response.data.expiresAt));
         }
-        toast.success("Recording started");
+        toast.success("You are logged in!");
         navigate("/dashboard");
       } else {
         setApiError("Login failed. Please check your credentials.");
         toast.error("Login failed!");
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Please try again!");
+      toast.error("Please try again!");
       setApiError(
         error.response?.data?.message ||
           "An error occurred during login. Please try again."
@@ -375,10 +375,12 @@ const Signup = ({ setActiveTab }) => {
       );
 
       // Redirect to login tab after a brief delay
+      toast.success("Registered Successfully!");
       setTimeout(() => {
         setActiveTab("login");
       }, 1500);
     } catch (error) {
+      toast.error("Server Error!");
       setApiError(
         error.response?.data?.message ||
           "An error occurred during registration. Please try again."
