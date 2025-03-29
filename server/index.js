@@ -9,7 +9,7 @@ import dotenv from "dotenv"
 import authRouter from "./routes/authRoute.js"
 // import generalRouter from "./routes/generalRoute.js"
 // import plantRouter from "./routes/plantRoute.js"
-// import scrapeRouter from "./routes/scrapeRoute.js"
+import scrapeRouter from "./routes/scrapeRoute.js"
 // import reportRouter from "./routes/reportRoute.js"
 dotenv.config()
 
@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/auth',authRouter)
 // app.use('/PlantPrediction',plantRouter)
 // app.use('/report',reportRouter)
-// app.use('/', scrapeRouter);
+app.use('/', scrapeRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello from Irrigation Node Backend!');
