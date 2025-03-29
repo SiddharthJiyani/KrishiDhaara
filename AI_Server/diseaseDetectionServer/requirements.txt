@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pillow
+torch
+torchvision
+google-generativeai
+google-ai-generativelanguage
+python-multipart
+requests
+pyrebase4
+firebase_admin
