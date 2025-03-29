@@ -216,11 +216,16 @@ export default function Dashboard() {
   const [insights, setInsights] = useState("");
   const [insightsLoading, setInsightsLoading] = useState(false);
   const [insightsError, setInsightsError] = useState(null);
+  const [validation, setValidation] = useState({
+    requiresHumanReview: false,
+    containsWarnings: false
+  });
 
   const handleGetInsights = async () => {
     try {
       setInsightsLoading(true);
       setInsightsError(null);
+      setValidation({ requiresHumanReview: false, containsWarnings: false });
 
       const response = await axios.get(
         // "http://localhost:3000/SensorData/getInsights",
@@ -233,6 +238,12 @@ export default function Dashboard() {
         setInsights(
           response.data.message || "No insights available at the moment."
         );
+        if (response.data.validation) {
+          setValidation({
+            requiresHumanReview: response.data.validation.requiresHumanReview,
+            containsWarnings: response.data.validation.containsWarnings
+          });
+        }
       }
     } catch (error) {
       console.error("Error fetching insights:", error);
@@ -333,13 +344,61 @@ export default function Dashboard() {
                 )}
               </button>
 
+              {validation.containsWarnings && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-4 p-4 border border-amber-500 bg-amber-500/20 rounded-md"
+                >
+                  <div className="flex items-center gap-3">
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      className="h-5 w-5 text-amber-500" 
+                      viewBox="0 0 20 20" 
+                      fill="currentColor"
+                    >
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    <h3 className="text-sm font-medium text-amber-500">
+                      Expert Review Recommended
+                    </h3>
+                  </div>
+                  
+                  {validation.requiresHumanReview && (
+                    <p className="mt-2 text-sm text-amber-600 dark:text-amber-400">
+                      These insights contain potential risks that should be verified by an agricultural expert.
+                    </p>
+                  )}
+
+                  <div className="mt-4 flex gap-3">
+                    <button
+                      onClick={() => console.log('Contact expert clicked')}
+                      className="px-3 py-1 text-sm bg-amber-500/20 hover:bg-amber-500/30 text-amber-600 dark:text-amber-400 rounded-md transition-colors"
+                    >
+                      Contact Expert
+                    </button>
+                    <button
+                      onClick={() => setValidation({ ...validation, requiresHumanReview: false })}
+                      className="px-3 py-1 text-sm text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 rounded-md transition-colors"
+                    >
+                      Acknowledge
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
               {/* Display insights when available */}
               {insights && !insightsLoading && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="mt-4 p-4 border border-zinc-200 dark:border-[#414142] bg-white dark:bg-[#121215] rounded-md">
+                  className={`mt-4 p-4 border ${
+                      validation.requiresHumanReview 
+                        ? 'border-amber-500 dark:border-amber-400/50' 
+                        : 'border-zinc-200 dark:border-[#414142]'
+                    } bg-white dark:bg-[#121215] rounded-md`}>
                   <h3 className="text-lg font-semibold mb-3 text-green-500">
                     AI Insights
                   </h3>

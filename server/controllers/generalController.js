@@ -228,24 +228,25 @@ export const getInsights = async (req, res) => {
         const formattedTemp = JSON.stringify(resultTemp, null, 2);
         const formattedMoisture = JSON.stringify(resultSoilMoist, null, 2);
 
-        const prompt = `You are an AI assistant that provides farmer-friendly insights on soil moisture (percentage) and temperature (Celsius).  
-The data provided are as follows:  
-- **Temperature:** ${formattedTemp}°C  
-- **Soil Moisture:** ${formattedMoisture}%  
+        const prompt = `You are an agricultural AI assistant. Strict rules:
+            1. Base responses ONLY on provided data
+            2. Never invent data points
+            3. Categorize recommendations by risk level
 
-### 📊 **Insights on the Data:**  
-Explain what these values mean in **simple language** that a farmer can understand.  
+            Provided Data:
+            - Temperature (monthly): ${formattedTemp}
+            - Soil Moisture (monthly): ${formattedMoisture}
 
-### 💧 **Practical Irrigation Advice:**  
-Provide actionable irrigation recommendations based on the given values.  
+            Analysis Requirements:
+            🟢 Safe Range: 10-25°C temp, 30-60% moisture
+            🟡 Caution: <10°C or >25°C temp, <30% or >60% moisture
+            🔴 Danger: <0°C or >35°C temp, <15% or >80% moisture
 
-### ⚠️ **Potential Issues:**  
-Detect any possible risks like overwatering, drought conditions, or extreme temperatures.  
-
-### 🌱 **Seasonal Patterns:**  
-Identify any trends or patterns in soil moisture and temperature based on typical seasonal variations.  
-
-Format the output in **proper markdown** for easy readability.`;
+            Format response with: 
+            1. Current Status (with emoji alerts)
+            2. Immediate Recommendations
+            3. Risk Assessment Matrix
+            4. Data Limitations Disclaimer`;
 
         const generationConfig = {
             temperature: 1,
@@ -262,7 +263,23 @@ Format the output in **proper markdown** for easy readability.`;
 
         const text = result.response.text();
 
-        return res.status(200).send({ "success": true, "message": text });
+        const safetyCheck = (text) => {
+					const redFlags = [
+						/over *?water/i,
+						/drought conditions/i,
+						/extreme (heat|cold)/i,
+						/immediate danger/i,
+					];
+
+					return {
+						containsWarnings: redFlags.some((regex) => regex.test(text)),
+						requiresHumanReview: redFlags.some((regex) => regex.test(text)),
+					};
+				};
+        
+        const validation = safetyCheck(text);
+
+        return res.status(200).send({ "success": true, "message": text, "validation": validation });
 
     } catch (error) {
         console.log(error);
