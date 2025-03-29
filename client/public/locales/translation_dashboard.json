@@ -1,0 +1,138 @@
+{
+  "en": {
+    "translation": {
+      "dashboard": {
+        "title": "Krishi Dhaara Dashboard",
+        "subtitle": "Monitor and control your smart irrigation system with real-time insights",
+        "tabs": {
+          "overview": "Overview",
+          "sensors": "Sensors",
+          "automation": "Automation",
+          "map": "View Field Map"
+        },
+        "overview": {
+          "stats": {
+            "soilMoisture": "Soil Moisture",
+            "temperature": "Temperature",
+            "optimal": "Optimal",
+            "optimalLevel": "Optimal level"
+          },
+          "filters": {
+            "title": "Data Filters",
+            "dateRange": "Date Range",
+            "to": "to",
+            "analysisType": "Analysis Type",
+            "daily": "Daily",
+            "monthly": "Monthly",
+            "yearly": "Yearly",
+            "sensorType": "Sensor Type",
+            "sensor": "Sensor"
+          },
+          "charts": {
+            "soilMoistureTrends": "Soil Moisture Trends",
+            "temperatureTrends": "Temperature Trends",
+            "maxMinMoistureTrends": "Max/Min Moisture Trends",
+            "maxMinTemperatureTrends": "Max/Min Temperature Trends",
+            "monitoring": "24-hour monitoring data",
+            "dateWiseMaxMin": "Date-wise maximum and minimum soil moisture data",
+            "dateWiseMaxMinTemp": "Date-wise maximum and minimum temperature data"
+          },
+          "insights": {
+            "getInsights": "Get Insights",
+            "gettingInsights": "Getting insights...",
+            "title": "AI Insights",
+            "expertReview": "Expert Review Recommended",
+            "verification": "These insights contain potential risks that should be verified by an agricultural expert.",
+            "contactExpert": "Contact Expert",
+            "acknowledge": "Acknowledge"
+          }
+        },
+        "sensors": {
+          "title": "Sensor Data",
+          "subtitle": "Status of all connected IoT sensors.",
+          "lastReading": "Last reading",
+          "ago": "ago"
+        },
+        "automation": {
+          "title": "Manual Override",
+          "subtitle": "Configure irrigation and sensors.",
+          "updating": "Updating...",
+          "on": "ON",
+          "off": "OFF",
+          "noRelays": "No relay devices found"
+        },
+        "errors": {
+          "fetchingInsights": "An error occurred while fetching insights. Please try again later."
+        }
+      }
+    }
+  },
+  "hi": {
+    "translation": {
+      "dashboard": {
+        "title": "कृषि धारा डैशबोर्ड",
+        "subtitle": "वास्तविक समय की अंतर्दृष्टि के साथ अपनी स्मार्ट सिंचाई प्रणाली की निगरानी और नियंत्रण करें",
+        "tabs": {
+          "overview": "अवलोकन",
+          "sensors": "सेंसर",
+          "automation": "स्वचालन",
+          "map": "क्षेत्र का नक्शा देखें"
+        },
+        "overview": {
+          "stats": {
+            "soilMoisture": "मिट्टी की नमी",
+            "temperature": "तापमान",
+            "optimal": "इष्टतम",
+            "optimalLevel": "इष्टतम स्तर"
+          },
+          "filters": {
+            "title": "डेटा फिल्टर",
+            "dateRange": "तिथि सीमा",
+            "to": "से",
+            "analysisType": "विश्लेषण प्रकार",
+            "daily": "दैनिक",
+            "monthly": "मासिक",
+            "yearly": "वार्षिक",
+            "sensorType": "सेंसर प्रकार",
+            "sensor": "सेंसर"
+          },
+          "charts": {
+            "soilMoistureTrends": "मिट्टी की नमी प्रवृत्तियाँ",
+            "temperatureTrends": "तापमान प्रवृत्तियाँ",
+            "maxMinMoistureTrends": "अधिकतम/न्यूनतम नमी प्रवृत्तियाँ",
+            "maxMinTemperatureTrends": "अधिकतम/न्यूनतम तापमान प्रवृत्तियाँ",
+            "monitoring": "24-घंटे की निगरानी डेटा",
+            "dateWiseMaxMin": "तिथि-वार अधिकतम और न्यूनतम मिट्टी की नमी डेटा",
+            "dateWiseMaxMinTemp": "तिथि-वार अधिकतम और न्यूनतम तापमान डेटा"
+          },
+          "insights": {
+            "getInsights": "अंतर्दृष्टि प्राप्त करें",
+            "gettingInsights": "अंतर्दृष्टि प्राप्त की जा रही है...",
+            "title": "एआई अंतर्दृष्टि",
+            "expertReview": "विशेषज्ञ समीक्षा की सिफारिश की",
+            "verification": "इन अंतर्दृष्टियों में संभावित जोखिम हैं जिनकी एक कृषि विशेषज्ञ द्वारा सत्यापित किया जाना चाहिए।",
+            "contactExpert": "विशेषज्ञ से संपर्क करें",
+            "acknowledge": "स्वीकार करें"
+          }
+        },
+        "sensors": {
+          "title": "सेंसर डेटा",
+          "subtitle": "सभी जुड़े IoT सेंसर की स्थिति।",
+          "lastReading": "अंतिम रीडिंग",
+          "ago": "पहले"
+        },
+        "automation": {
+          "title": "मैनुअल ओवरराइड",
+          "subtitle": "सिंचाई और सेंसर कॉन्फ़िगर करें।",
+          "updating": "अपडेट हो रहा है...",
+          "on": "चालू",
+          "off": "बंद",
+          "noRelays": "कोई रिले डिवाइस नहीं मिला"
+        },
+        "errors": {
+          "fetchingInsights": "अंतर्दृष्टि प्राप्त करने में त्रुटि हुई। कृपया बाद में पुन: प्रयास करें।"
+        }
+      }
+    }
+  }
+}

@@ -25,11 +25,13 @@ import remarkGfm from "remark-gfm";
 import { ref, onValue, get, set } from "firebase/database";
 import { database } from "../lib/firebase";
 import FarmMap from "../components/FarmMapLeaflet";
+import { useTranslation } from "../i18n";
 // import rehypeRaw from "rehype-raw";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 var acTab = "";
 export default function Dashboard() {
+  const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState("overview");
   const [dateRange, setDateRange] = useState({
     start: "2025-01-01",
@@ -248,11 +250,17 @@ export default function Dashboard() {
     } catch (error) {
       console.error("Error fetching insights:", error);
       setInsightsError(
-        "An error occurred while fetching insights. Please try again later."
+        t("dashboard.errors.fetchingInsights")
       );
     } finally {
       setInsightsLoading(false);
     }
+  };
+
+  // Function to toggle language
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'hi' : 'en';
+    i18n.changeLanguage(newLang);
   };
 
   return (
@@ -262,17 +270,18 @@ export default function Dashboard() {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-white dark:bg-black">
       <main className="container mx-auto px-4 py-8">
+
+        
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mb-8">
           <h1 className="text-3xl font-bold text-green-500 dark:text-green-600">
-            Krishi Dhaara Dashboard
+            {t("dashboard.title")}
           </h1>
           <p className="text-zinc-600 dark:text-zinc-400">
-            Monitor and control your smart irrigation system with real-time
-            insights
+            {t("dashboard.subtitle")}
           </p>
         </motion.div>
 
@@ -283,25 +292,25 @@ export default function Dashboard() {
               className="cursor-pointer hover:bg-zinc-600"
               value="overview"
               onClick={() => setActiveTab("overview")}>
-              Overview
+              {t("dashboard.tabs.overview")}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer hover:bg-zinc-600"
               value="sensors"
               onClick={() => setActiveTab("sensors")}>
-              Sensors
+              {t("dashboard.tabs.sensors")}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer hover:bg-zinc-600"
               value="automation"
               onClick={() => setActiveTab("automation")}>
-              Automation
+              {t("dashboard.tabs.automation")}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer hover:bg-zinc-600"
               value="map"
               onClick={() => setActiveTab("map")}>
-              View Field Map
+              {t("dashboard.tabs.map")}
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -323,6 +332,7 @@ export default function Dashboard() {
               sensorList={sensorList}
               loading={loading}
               maxMinData={maxMinData}
+              t={t}
             />
 
             {/* Replace the current button with this improved version and add insights display */}
@@ -334,11 +344,11 @@ export default function Dashboard() {
                 {insightsLoading ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    Getting insights...
+                    {t("dashboard.overview.insights.gettingInsights")}
                   </>
                 ) : (
                   <>
-                    Get Insights
+                    {t("dashboard.overview.insights.getInsights")}
                     <BarChart2 className="h-4 w-4" />
                   </>
                 )}
@@ -361,13 +371,13 @@ export default function Dashboard() {
                       <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
                     <h3 className="text-sm font-medium text-amber-500">
-                      Expert Review Recommended
+                      {t("dashboard.overview.insights.expertReview")}
                     </h3>
                   </div>
                   
                   {validation.requiresHumanReview && (
                     <p className="mt-2 text-sm text-amber-600 dark:text-amber-400">
-                      These insights contain potential risks that should be verified by an agricultural expert.
+                      {t("dashboard.overview.insights.verification")}
                     </p>
                   )}
 
@@ -376,13 +386,13 @@ export default function Dashboard() {
                       onClick={() => console.log('Contact expert clicked')}
                       className="px-3 py-1 text-sm bg-amber-500/20 hover:bg-amber-500/30 text-amber-600 dark:text-amber-400 rounded-md transition-colors"
                     >
-                      Contact Expert
+                      {t("dashboard.overview.insights.contactExpert")}
                     </button>
                     <button
                       onClick={() => setValidation({ ...validation, requiresHumanReview: false })}
                       className="px-3 py-1 text-sm text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 rounded-md transition-colors"
                     >
-                      Acknowledge
+                      {t("dashboard.overview.insights.acknowledge")}
                     </button>
                   </div>
                 </motion.div>
@@ -400,7 +410,7 @@ export default function Dashboard() {
                         : 'border-zinc-200 dark:border-[#414142]'
                     } bg-white dark:bg-[#121215] rounded-md`}>
                   <h3 className="text-lg font-semibold mb-3 text-green-500">
-                    AI Insights
+                    {t("dashboard.overview.insights.title")}
                   </h3>
                   <div className="text-sm text-zinc-800 dark:text-zinc-300 leading-relaxed markdown-content">
                     <ReactMarkdown
@@ -422,8 +432,8 @@ export default function Dashboard() {
             </div>
           </div>
         )}
-        {activeTab === "sensors" && <SensorsTab sensorData={allSensorList} />}
-        {activeTab === "automation" && <AutomationTab />}
+        {activeTab === "sensors" && <SensorsTab sensorData={allSensorList} t={t} />}
+        {activeTab === "automation" && <AutomationTab t={t} />}
         {activeTab === "map" && <FarmMap/>}
       </main>
     </motion.div>
@@ -445,6 +455,7 @@ function OverviewTab({
   sensorList,
   loading,
   maxMinData,
+  t
 }) {
   const processedData = processData(analyticsData, analysisType);
 
@@ -455,18 +466,20 @@ function OverviewTab({
       transition={{ duration: 0.5 }}>
       <div className="grid gap-6 md:grid-cols-2">
         <StatCard
-          title="Soil Moisture"
+          title={t("dashboard.overview.stats.soilMoisture")}
           iconDiv={<Droplet className="h-5 w-5 text-blue-400" />}
           value={sensorData.resultHumi?.humidity || "Loading..."}
           optimal="40-60%"
           progress="85"
+          t={t}
         />
         <StatCard
-          title="Temperature"
+          title={t("dashboard.overview.stats.temperature")}
           iconDiv={<Thermometer className="h-5 w-5 text-yellow-500" />}
           value={sensorData.resultTemp?.temperature || "Loading..."}
           optimal="18-26°C"
           progress="45.6"
+          t={t}
         />
       </div>
 
@@ -478,14 +491,14 @@ function OverviewTab({
           transition={{ duration: 0.5, delay: 0.4 }}
           className="my-5 bg-white dark:border-1 dark:border-[#414142] dark:bg-[#121215] rounded-lg shadow-sm p-6 mb-8">
           <h2 className="text-lg font-medium mb-4 text-zinc-800 dark:text-zinc-200">
-            Data Filters
+            {t("dashboard.overview.filters.title")}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Date Range Section */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                Date Range
+                {t("dashboard.overview.filters.dateRange")}
               </label>
               <div className="flex flex-col sm:flex-row gap-3">
                 <input
@@ -496,7 +509,7 @@ function OverviewTab({
                   className="flex-1 border border-zinc-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:border-zinc-600 dark:text-white"
                 />
                 <div className="flex items-center justify-center text-zinc-400">
-                  to
+                  {t("dashboard.overview.filters.to")}
                 </div>
                 <input
                   type="date"
@@ -511,7 +524,7 @@ function OverviewTab({
             {/* Analysis Type Section */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                Analysis Type
+                {t("dashboard.overview.filters.analysisType")}
               </label>
               <div className="flex gap-3">
                 {["daily", "monthly", "yearly"].map((type) => (
@@ -525,7 +538,7 @@ function OverviewTab({
                         ? "bg-blue-500 text-white"
                         : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-600"
                     }`}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                    {t(`dashboard.overview.filters.${type}`)}
                   </button>
                 ))}
               </div>
@@ -536,21 +549,21 @@ function OverviewTab({
             {/* Sensor Type Dropdown */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                Sensor Type
+                {t("dashboard.overview.filters.sensorType")}
               </label>
               <select
                 value={selectedSensorType}
                 onChange={handleSensorTypeChange}
                 className="w-full cursor-pointer border border-zinc-300 rounded-md p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:border-zinc-600 dark:text-white">
-                <option value="humidity">Soil Moisture</option>
-                <option value="temperature">Temperature</option>
+                <option value="humidity">{t("dashboard.overview.stats.soilMoisture")}</option>
+                <option value="temperature">{t("dashboard.overview.stats.temperature")}</option>
               </select>
             </div>
 
             {/* Sensor Selection */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                Sensor
+                {t("dashboard.overview.filters.sensor")}
               </label>
               <select
                 value={selectedSensor}
@@ -578,12 +591,12 @@ function OverviewTab({
           <BarChart2 className="h-5 w-5 text-green-500" />
           <h3 className="text-lg font-medium dark:text-white">
             {selectedSensorType === "humidity"
-              ? "Soil Moisture Trends"
-              : "Temperature Trends"}
+              ? t("dashboard.overview.charts.soilMoistureTrends")
+              : t("dashboard.overview.charts.temperatureTrends")}
           </h3>
         </div>
         <div className="text-sm text-zinc-500 dark:text-zinc-400">
-          24-hour monitoring data
+          {t("dashboard.overview.charts.monitoring")}
         </div>
         <div className="mt-4 h-80">
           {loading ? (
@@ -593,8 +606,8 @@ function OverviewTab({
               data={processedData}
               dataLabel={
                 selectedSensorType === "humidity"
-                  ? "Soil Moisture"
-                  : "Temperature"
+                  ? t("dashboard.overview.stats.soilMoisture")
+                  : t("dashboard.overview.stats.temperature")
               }
               bodyColor={
                 selectedSensorType === "humidity" ? "#10b981" : "#f59e0b"
@@ -619,11 +632,11 @@ function OverviewTab({
           <div className="mb-4 flex items-center gap-2">
             <BarChart2 className="h-5 w-5 text-green-500" />
             <h3 className="text-lg font-medium dark:text-white">
-              Max/Min Moisture Trends
+              {t("dashboard.overview.charts.maxMinMoistureTrends")}
             </h3>
           </div>
           <div className="text-sm text-zinc-500 dark:text-zinc-400">
-            Date-wise maximum and minimum soil moisture data
+            {t("dashboard.overview.charts.dateWiseMaxMin")}
           </div>
           <div className="mt-4 h-80">
             <MultiLineChart data={maxMinData.minmaxHumidity} />
@@ -641,11 +654,11 @@ function OverviewTab({
           <div className="mb-4 flex items-center gap-2">
             <BarChart2 className="h-5 w-5 text-green-500" />
             <h3 className="text-lg font-medium dark:text-white">
-              Max/Min Temperature Trends
+              {t("dashboard.overview.charts.maxMinTemperatureTrends")}
             </h3>
           </div>
           <div className="text-sm text-zinc-500 dark:text-zinc-400">
-            Date-wise maximum and minimum temperature data
+            {t("dashboard.overview.charts.dateWiseMaxMinTemp")}
           </div>
           <div className="mt-4 h-80">
             <MultiLineChart data={maxMinData.minmaxTemperature} />
@@ -790,8 +803,8 @@ const getMaxTemperature = (data) => {
 };
 
 // Sensors Tab Content
-function SensorsTab() {
-  const [sensorData, setSensorData] = useState([]);
+function SensorsTab({ sensorData, t }) {
+  const [sensors, setSensors] = useState([]);
 
   useEffect(() => {
     const dbRef = ref(database, "/");
@@ -821,14 +834,13 @@ function SensorsTab() {
             });
           }
           // console.log(processedSensorData);
-          setSensorData(processedSensorData);
+          setSensors(processedSensorData);
         } else {
           console.log("No data available from Firebase");
         }
       })
       .catch((error) => {
         console.error("Error fetching initial data:", error);
-        setLoading(false);
       });
 
     onValue(dbRef, (snapshot) => {
@@ -854,7 +866,7 @@ function SensorsTab() {
           });
         }
         // console.log(processedSensorData);
-        setSensorData(processedSensorData);
+        setSensors(processedSensorData);
       } else {
         console.log("No data available from Firebase");
       }
@@ -868,19 +880,20 @@ function SensorsTab() {
       transition={{ duration: 0.5 }}
       className="p-6 rounded-lg border border-zinc-200 dark:border-[#414142] dark:bg-[#121215]">
       <h3 className="text-xl font-bold text-green-500 dark:text-green-400">
-        Sensor Data
+        {t("dashboard.sensors.title")}
       </h3>
       <p className="text-zinc-600 dark:text-zinc-400 mb-4">
-        Status of all connected IoT sensors.
+        {t("dashboard.sensors.subtitle")}
       </p>
       <div className="flex flex-col gap-4">
-        {sensorData?.map((sensor) => (
+        {sensors?.map((sensor) => (
           <SensorCard
             key={sensor.sensorNumber}
             sensorName={sensor.sensorNumber}
             status={sensor.state}
             lastReading="5 minutes"
             batteryPercentage={80}
+            t={t}
           />
         ))}
       </div>
@@ -889,34 +902,13 @@ function SensorsTab() {
 }
 
 // Automation Tab Content
-function AutomationTab() {
+function AutomationTab({ t }) {
   const [relays, setRelays] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Individual loading states for each relay
   const [loadingRelays, setLoadingRelays] = useState({});
-
-  const fetchRelayData = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(
-        // "http://localhost:3000/SensorData/relay/getState",.
-        `${BACKEND_URL}/SensorData/relay/getState`,
-        { withCredentials: true }
-      );
-
-      if (response.data.success === true) {
-        const allData = response.data.message.states;
-        setRelays(allData);
-      }
-    } catch (error) {
-      console.error("Error fetching relay data:", error);
-      setError("Failed to load relay data. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     // fetchRelayData();
@@ -1057,10 +1049,10 @@ function AutomationTab() {
       transition={{ duration: 0.5 }}
       className="p-6 rounded-lg border border-zinc-200 dark:border-zinc-700">
       <h3 className="text-xl font-bold text-green-500 dark:text-green-400">
-        Manual Override
+        {t("dashboard.automation.title")}
       </h3>
       <p className="text-zinc-600 dark:text-zinc-400 mb-4">
-        Configure irrigation and sensors.
+        {t("dashboard.automation.subtitle")}
       </p>
 
       {error && (
@@ -1075,7 +1067,7 @@ function AutomationTab() {
         </div>
       ) : relays.length === 0 ? (
         <div className="text-center p-8 text-zinc-500 dark:text-zinc-400">
-          No relay devices found
+          {t("dashboard.automation.noRelays")}
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-1">
@@ -1096,14 +1088,14 @@ function AutomationTab() {
                 {loadingRelays[relay.sensorNumber] ? (
                   <div className="flex items-center">
                     <div className="animate-spin rounded-full h-4 w-4 border-2 border-green-500 border-t-transparent mr-2"></div>
-                    <span className="text-xs text-gray-300">Updating...</span>
+                    <span className="text-xs text-gray-300">{t("dashboard.automation.updating")}</span>
                   </div>
                 ) : (
                   <span
                     className={`text-xs ${
                       relay.state === "on" ? "text-green-400" : "text-red-400"
                     }`}>
-                    {relay.state === "on" ? "ON" : "OFF"}
+                    {relay.state === "on" ? t("dashboard.automation.on") : t("dashboard.automation.off")}
                   </span>
                 )}
 
@@ -1129,7 +1121,7 @@ function AutomationTab() {
 }
 
 // Reusable Stat Card Component
-function StatCard({ title, iconDiv, value, optimal, progress }) {
+function StatCard({ title, iconDiv, value, optimal, progress, t }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -1141,10 +1133,10 @@ function StatCard({ title, iconDiv, value, optimal, progress }) {
         <h3 className="text-lg font-medium dark:text-white">{title}</h3>
       </div>
       <div className="mb-2 text-4xl font-bold dark:text-white">
-        {title==="Soil Moisture" ? value + "%" : value + "°C"}
+        {title === t("dashboard.overview.stats.soilMoisture") ? value + "%" : value + "°C"}
       </div>
       <div className="mb-2 text-sm text-zinc-500 dark:text-zinc-400">
-        Optimal: {optimal}
+        {t("dashboard.overview.stats.optimal")}: {optimal}
       </div>
       <div className="h-2 w-full rounded-full bg-zinc-200 dark:bg-zinc-700">
         <div
@@ -1152,13 +1144,13 @@ function StatCard({ title, iconDiv, value, optimal, progress }) {
           style={{ width: `${progress}%` }}></div>
       </div>
       <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-        Optimal level
+        {t("dashboard.overview.stats.optimalLevel")}
       </div>
     </motion.div>
   );
 }
 
-function SensorCard({ sensorName, status, lastReading, batteryPercentage }) {
+function SensorCard({ sensorName, status, lastReading, batteryPercentage, t }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -1168,7 +1160,7 @@ function SensorCard({ sensorName, status, lastReading, batteryPercentage }) {
       <div>
         <div className="font-medium text-white">{sensorName}</div>
         <div className="text-sm text-muted-foreground text-zinc-400">
-          Last reading: {lastReading} ago
+          {t("dashboard.sensors.lastReading")}: {lastReading} {t("dashboard.sensors.ago")}
         </div>
       </div>
       <div className="flex items-center gap-4">
@@ -1177,7 +1169,7 @@ function SensorCard({ sensorName, status, lastReading, batteryPercentage }) {
             className={`inline-block w-2 h-2 rounded-full mr-2 ${
               status === "on" ? "bg-green-500" : "bg-red-500"
             }`}></span>
-          {status === "on" ? "ON" : "OFF"}
+          {status === "on" ? t("dashboard.automation.on") : t("dashboard.automation.off")}
         </div>
       </div>
     </motion.div>

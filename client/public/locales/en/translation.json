@@ -39,5 +39,69 @@
     "weatherIntegrationDesc": "Local weather forecasting that helps optimize irrigation schedules based on upcoming conditions.",
     
     "responsiveDesignTitle": "Responsive Design",
-    "responsiveDesignDesc": "Access your plant care system from any device with a fully responsive interface that works everywhere."
+    "responsiveDesignDesc": "Access your plant care system from any device with a fully responsive interface that works everywhere.",
+    "dashboard": {
+    "title": "Krishi Dhaara Dashboard",
+    "subtitle": "Monitor and control your smart irrigation system with real-time insights",
+    "tabs": {
+      "overview": "Overview",
+      "sensors": "Sensors",
+      "automation": "Automation",
+      "map": "View Field Map"
+    },
+    "overview": {
+      "stats": {
+        "soilMoisture": "Soil Moisture",
+        "temperature": "Temperature",
+        "optimal": "Optimal",
+        "optimalLevel": "Optimal level"
+      },
+      "filters": {
+        "title": "Data Filters",
+        "dateRange": "Date Range",
+        "to": "to",
+        "analysisType": "Analysis Type",
+        "daily": "Daily",
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "sensorType": "Sensor Type",
+        "sensor": "Sensor"
+      },
+      "charts": {
+        "soilMoistureTrends": "Soil Moisture Trends",
+        "temperatureTrends": "Temperature Trends",
+        "maxMinMoistureTrends": "Max/Min Moisture Trends",
+        "maxMinTemperatureTrends": "Max/Min Temperature Trends",
+        "monitoring": "24-hour monitoring data",
+        "dateWiseMaxMin": "Date-wise maximum and minimum soil moisture data",
+        "dateWiseMaxMinTemp": "Date-wise maximum and minimum temperature data"
+      },
+      "insights": {
+        "getInsights": "Get Insights",
+        "gettingInsights": "Getting insights...",
+        "title": "AI Insights",
+        "expertReview": "Expert Review Recommended",
+        "verification": "These insights contain potential risks that should be verified by an agricultural expert.",
+        "contactExpert": "Contact Expert",
+        "acknowledge": "Acknowledge"
+      }
+    },
+    "sensors": {
+      "title": "Sensor Data",
+      "subtitle": "Status of all connected IoT sensors.",
+      "lastReading": "Last reading",
+      "ago": "ago"
+    },
+    "automation": {
+      "title": "Manual Override",
+      "subtitle": "Configure irrigation and sensors.",
+      "updating": "Updating...",
+      "on": "ON",
+      "off": "OFF",
+      "noRelays": "No relay devices found"
+    },
+    "errors": {
+      "fetchingInsights": "An error occurred while fetching insights. Please try again later."
+    }
+  }
 }
