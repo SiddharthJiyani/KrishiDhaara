@@ -1,0 +1,11 @@
+flask
+scikit-learn
+pandas
+numpy
+statsmodels
+tensorflow
+joblib
+python-dotenv
+firebase_admin
+uvicorn
+asgiref
