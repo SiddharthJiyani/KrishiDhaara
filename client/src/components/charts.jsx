@@ -493,4 +493,142 @@ const ForecastChart = ({ data, isLoading = false }) => {
   return <Line data={chartData} options={options} />;
 };
 
-export { LineChart, BarChart, AreaChart, DoughnutChart, MultiLineChart, ForecastChart };
+const WaterUsageChart = ({ data, isLoading = false }) => {
+  const isDark = useDarkMode();
+
+  if (isLoading || !data || data.length === 0) {
+    return <LoadingSpinner />;
+  }
+
+  // Function to format the ISO timestamp to readable format
+  const formatISOTime = (isoString) => {
+    if (!isoString) return '';
+    try {
+      const date = new Date(isoString);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch (error) {
+      console.error("Error formatting time:", error);
+      return isoString;
+    }
+  };
+
+  // Create labels with start and end times
+  const labels = data.map(item => {
+    try {
+      const startTime = formatISOTime(item.startTimestamp);
+      const endTime = formatISOTime(item.endTimestamp);
+      return `${startTime} - ${endTime}`;
+    } catch (error) {
+      console.error("Error creating label:", error);
+      return "Invalid Time";
+    }
+  });
+
+  // Format date for better display
+  const formatDate = (isoString) => {
+    if (!isoString) return '';
+    try {
+      const date = new Date(isoString);
+      return date.toLocaleDateString([], { 
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return isoString;
+    }
+  };
+
+  const chartData = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'Water Usage (Liters)',
+        data: data.map(item => item.waterUsageLiters),
+        backgroundColor: '#3b82f6',
+        borderColor: '#3b82f6',
+        borderWidth: 1,
+        borderRadius: 4,
+      }
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          color: isDark ? '#d1d5db' : '#4b5563',
+        }
+      },
+      title: {
+        display: true,
+        text: 'Water Usage by Irrigation Session',
+        color: isDark ? '#f3f4f6' : '#1f2937',
+        font: {
+          size: 16,
+        }
+      },
+      tooltip: {
+        backgroundColor: isDark ? '#374151' : '#ffffff',
+        titleColor: isDark ? '#ffffff' : '#111827',
+        bodyColor: isDark ? '#d1d5db' : '#4b5563',
+        callbacks: {
+          title: function(tooltipItems) {
+            // Get the date from the recordedAt property to show in title
+            const index = tooltipItems[0].dataIndex;
+            const item = data[index];
+            return formatDate(item.recordedAt);
+          },
+          afterLabel: function(context) {
+            const index = context.dataIndex;
+            const item = data[index];
+            return [
+              `Start: ${formatISOTime(item.startTimestamp)}`,
+              `End: ${formatISOTime(item.endTimestamp)}`,
+              `Duration: ${item.durationMinutes.toFixed(1)} min`,
+              `Efficiency: ${(item.waterUsageLiters / item.durationMinutes).toFixed(2)} L/min`
+            ];
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Water Usage (Liters)',
+          color: isDark ? '#d1d5db' : '#4b5563',
+        },
+        grid: {
+          color: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+        },
+        ticks: {
+          color: isDark ? '#d1d5db' : '#4b5563',
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Session Time Range',
+          color: isDark ? '#d1d5db' : '#4b5563',
+        },
+        grid: {
+          color: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+        },
+        ticks: {
+          color: isDark ? '#d1d5db' : '#4b5563',
+
+        }
+      }
+    }
+  };
+
+  return <Bar data={chartData} options={options} />;
+};
+
+export { LineChart, BarChart, AreaChart, DoughnutChart, MultiLineChart, ForecastChart, WaterUsageChart };

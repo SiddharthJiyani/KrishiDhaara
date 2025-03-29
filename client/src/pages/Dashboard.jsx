@@ -1140,7 +1140,9 @@ function StatCard({ title, iconDiv, value, optimal, progress }) {
         <div className="text-green-500">{iconDiv}</div>
         <h3 className="text-lg font-medium dark:text-white">{title}</h3>
       </div>
-      <div className="mb-2 text-4xl font-bold dark:text-white">{value}</div>
+      <div className="mb-2 text-4xl font-bold dark:text-white">
+        {title==="Soil Moisture" ? value + "%" : value + "°C"}
+      </div>
       <div className="mb-2 text-sm text-zinc-500 dark:text-zinc-400">
         Optimal: {optimal}
       </div>

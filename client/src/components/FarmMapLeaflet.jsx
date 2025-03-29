@@ -440,10 +440,8 @@ const FarmMap = () => {
   // Format sensor value with unit
   const formatSensorValue = (sensor) => {
     switch(sensor.type) {
-      case 'moisture': return `${sensor.value}%`;
       case 'temperature': return `${sensor.value}°C`;
       case 'humidity': return `${sensor.value}%`;
-      case 'light': return `${sensor.value} lux`;
       default: return sensor.value;
     }
   };
@@ -743,11 +741,11 @@ const FarmMap = () => {
                 <h3 style={{ margin: '0 0 10px 0', borderBottom: `2px solid ${sensor.color}`, paddingBottom: '5px' }}>
                   {sensor.name}
                 </h3>
-                {sensor.type && (
+                {/* {sensor.type && (
                   <p style={{ margin: '5px 0' }}>
                     <strong>Type:</strong> {sensor.type}
                   </p>
-                )}
+                )} */}
                 {sensor.value && (
                   <p style={{ margin: '5px 0' }}>
                     <strong>Value:</strong> {formatSensorValue(sensor)}

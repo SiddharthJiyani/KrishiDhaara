@@ -151,7 +151,6 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
                 <span className="mr-2">
                   <LanguageToggle />
                 </span>
-                Language
               </button>
             </div>
           </nav>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Cloud, Leaf, BarChart2, ArrowLeft, Download } from "lucide-react";
+import { Cloud, Leaf, BarChart2, ArrowLeft, Download, Calendar } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { BarChart, DoughnutChart, ForecastChart } from "../components/charts";
+import { BarChart, DoughnutChart, ForecastChart, WaterUsageChart } from "../components/charts";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { usePDF } from "react-to-pdf";
@@ -33,6 +33,12 @@ export default function StatsPage() {
   });
   const [forecastData, setForecastData] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [waterUsageData, setWaterUsageData] = useState([]);
+  const [isLoadingWaterData, setIsLoadingWaterData] = useState(true);
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 days ago
+    endDate: new Date().toISOString().split('T')[0], // today
+  });
   const reportRef = useRef(null);
   const navigate = useNavigate();
 
@@ -90,11 +96,96 @@ export default function StatsPage() {
     }
   };
 
+  // Fetch water usage data
+  const fetchWaterUsageData = async () => {
+    setIsLoadingWaterData(true);
+    try {
+      // Use the date range from state
+      const startStamp = dateRange.startDate;
+      const endStamp = dateRange.endDate;
+      
+      console.log(`Fetching water usage data from ${startStamp} to ${endStamp}`);
+      
+      // Make the API call with query parameters
+      const url =  `http://localhost:3000/SensorData/relay/getWaterUsage/relay1`;
+      console.log("API URL:", url);
+      
+      const response = await axios.post(url, { 
+        params: { startStamp, endStamp },
+        withCredentials: true 
+      });
+
+      console.log('Response:', response);
+
+      console.log("API Response:", response.data);
+
+      if (response.data.success === true) {
+        // Sort the data by timestamp - most recent first
+        const sortedData = [...response.data.message].sort((a, b) => {
+          const dateA = new Date(a.startTimestamp);
+          const dateB = new Date(b.startTimestamp);
+          return dateA - dateB; // For ascending order (oldest first)
+        });
+        
+        setWaterUsageData(sortedData);
+      } else {
+        console.log("Failed to fetch water usage data");
+        // Set example data if API fails
+        setWaterUsageData(sampleWaterData);
+      }
+    } catch (error) {
+      console.error("Error fetching water usage data:", error);
+      // Set example data if API fails
+      setWaterUsageData(sampleWaterData);
+    } finally {
+      setIsLoadingWaterData(false);
+    }
+  };
+
+  // // Sample data as fallback
+  // const sampleWaterData = [
+  //   {
+  //     "_id": "67e809062ca3018a739c7e35",
+  //     "relayNumber": "relay1",
+  //     "startTimestamp": "2025-03-29T20:01",
+  //     "endTimestamp": "2025-03-29T20:21",
+  //     "durationMinutes": 20.3,
+  //     "waterUsageLiters": 60.9,
+  //     "recordedAt": "2025-03-29T20:21:50.787Z"
+  //   },
+  //   {
+  //     "_id": "67e803ec2ca3018a739c7e34",
+  //     "relayNumber": "relay1",
+  //     "startTimestamp": "2025-03-29T19:44",
+  //     "endTimestamp": "2025-03-29T20:00",
+  //     "durationMinutes": 15.37,
+  //     "waterUsageLiters": 46.1,
+  //     "recordedAt": "2025-03-29T20:00:04.707Z"
+  //   },
+  //   {
+  //     "_id": "67e7f80bf6e9bcc5d9d07ee2",
+  //     "relayNumber": "relay1",
+  //     "startTimestamp": "2025-03-29T19:05",
+  //     "endTimestamp": "2025-03-29T19:09",
+  //     "durationMinutes": 4.1,
+  //     "waterUsageLiters": 12.3,
+  //     "recordedAt": "2025-03-29T19:09:23.420Z"
+  //   }
+  // ];
+
+  // Fetch data when component mounts or when date range changes
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchPlantHealthHistory();
     fetchForecastData();
   }, []);
+
+  // Fetch water data when date range changes
+  useEffect(() => {
+    if (activeTab === 'water') {
+      fetchWaterUsageData();
+    }
+  }, [dateRange, activeTab]);
 
   // Hide success message after 3 seconds
   useEffect(() => {
@@ -105,6 +196,14 @@ export default function StatsPage() {
       return () => clearTimeout(timer);
     }
   }, [showSuccess]);
+
+  // Handle date range change
+  const handleDateChange = (e, field) => {
+    setDateRange({
+      ...dateRange,
+      [field]: e.target.value
+    });
+  };
 
   const monthlyData = [
     { month: "Jan", value: 120 },
@@ -233,6 +332,11 @@ export default function StatsPage() {
     return "Shishira (Winter)";
   };
 
+  // Calculate total water usage and duration
+  const totalWaterUsage = waterUsageData.reduce((sum, item) => sum + item.waterUsageLiters, 0);
+  const totalDuration = waterUsageData.reduce((sum, item) => sum + item.durationMinutes, 0);
+  const avgEfficiency = totalDuration > 0 ? (totalWaterUsage / totalDuration).toFixed(2) : 0;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -250,7 +354,7 @@ export default function StatsPage() {
           className="mb-6 flex items-center gap-4">
           <a
             href="/"
-            className="flex items-center gap-2 text-gray-600 cursor-pointer hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+            className="flex items-center gap-2 text-zinc-600 cursor-pointer hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
             <ArrowLeft className="h-5 w-5" />
             <span>Back to Dashboard</span>
           </a>
@@ -265,7 +369,7 @@ export default function StatsPage() {
           <h1 className="text-3xl font-bold text-purple-500 dark:text-purple-400">
             Statistics & Analytics
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-zinc-600 dark:text-zinc-400">
             Detailed insights and trends from your smart irrigation system
           </p>
         </motion.div>
@@ -273,13 +377,13 @@ export default function StatsPage() {
         <Tabs
           defaultValue="water"
           className="mb-8 flex flex-col gap-5 md:flex-row justify-between items-center cursor-pointer">
-          <TabsList className="bg-gray-100 text-slate-400 dark:bg-[#27272a] cursor-pointer">
+          <TabsList className="bg-zinc-100 text-slate-400 dark:bg-[#27272a] cursor-pointer">
             <TabsTrigger
               value="water"
               onClick={() => setActiveTab("water")}
               className={
                 activeTab === "water"
-                  ? "data-[state=active]:bg-white dark:bg-gray-100 cursor-pointer"
+                  ? "data-[state=active]:bg-white dark:bg-zinc-100 cursor-pointer"
                   : "cursor-pointer"
               }>
               <BarChart2 className="mr-2 h-4 w-4" />
@@ -290,7 +394,7 @@ export default function StatsPage() {
               onClick={() => setActiveTab("plant")}
               className={
                 activeTab === "plant"
-                  ? "data-[state=active]:bg-white bg-gray-100 cursor-pointer"
+                  ? "data-[state=active]:bg-white bg-zinc-100 cursor-pointer"
                   : "cursor-pointer"
               }>
               <Leaf className="mr-2 h-4 w-4" />
@@ -301,7 +405,7 @@ export default function StatsPage() {
               onClick={() => setActiveTab("forecast")}
               className={
                 activeTab === "forecast"
-                  ? "data-[state=active]:bg-white bg-gray-100 cursor-pointer"
+                  ? "data-[state=active]:bg-white bg-zinc-100 cursor-pointer"
                   : "cursor-pointer"
               }>
               <Cloud className="mr-2 h-4 w-4" />
@@ -328,26 +432,124 @@ export default function StatsPage() {
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="rounded-lg border border-gray-200 bg-white p-6 dark:border-[#414142] dark:bg-[#121215]">
-          <div className="mb-4">
-            <h2 className="text-xl font-medium dark:text-white">
-              {activeTab === "water"
-                ? "Water Usage Analysis"
-                : activeTab === "plant"
-                ? "Plant Health Analysis"
-                : "Soil Condition Forecast Analysis"}
-            </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {activeTab === "water"
-                ? "Monthly water consumption compared to average usage"
-                : activeTab === "plant"
-                ? "Distribution of plant health metrics based on predictions being done by the farmer for his field"
-                : "Temperature and moisture predictions for the next 24 hours coming from our trained AI model"}
-            </p>
+          className="rounded-lg border border-zinc-200 bg-white p-6 dark:border-[#414142] dark:bg-[#121215]">
+          <div className="mb-4 flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div>
+              <h2 className="text-xl font-medium dark:text-white">
+                {activeTab === "water"
+                  ? "Water Usage Analysis"
+                  : activeTab === "plant"
+                  ? "Plant Health Analysis"
+                  : "Soil Condition Forecast Analysis"}
+              </h2>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                {activeTab === "water"
+                  ? "Water consumption data from your irrigation system"
+                  : activeTab === "plant"
+                  ? "Distribution of plant health metrics based on predictions being done by the farmer for his field"
+                  : "Temperature and moisture predictions for the next 24 hours coming from our trained AI model"}
+              </p>
+            </div>
+            
+            {/* Date Selection for Water Usage */}
+            {activeTab === "water" && (
+              <div className="mt-4 md:mt-0 flex flex-col sm:flex-row gap-3 bg-zinc-50 dark:bg-zinc-800 p-3 rounded-md">
+                <div className="flex flex-col">
+                  <label className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Start Date</label>
+                  <div className="flex">
+                    <span className="inline-flex items-center px-3 text-sm text-zinc-900 bg-zinc-200 border border-r-0 border-zinc-300 rounded-l-md dark:bg-zinc-600 dark:text-zinc-400 dark:border-zinc-600">
+                      <Calendar className="w-4 h-4" />
+                    </span>
+                    <input
+                      type="date"
+                      value={dateRange.startDate}
+                      onChange={(e) => handleDateChange(e, 'startDate')}
+                      className="bg-zinc-50 border border-zinc-300 text-zinc-900 text-sm rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-zinc-400 dark:text-white"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <label className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">End Date</label>
+                  <div className="flex">
+                    <span className="inline-flex items-center px-3 text-sm text-zinc-900 bg-zinc-200 border border-r-0 border-zinc-300 rounded-l-md dark:bg-zinc-600 dark:text-zinc-400 dark:border-zinc-600">
+                      <Calendar className="w-4 h-4" />
+                    </span>
+                    <input
+                      type="date"
+                      value={dateRange.endDate}
+                      onChange={(e) => handleDateChange(e, 'endDate')}
+                      className="bg-zinc-50 border border-zinc-300 text-zinc-900 text-sm rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-zinc-400 dark:text-white"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="h-auto min-h-80">
-            {activeTab === "water" && <BarChart data={monthlyData} />}
+            {activeTab === "water" && (
+              <div className="flex flex-col space-y-6">
+                <div className="h-64 md:h-80">
+                  {isLoadingWaterData ? (
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                      <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">Loading water usage data...</p>
+                    </div>
+                  ) : waterUsageData.length > 0 ? (
+                    <WaterUsageChart data={waterUsageData} isLoading={isLoadingWaterData} />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <p className="text-lg text-zinc-500 dark:text-zinc-400">No water usage data available for the selected period</p>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true }}
+                    className="rounded-lg bg-blue-50 dark:bg-[#121215] border border-[#414142] p-4 shadow">
+                    <h3 className="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                      Total Water Usage
+                    </h3>
+                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      {totalWaterUsage.toFixed(1)} L
+                    </p>
+                  </motion.div>
+                  
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    viewport={{ once: true }}
+                    className="rounded-lg bg-green-50 dark:bg-[#121215] border border-[#414142]  p-4 shadow">
+                    <h3 className="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                      Total Duration
+                    </h3>
+                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                      {totalDuration.toFixed(1)} min
+                    </p>
+                  </motion.div>
+                  
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    viewport={{ once: true }}
+                    className="rounded-lg bg-amber-50 dark:bg-[#121215] border border-[#414142] p-4 shadow">
+                    <h3 className="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                      Average Efficiency
+                    </h3>
+                    <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+                      {avgEfficiency} L/min
+                    </p>
+                  </motion.div>
+                </div>
+              </div>
+            )}
+            
             {activeTab === "plant" && (
               <div className="flex flex-col lg:flex-row w-full items-center">
                 <div className="w-full lg:w-1/2 flex justify-center mb-6 lg:mb-0">
@@ -360,8 +562,8 @@ export default function StatsPage() {
                     whileInView={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.5 }}
                     viewport={{ once: true }}
-                    className="rounded-lg bg-gray-50 p-4 dark:bg-[#121215] dark:border dark:border-[#414142]">
-                    <h3 className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                    className="rounded-lg bg-zinc-50 p-4 dark:bg-[#121215] dark:border dark:border-[#414142]">
+                    <h3 className="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
                       Healthy Predictions
                     </h3>
                     <p className="text-2xl font-bold  text-[#00b579]">
@@ -373,8 +575,8 @@ export default function StatsPage() {
                     whileInView={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
                     viewport={{ once: true }}
-                    className="rounded-lg bg-gray-50 p-4 dark:bg-[#121215] dark:border dark:border-[#414142]">
-                    <h3 className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                    className="rounded-lg bg-zinc-50 p-4 dark:bg-[#121215] dark:border dark:border-[#414142]">
+                    <h3 className="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
                       Unhealthy Predictions
                     </h3>
                     <p className="text-2xl font-bold  text-[#ef4444]">
@@ -386,8 +588,8 @@ export default function StatsPage() {
                     whileInView={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
                     viewport={{ once: true }}
-                    className="rounded-lg bg-gray-50 p-4 dark:bg-[#121215] dark:border dark:border-[#414142]">
-                    <h3 className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                    className="rounded-lg bg-zinc-50 p-4 dark:bg-[#121215] dark:border dark:border-[#414142]">
+                    <h3 className="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
                       Total Predictions
                     </h3>
                     <p className="text-2xl font-bold text-white">
@@ -407,7 +609,7 @@ export default function StatsPage() {
                   </>
                 ) : (
                   <div className="flex justify-center items-center h-60">
-                    <p className="text-gray-500 dark:text-gray-400">
+                    <p className="text-zinc-500 dark:text-zinc-400">
                       Loading forecast data...
                     </p>
                   </div>
