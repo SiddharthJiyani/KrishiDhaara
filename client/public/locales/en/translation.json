@@ -205,6 +205,10 @@
     "title": "Plant Disease Detection",
     "subtitle": "AI-powered analysis to identify plant diseases and get treatment recommendations",
     "backToDashboard": "Back to Dashboard",
+    "tabs": {
+      "plantDisease": "Plant Disease",
+      "cropRecommendation": "Crop Recommendation"
+    },
     "modelDetails": {
       "title": "Analyze Plant Health",
       "subtitle": "Upload or take a photo of your plant to detect diseases",
@@ -232,6 +236,7 @@
     },
     "cropRecommendation": {
       "title": "Crop Recommendation",
+      "description": "Get personalized crop recommendations based on soil conditions and environmental factors",
       "nitrogen": "Nitrogen",
       "phosphorus": "Phosphorus",
       "potassium": "Potassium",
@@ -247,7 +252,13 @@
       "failedRecommendation": "Failed to get recommendation. Please try again.",
       "recommendationResult": "Recommendation Result",
       "expertReview": "Expert Review Recommended",
-      "incompleteAnalysis": "Incomplete analysis detected - verify with soil testing"
+      "incompleteAnalysis": "Incomplete analysis detected - verify with soil testing",
+      "tips": {
+        "title": "Soil Testing Tips",
+        "tip1": "Always collect soil samples from multiple locations in your field for accurate results",
+        "tip2": "Optimal soil pH range for most crops is between 6.0 and 7.0",
+        "tip3": "Consider crop rotation to maintain soil health and nutrient balance"
+      }
     },
     "predictionResult": {
       "diseaseDetected": "Disease Detected",
