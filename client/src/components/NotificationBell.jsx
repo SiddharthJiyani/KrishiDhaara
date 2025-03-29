@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Bell } from "lucide-react";
-import { database } from "../lib/firebase";
+import { database, secondaryDatabase } from "../lib/firebase";
 import { ref, onValue } from "firebase/database";
 
 export default function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const previousStatesRef = useRef({});
+  const previousAnomalyRef = useRef({});
   const modalRef = useRef(null);
   const unreadCount = notifications.length;
 
@@ -28,6 +29,52 @@ export default function NotificationBell() {
 
   useEffect(() => {
     const dbRef = ref(database, "/relay-sensors-suggestion");
+    const secdbRef = ref(secondaryDatabase,"/anomaly");
+
+    onValue(secdbRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const anomalyData = snapshot.val();
+        console.log(anomalyData)
+        const newNotifications = [];
+        
+        // Check for soil moisture anomaly
+        if (anomalyData.soil_moisture !== undefined && 
+            previousAnomalyRef.current.soil_moisture !== anomalyData.soil_moisture) {
+          if (anomalyData.soil_moisture) {
+            newNotifications.push({
+              id: "soil_moisture_" + Date.now(),
+              sensorNumber: "Soil Moisture Anomaly",
+              state: "alert",
+              type: "error",
+              timestamp: new Date().toISOString(),
+              message: "Abnormal soil moisture levels detected! Please check your irrigation system."
+            });
+          }
+          previousAnomalyRef.current.soil_moisture = anomalyData.soil_moisture;
+        }
+        
+        // Check for temperature anomaly
+        if (anomalyData.temperature !== undefined && 
+            previousAnomalyRef.current.temperature !== anomalyData.temperature) {
+          if (anomalyData.temperature) {
+            newNotifications.push({
+              id: "temperature_" + Date.now(),
+              sensorNumber: "Temperature Anomaly",
+              state: "alert",
+              type: "error",
+              timestamp: new Date().toISOString(),
+              message: "Abnormal temperature detected! Plants may be at risk."
+            });
+          }
+          previousAnomalyRef.current.temperature = anomalyData.temperature;
+        }
+        
+        if (newNotifications.length > 0) {
+          setNotifications((prev) => [...newNotifications, ...prev]);
+        }
+      }
+    });
+
     onValue(dbRef, (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.val();
@@ -124,7 +171,7 @@ export default function NotificationBell() {
                       <div className="flex items-center gap-2">
                         <span
                           className={`h-2 w-2 rounded-full ${getNotificationColor(
-                            "warning"
+                            notification.message? "error":"warning"
                           )}`}></span>
                         <span className="font-medium text-white">
                           {notification.sensorNumber}
@@ -137,7 +184,7 @@ export default function NotificationBell() {
                       </div>
                     </div>
                   </div>
-                  <p className="text-gray-400">{`Our AI suggests flipping this relay ${notification.state} for optimal performance! 🚀`}</p>
+                  <p className="text-gray-400">{ notification.message || `Our AI suggests flipping this relay ${notification.state} for optimal performance! 🚀`}</p>
                 </div>
               ))}
             </div>

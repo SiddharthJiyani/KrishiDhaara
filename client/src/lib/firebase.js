@@ -13,8 +13,22 @@ const firebaseConfig = {
     measurementId: "G-3N892XERP8"
 };
 
+const firebase_secondary_Config = {
+    apiKey: import.meta.env.VITE_FIREBASE_SECONDARY_APIKEY,
+    authDomain: "smart-irrigation-water-usage.firebaseapp.com",
+    databaseURL: "https://smart-irrigation-water-usage-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "smart-irrigation-water-usage",
+    storageBucket: "smart-irrigation-water-usage.firebasestorage.app",
+    messagingSenderId: "693321324161",
+    appId: "1:693321324161:web:0f6e89dcf6ae7ce48d1f80",
+    measurementId: "G-SHVFQ9YG04"
+  };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-export { database };
+const secondaryApp = initializeApp(firebase_secondary_Config, "secondary");
+const secondaryDatabase = getDatabase(secondaryApp);
+
+export { database, secondaryDatabase };

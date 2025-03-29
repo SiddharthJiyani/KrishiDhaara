@@ -21,7 +21,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import '../i18n';
 import LanguageToggle from "./LanguageToggle";
-// import  NotificationBell  from "./NotificationBell";
+import  NotificationBell  from "./NotificationBell";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Header({ darkMode, toggleDarkMode, activeTab }) {
@@ -133,7 +133,7 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
               to="/auth"
               active={activeTab === "/auth"}
             /> */}
-            {/* <NotificationBell /> */}
+            <NotificationBell /> 
             <div className="flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors">
               <button
                 onClick={handleLogout}
@@ -158,7 +158,7 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
           <div className="flex items-center space-x-2">
             {/* Mobile Menu Toggle */}
             <div className="md:hidden">
-              {/* <NotificationBell /> */}
+               <NotificationBell />
             </div>
             <Button
               variant="ghost"
