@@ -5,8 +5,10 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
+import WeatherPage from "./pages/WeatherPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import ProtectedRoute from "./lib/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 import LandingPage from "./pages/LandingPage";
 import Auth from "./pages/Auth";
@@ -26,6 +28,11 @@ function AppContent() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="*" element={<NotFound />} />
+
+        <Route element={<ProtectedRoute></ProtectedRoute>}>
+        <Route path="/weather" element={<WeatherPage />} />
+        
+        </Route>
 
       </Routes>
       {!isLandingPage && <Footer />}
