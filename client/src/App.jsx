@@ -13,6 +13,7 @@ import ProtectedRoute from "./lib/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 import LandingPage from "./pages/LandingPage";
 import Auth from "./pages/Auth";
+import AgriReport from "./components/AgriReport";
 
 
 function AppContent() {
@@ -33,6 +34,7 @@ function AppContent() {
         <Route element={<ProtectedRoute></ProtectedRoute>}>
         <Route path="/predict-disease" element={<PredictDisease />} />
         <Route path="/weather" element={<WeatherPage />} />
+        <Route path="/pdf" element={<AgriReport />} />
         
         </Route>
 
