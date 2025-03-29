@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polygon, LayersControl, CircleMarker, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import axios from 'axios';
+// Import Firebase functionality
+import { ref, onValue } from 'firebase/database';
+import { database, secondaryDatabase } from "../lib/firebase";
 
 // Fix for default marker icons in Leaflet
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -21,10 +24,10 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 // Create custom sensor icons
-const createSensorIcon = (color) => {
+const createSensorIcon = (color, isAlert = false) => {
   return L.divIcon({
     className: 'custom-sensor-icon',
-    html: `<div style="background-color: ${color}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>`,
+    html: `<div style="background-color: ${color}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid ${isAlert ? 'red' : 'white'}; box-shadow: 0 0 ${isAlert ? '8px rgba(255,0,0,0.7)' : '5px rgba(0,0,0,0.5)'};"></div>`,
     iconSize: [20, 20],
     iconAnchor: [10, 10]
   });
@@ -95,6 +98,18 @@ const FarmMap = () => {
   const [sensorData, setSensorData] = useState({});
   const [showSensorPanel, setShowSensorPanel] = useState(false);
   const [showResetButton, setShowResetButton] = useState(false);
+  // Add state for anomaly data
+  const [anomalyData, setAnomalyData] = useState({
+    soil_moisture: false,
+    temperature: false
+  });
+  // Add state for notifications
+  const [notifications, setNotifications] = useState([]);
+  // Ref to track previous anomaly state to prevent duplicate notifications
+  const previousAnomalyRef = useRef({
+    soil_moisture: false,
+    temperature: false
+  });
 
   // Load field dimensions from local storage
   const loadFieldDimensions = () => {
@@ -142,6 +157,128 @@ const FarmMap = () => {
     loadSensorLocations();
   }, []);
 
+  // Store anomaly status in a ref to persist across renders
+  const anomalyStatusRef = useRef({
+    soil_moisture: false,
+    temperature: false
+  });
+  
+  // Setup Firebase listeners
+  useEffect(() => {
+    // Reference to relay sensors suggestion (if needed)
+    const dbRef = ref(database, "/relay-sensors-suggestion");
+    
+    // Reference to anomaly data
+    const secdbRef = ref(secondaryDatabase, "/anomaly");
+    
+    console.log("Setting up Firebase listeners...");
+    
+    // Listen for anomaly changes
+    const unsubscribe = onValue(secdbRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const newAnomalyData = snapshot.val();
+        console.log("Anomaly data received:", newAnomalyData);
+        
+        // Store the anomaly data in a ref for persistence
+        anomalyStatusRef.current = newAnomalyData;
+        
+        // Update the state (for UI rendering)
+        setAnomalyData({...newAnomalyData});
+        
+        const newNotifications = [];
+        
+        // Check for soil moisture anomaly
+        if (newAnomalyData.soil_moisture !== undefined && 
+            previousAnomalyRef.current.soil_moisture !== newAnomalyData.soil_moisture) {
+          if (newAnomalyData.soil_moisture) {
+            newNotifications.push({
+              id: "soil_moisture_" + Date.now(),
+              sensorNumber: "Soil Moisture Anomaly",
+              state: "alert",
+              type: "error",
+              timestamp: new Date().toISOString(),
+              message: "Abnormal soil moisture levels detected! Please check your irrigation system."
+            });
+          }
+          previousAnomalyRef.current.soil_moisture = newAnomalyData.soil_moisture;
+        }
+        
+        // Check for temperature anomaly
+        if (newAnomalyData.temperature !== undefined && 
+            previousAnomalyRef.current.temperature !== newAnomalyData.temperature) {
+          if (newAnomalyData.temperature) {
+            newNotifications.push({
+              id: "temperature_" + Date.now(),
+              sensorNumber: "Temperature Anomaly",
+              state: "alert",
+              type: "error",
+              timestamp: new Date().toISOString(),
+              message: "Abnormal temperature detected! Plants may be at risk."
+            });
+          }
+          previousAnomalyRef.current.temperature = newAnomalyData.temperature;
+        }
+        
+        if (newNotifications.length > 0) {
+          console.log("Adding new notifications:", newNotifications);
+          setNotifications((prev) => [...newNotifications, ...prev]);
+        }
+        
+        // Always update sensor statuses whenever anomaly data changes
+        updateSensorStatusesFromAnomalies(newAnomalyData);
+      } else {
+        console.log("No anomaly data found in Firebase");
+      }
+    }, (error) => {
+      console.error("Error fetching anomaly data:", error);
+    });
+    
+    // Cleanup function to unsubscribe from Firebase
+    return () => {
+      console.log("Cleaning up Firebase listeners");
+      unsubscribe();
+    };
+  }, []); // Empty dependency array to ensure this runs only once
+
+  // Function to update sensor statuses based on anomaly data
+  const updateSensorStatusesFromAnomalies = (anomalyData) => {
+    console.log("Updating sensor statuses from anomalies:", anomalyData);
+    
+    // Store the anomaly data locally in a variable to ensure it persists
+    const currentAnomalyState = {...anomalyData};
+    
+    setSensors(prevSensors => {
+      // If there are no sensors yet, don't do anything
+      if (prevSensors.length === 0) {
+        return prevSensors;
+      }
+      
+      const updatedSensors = prevSensors.map(sensor => {
+        // Make a copy of the sensor to avoid mutation
+        const updatedSensor = {...sensor};
+        
+        // Check for soil moisture sensor
+        if (updatedSensor.id === 'soilmoist1') {
+          updatedSensor.status = currentAnomalyState.soil_moisture ? 'alert' : 'normal';
+        } 
+        // Check for temperature sensor
+        else if (updatedSensor.id === 'temp1') {
+          updatedSensor.status = currentAnomalyState.temperature ? 'alert' : 'normal';
+        }
+        
+        return updatedSensor;
+      });
+      
+      console.log("Updated sensors:", updatedSensors);
+      return updatedSensors;
+    });
+    
+    // Also schedule fetchSensorData after a short delay to ensure the sensors are updated
+    setTimeout(() => {
+      fetchSensorData(anomalyData);
+    }, 300);
+  };
+
   // Update field boundary when dimensions or field center changes
   useEffect(() => {
     if (fieldCenter) {
@@ -153,10 +290,22 @@ const FarmMap = () => {
   // Fetch sensor data when user location is available
   useEffect(() => {
     if (userLocation) {
+      console.log("User location available, fetching sensor data");
       fetchAllSensorList();
-      fetchSensorData();
+      // Use a timeout to make sure the anomaly data has been loaded first
+      setTimeout(() => {
+        fetchSensorData();
+      }, 500);
     }
   }, [userLocation]);
+  
+  // Re-apply anomaly status whenever anomalyData changes
+  useEffect(() => {
+    if (sensors.length > 0) {
+      console.log("Anomaly data changed, updating sensors:", anomalyData);
+      updateSensorStatusesFromAnomalies(anomalyData);
+    }
+  }, [anomalyData]);
 
   // Load sensor locations from local storage
   const loadSensorLocations = () => {
@@ -263,20 +412,156 @@ const FarmMap = () => {
     setShowResetButton(false);
   };
 
-  // Function to fetch sensor data
-  const fetchSensorData = async () => {
+  // Function to fetch sensor data with optional anomaly override
+  const fetchSensorData = async (anomalyOverride = null) => {
     try {
+      console.log("Fetching sensor data from API...");
       const response = await axios.get(`${BACKEND_URL}/SensorData/getLatest`, {
         withCredentials: true,
       });
+      
+      console.log("Raw API response:", response.data);
       const data = response.data.message;
-      setSensorData(data);
-      console.log('Sensor Data:', data);
+      
+      // Format data to match expected structure
+      const formattedData = {};
+      
+      // Get current anomaly status - either from the passed override or from the ref
+      const currentAnomalyStatus = anomalyOverride || anomalyStatusRef.current;
+      console.log("Using anomaly status for sensor data:", currentAnomalyStatus);
+      
+      // Handle temperature data (from resultTemp)
+      if (data && data.resultTemp && data.resultTemp.metadata) {
+        const sensorId = data.resultTemp.metadata.sensorNumber;
+        formattedData[sensorId] = {
+          value: data.resultTemp.temperature,
+          status: currentAnomalyStatus.temperature ? 'alert' : 'normal',
+          type: 'temperature',
+          timestamp: data.resultTemp.timestamp
+        };
+        console.log(`Temperature sensor (${sensorId}) data processed:`, formattedData[sensorId]);
+      }
+      
+      // Handle humidity/soil moisture data (from resultHumi)
+      if (data && data.resultHumi && data.resultHumi.metadata) {
+        const sensorId = data.resultHumi.metadata.sensorNumber;
+        formattedData[sensorId] = {
+          value: data.resultHumi.humidity,
+          status: currentAnomalyStatus.soil_moisture ? 'alert' : 'normal',
+          type: 'humidity',
+          timestamp: data.resultHumi.timestamp
+        };
+        console.log(`Humidity sensor (${sensorId}) data processed:`, formattedData[sensorId]);
+      }
+      
+      setSensorData(formattedData);
+      console.log('All formatted sensor data:', formattedData);
+      
+      // Update sensors with the new data
+      updateSensorsWithData(formattedData, currentAnomalyStatus);
+      
+      // If we have data, make sure soil moisture and temperature sensors are included in the list
+      if ((data.resultTemp || data.resultHumi) && sensors.length === 0) {
+        const baseSensors = [];
+        
+        if (data.resultTemp) {
+          baseSensors.push({
+            id: data.resultTemp.metadata.sensorNumber,
+            name: 'Temperature Sensor',
+            type: 'temperature',
+            value: data.resultTemp.temperature,
+            status: currentAnomalyStatus.temperature ? 'alert' : 'normal'
+          });
+        }
+        
+        if (data.resultHumi) {
+          baseSensors.push({
+            id: data.resultHumi.metadata.sensorNumber,
+            name: 'Soil Moisture Sensor', 
+            type: 'humidity',
+            value: data.resultHumi.humidity,
+            status: currentAnomalyStatus.soil_moisture ? 'alert' : 'normal'
+          });
+        }
+        
+        if (baseSensors.length > 0) {
+          setAllSensorList(baseSensors);
+          processSensorData(baseSensors, currentAnomalyStatus);
+        }
+      }
+      
     } catch (error) {
       console.error("Error fetching sensor data:", error);
       // Use sample data if API fails
       useSampleSensorData();
     }
+  };
+
+  // Update sensors with data and respect anomaly status
+  const updateSensorsWithData = (data, anomalyOverride = null) => {
+    console.log("Updating sensors with new data:", data);
+    
+    // Get current anomaly status - either from override or from the ref
+    const currentAnomalyStatus = anomalyOverride || anomalyStatusRef.current;
+    
+    setSensors(prevSensors => {
+      // If no sensors exist yet, create them
+      if (prevSensors.length === 0 && Object.keys(data).length > 0) {
+        const newSensors = Object.entries(data).map(([id, sensorData], index) => {
+          // Generate default position if user location exists
+          const position = userLocation ? [
+            userLocation[0] + (Math.cos(index * Math.PI) * 0.001),
+            userLocation[1] + (Math.sin(index * Math.PI) * 0.001)
+          ] : [0, 0];
+          
+          // Determine status based on id and anomaly status
+          let status = sensorData.status;
+          if (id === 'temp1') {
+            status = currentAnomalyStatus.temperature ? 'alert' : 'normal';
+          } else if (id === 'soilmoist1') {
+            status = currentAnomalyStatus.soil_moisture ? 'alert' : 'normal';
+          }
+          
+          return {
+            id,
+            name: id === 'temp1' ? 'Temperature Sensor' : 
+                 id === 'soilmoist1' ? 'Soil Moisture Sensor' : 
+                 `Sensor ${id}`,
+            position,
+            color: getRandomColor(),
+            value: sensorData.value,
+            status: status,
+            type: sensorData.type
+          };
+        });
+        console.log("Created new sensors:", newSensors);
+        return newSensors;
+      }
+      
+      // Otherwise update existing sensors while preserving anomaly status
+      const updatedSensors = prevSensors.map(sensor => {
+        // Start with a copy of the sensor
+        const updatedSensor = {...sensor};
+        
+        // If we have new data for this sensor, update value and type
+        if (data[sensor.id]) {
+          updatedSensor.value = data[sensor.id].value;
+          updatedSensor.type = data[sensor.id].type;
+        }
+        
+        // Always set status based on current anomaly information
+        if (updatedSensor.id === 'temp1') {
+          updatedSensor.status = currentAnomalyStatus.temperature ? 'alert' : 'normal';
+        } else if (updatedSensor.id === 'soilmoist1') {
+          updatedSensor.status = currentAnomalyStatus.soil_moisture ? 'alert' : 'normal';
+        }
+        
+        return updatedSensor;
+      });
+      
+      console.log("Updated existing sensors:", updatedSensors);
+      return updatedSensors;
+    });
   };
 
   // Function to fetch all sensor types
@@ -306,12 +591,22 @@ const FarmMap = () => {
     }
   };
 
-  // Process sensor data and create positions
-  const processSensorData = (sensorList) => {
-    if (!userLocation || !sensorList || sensorList.length === 0) return;
+  // Process sensor data and create positions with anomaly awareness
+  const processSensorData = (sensorList, anomalyOverride = null) => {
+    if (!userLocation || !sensorList || sensorList.length === 0) {
+      console.log("Unable to process sensor data: missing location or sensor list");
+      return;
+    }
+    
+    console.log("Processing sensor list:", sensorList);
+    
+    // Get current anomaly status - either from override or from the ref
+    const currentAnomalyStatus = anomalyOverride || anomalyStatusRef.current;
+    console.log("Using anomaly status for processing:", currentAnomalyStatus);
     
     // Check for saved locations
     const savedLocations = loadSensorLocations();
+    console.log("Loaded saved locations:", savedLocations);
     
     // Create a map to store sensor colors for consistency
     const colorMap = {};
@@ -319,8 +614,20 @@ const FarmMap = () => {
     // Map the sensor list to sensors with positions and colors
     const positionedSensors = sensorList.map((sensor, index) => {
       // Generate a unique id if not available
-      const sensorId = typeof sensor === 'object' ? sensor.id : `sensor-${index}`;
-      const sensorName = typeof sensor === 'object' ? sensor.name : sensor;
+      const sensorId = typeof sensor === 'object' && sensor.id ? sensor.id : 
+                       typeof sensor === 'string' ? sensor : `sensor-${index}`;
+                       
+      // Generate name if not available
+      let sensorName;
+      if (typeof sensor === 'object' && sensor.name) {
+        sensorName = sensor.name;
+      } else if (sensorId === 'temp1') {
+        sensorName = 'Temperature Sensor';
+      } else if (sensorId === 'soilmoist1') {
+        sensorName = 'Soil Moisture Sensor';
+      } else {
+        sensorName = `Sensor ${index + 1}`;
+      }
       
       // Use saved location or generate a new one
       let position;
@@ -341,34 +648,99 @@ const FarmMap = () => {
         colorMap[sensorId] = getRandomColor();
       }
       
-      return {
+      // Determine status based on sensor id and anomaly status
+      let status;
+      if (sensorId === 'soilmoist1') {
+        status = currentAnomalyStatus.soil_moisture ? 'alert' : 'normal';
+      } else if (sensorId === 'temp1') {
+        status = currentAnomalyStatus.temperature ? 'alert' : 'normal';
+      } else if (typeof sensor === 'object' && sensor.status) {
+        status = sensor.status;
+      } else {
+        status = 'normal';
+      }
+      
+      // Get sensor type (temperature, humidity, etc.)
+      let type = 'unknown';
+      if (typeof sensor === 'object' && sensor.type) {
+        type = sensor.type;
+      } else if (sensorId === 'temp1') {
+        type = 'temperature';
+      } else if (sensorId === 'soilmoist1') {
+        type = 'humidity';
+      }
+      
+      // Get sensor value 
+      let value;
+      if (typeof sensor === 'object' && sensor.value !== undefined) {
+        value = sensor.value;
+      } else if (sensorData[sensorId]) {
+        value = sensorData[sensorId].value;
+      } else {
+        value = Math.floor(Math.random() * 100);
+      }
+      
+      const positionedSensor = {
         id: sensorId,
         name: sensorName,
         position: position,
         color: colorMap[sensorId],
-        // Add type and value if available from sensorData
-        type: typeof sensor === 'object' ? sensor.type : 'unknown',
-        value: sensorData[sensorId] ? sensorData[sensorId].value : Math.floor(Math.random() * 100),
-        status: sensorData[sensorId] ? sensorData[sensorId].status : 'normal'
+        type: type,
+        value: value,
+        status: status
       };
+      
+      console.log(`Processed sensor ${sensorId}:`, positionedSensor);
+      return positionedSensor;
     });
     
+    console.log("Setting positioned sensors:", positionedSensors);
     setSensors(positionedSensors);
   };
 
   // Use sample sensor data if API fails
   const useSampleSensorData = () => {
-    if (!userLocation) return;
+    if (!userLocation) {
+      console.log("Cannot use sample data: user location not available");
+      return;
+    }
+    
+    // Get current anomaly status from the ref for persistence
+    const currentAnomalyStatus = anomalyStatusRef.current;
+    console.log("Using sample sensor data with anomaly status:", currentAnomalyStatus);
     
     const sampleSensors = [
-      { id: 'sensor-1', name: 'Humidity Sensor 1', type: 'humidity', value: 65, status: 'normal' },
-      { id: 'sensor-2', name: 'Temperature Sensor 1', type: 'temperature', value: 28, status: 'high' },
-      { id: 'sensor-3', name: 'Moisture Sensor 1', type: 'moisture', value: 42, status: 'normal' },
-      { id: 'sensor-4', name: 'Light Sensor 1', type: 'light', value: 890, status: 'normal' }
+      { 
+        id: 'temp1', 
+        name: 'Temperature Sensor 1', 
+        type: 'temperature', 
+        value: 26.5, 
+        status: currentAnomalyStatus.temperature ? 'alert' : 'normal' 
+      },
+      { 
+        id: 'soilmoist1', 
+        name: 'Soil Moisture Sensor 1', 
+        type: 'humidity', 
+        value: 27, 
+        status: currentAnomalyStatus.soil_moisture ? 'alert' : 'normal' 
+      }
     ];
     
+    // Create formatted sensor data structure
+    const formattedData = {};
+    sampleSensors.forEach(sensor => {
+      formattedData[sensor.id] = {
+        value: sensor.value,
+        status: sensor.status,
+        type: sensor.type
+      };
+    });
+    
+    console.log("Setting sample sensor data:", formattedData);
+    setSensorData(formattedData);
+    
     setAllSensorList(sampleSensors);
-    processSensorData(sampleSensors);
+    processSensorData(sampleSensors, currentAnomalyStatus);
   };
 
   // Function to update sensor's location with current user location
@@ -572,6 +944,28 @@ const FarmMap = () => {
         </div>
       )}
 
+      {/* Notifications Badge */}
+      {notifications.length > 0 && (
+        <div style={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          zIndex: 1000,
+          backgroundColor: '#ff3838',
+          color: 'white',
+          borderRadius: '50%',
+          width: '25px',
+          height: '25px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontWeight: 'bold',
+          boxShadow: '0 2px 5px rgba(0,0,0,0.3)',
+        }}>
+          {notifications.length}
+        </div>
+      )}
+
       {/* Sensor Panel */}
       {showSensorPanel && (
         <div style={{
@@ -598,7 +992,9 @@ const FarmMap = () => {
                 marginBottom: '8px', 
                 backgroundColor: '#f5f5f5', 
                 borderRadius: '4px',
-                borderLeft: `4px solid ${sensor.color}`
+                borderLeft: `4px solid ${sensor.color}`,
+                border: sensor.status === 'alert' ? '2px solid red' : 'none',
+                boxShadow: sensor.status === 'alert' ? '0 0 8px rgba(255, 0, 0, 0.5)' : 'none'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
@@ -606,6 +1002,11 @@ const FarmMap = () => {
                     {sensor.value && (
                       <div style={{ fontSize: '14px' }}>
                         {formatSensorValue(sensor)}
+                      </div>
+                    )}
+                    {sensor.status === 'alert' && (
+                      <div style={{ color: 'red', fontWeight: 'bold', fontSize: '12px', marginTop: '4px' }}>
+                        ANOMALY DETECTED!
                       </div>
                     )}
                   </div>
@@ -683,6 +1084,14 @@ const FarmMap = () => {
           .loading-icon {
             animation: spin 1s linear infinite;
           }
+          @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+          }
+          .alert-sensor {
+            animation: pulse 1.5s infinite;
+          }
         `}
       </style>
       
@@ -734,20 +1143,26 @@ const FarmMap = () => {
           <Marker 
             key={sensor.id}
             position={sensor.position}
-            icon={createSensorIcon(sensor.color)}
+            icon={createSensorIcon(sensor.color, sensor.status === 'alert')}
+            className={sensor.status === 'alert' ? 'alert-sensor' : ''}
           >
             <Popup>
               <div style={{ minWidth: '200px' }}>
-                <h3 style={{ margin: '0 0 10px 0', borderBottom: `2px solid ${sensor.color}`, paddingBottom: '5px' }}>
+                <h3 style={{ 
+                  margin: '0 0 10px 0', 
+                  borderBottom: `2px solid ${sensor.color}`, 
+                  paddingBottom: '5px',
+                  color: sensor.status === 'alert' ? 'red' : 'inherit'
+                }}>
                   {sensor.name}
+                  {sensor.status === 'alert' && ' (ANOMALY)'}
                 </h3>
-                {/* {sensor.type && (
-                  <p style={{ margin: '5px 0' }}>
-                    <strong>Type:</strong> {sensor.type}
-                  </p>
-                )} */}
                 {sensor.value && (
-                  <p style={{ margin: '5px 0' }}>
+                  <p style={{ 
+                    margin: '5px 0',
+                    fontWeight: sensor.status === 'alert' ? 'bold' : 'normal',
+                    color: sensor.status === 'alert' ? 'red' : 'inherit'
+                  }}>
                     <strong>Value:</strong> {formatSensorValue(sensor)}
                   </p>
                 )}
@@ -812,18 +1227,19 @@ const FarmMap = () => {
           </Marker>
         ))}
         
-        {/* Sensor range circles */}
+        {/* Sensor range circles - pulsing animation for anomaly sensors */}
         {sensors.map(sensor => (
           <CircleMarker 
             key={`range-${sensor.id}`}
             center={sensor.position}
             radius={30}
             pathOptions={{ 
-              color: sensor.color, 
-              fillColor: sensor.color, 
-              fillOpacity: 0.1,
-              weight: 1 
+              color: sensor.status === 'alert' ? 'red' : sensor.color, 
+              fillColor: sensor.status === 'alert' ? 'red' : sensor.color, 
+              fillOpacity: sensor.status === 'alert' ? 0.2 : 0.1,
+              weight: sensor.status === 'alert' ? 2 : 1 
             }}
+            className={sensor.status === 'alert' ? 'alert-sensor' : ''}
           />
         ))}
       </MapContainer>
