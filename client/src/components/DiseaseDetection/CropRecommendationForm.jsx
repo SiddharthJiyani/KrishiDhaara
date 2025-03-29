@@ -17,10 +17,16 @@ const CropRecommendationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [recommendation, setRecommendation] = useState("");
+  const [validation, setValidation] = useState({
+      isValid: true,
+      requiresReview: false,
+      warnings: {}
+    });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setRecommendation("");
 
     try {
       // Validate inputs
@@ -31,17 +37,25 @@ const CropRecommendationForm = () => {
 
       setIsLoading(true);
 
-      const prompt = `As an expert agronomist, analyze these soil parameters and recommend 3 suitable crops:
-        - Nitrogen: ${formData.nitrogen} ppm
-        - Phosphorus: ${formData.phosphorus} ppm
-        - Potassium: ${formData.potassium} ppm
-        - Soil Moisture: ${formData.moisture}%
-        - Temperature: ${formData.temperature}°C
-        Provide detailed analysis in markdown format with headings:
-        # Crop Recommendation Report
-        ## Recommended Crops
-        ## Soil Analysis
-        ## Additional Considerations`;
+      const prompt = `As an expert agronomist, follow these strict guidelines:
+          1. Recommend ONLY crops suitable for these parameters:
+            - Nitrogen: ${formData.nitrogen}ppm (ideal: 20-100ppm)
+            - Phosphorus: ${formData.phosphorus}ppm (ideal: 15-60ppm)
+            - Potassium: ${formData.potassium}ppm (ideal: 100-250ppm)
+            - Soil Moisture: ${formData.moisture}% (ideal: 40-70%)
+            - Temperature: ${formData.temperature}°C (ideal: 15-35°C)
+
+          2. Safety rules:
+            - Never recommend crops requiring >5°C different temperature
+            - Avoid suggesting chemically intensive solutions
+            - Flag parameters outside ideal ranges
+
+          Format response in markdown with these exact sections:
+          # Crop Recommendation Analysis
+          ## Suitable Crop Options (max 3)
+          ## Soil Health Assessment
+          ## Risk Factors
+          ## Sustainable Practices`;
 
       const response = await groq.chat.completions.create({
         model: "llama3-8b-8192",
@@ -64,6 +78,31 @@ const CropRecommendationForm = () => {
       }
 
       const content = response.choices[0].message.content;
+
+      const validateResponse = (content) => {
+        const requiredSections = [
+          'Suitable Crop Options',
+          'Soil Health Assessment',
+          'Risk Factors',
+          'Sustainable Practices'
+        ];
+
+        const warnings = {
+          experimental: /experimental|untested/i.test(content),
+          riskyCrops: /risk of|not recommended/i.test(content),
+          missingData: requiredSections.some(section => !content.includes(section))
+        };
+
+        return {
+          isValid: !warnings.experimental && !warnings.riskyCrops,
+          requiresReview: warnings.experimental || warnings.riskyCrops,
+          warnings
+        };
+      };
+
+      const validation = validateResponse(content);
+      setValidation(validation);
+
       
       // Set the recommendation state directly
       setRecommendation(content);
@@ -138,10 +177,28 @@ const CropRecommendationForm = () => {
 
       {/* Separate the recommendation section from the form */}
       {recommendation && (
-        <div className="mt-6 p-6 bg-[#1c1c20] rounded-xl shadow-lg border border-green-500">
-          <h3 className="text-xl font-bold mb-4 text-green-400">
-            Recommendation Result
-          </h3>
+        <div className={`mt-6 p-6 rounded-xl shadow-lg border ${
+          validation.requiresReview 
+            ? 'border-amber-500 bg-amber-500/10'
+            : 'border-green-500 bg-[#1c1c20]'
+        }`}>
+          <div className="flex items-center gap-3 mb-4">
+            <h3 className="text-xl font-bold text-green-400">
+              Recommendation Result
+            </h3>
+            {validation.requiresReview && (
+              <span className="px-2 py-1 text-sm bg-amber-500/20 text-amber-300 rounded-full">
+                Expert Review Recommended
+              </span>
+            )}
+          </div>
+          
+          {validation.warnings.missingData && (
+            <div className="mb-4 p-3 bg-red-500/20 rounded-lg">
+              ⚠️ Incomplete analysis detected - verify with soil testing
+            </div>
+          )}
+
           <div className="prose prose-invert max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {recommendation}
