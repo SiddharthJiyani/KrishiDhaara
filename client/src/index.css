@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+.prose ul {
+    padding-left: 1.5rem; /* Increase left padding for unordered lists */
+  }
+  .prose ol {
+    padding-left: 1.5rem; /* Increase left padding for ordered lists */
+  }
+  .prose blockquote {
+    padding-left: 1rem;
+    border-left: 4px solid #ccc;
+  }
+
+  
+
