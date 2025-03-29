@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "smartirrigation-1f48f",
+  "private_key_id": "ef69341f17987a246c97429acb195d1c9ab3b5e4",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDy/iJz85A24yis\nMMVSZZTaJLJkHZDYQQ6TyrQ0y+aYguc/xv1XlCsbfkWkYsX4o3Hp/SwKkhnxR1xt\nNopNO/cRiKj13IOqQb7e8HUFbPoAgXb66hDN19+vfkiKJoanZ5OmDWcLdPR2mLbr\nJ4s+2wRPS1R1rx/b5fD9XDTfMLk0DpfmRb54qzlvRcaNtIGAVwOzfxAWYeD0EvlG\n9ZLNa4/95G621EeAQnmm7yM7By0go0syMO6xtN0NkEjgFI2RmuOBBtx8XmNjUv+7\nP9PsgpMGQuJGGmky7Bz12oGIDSp5ehUt5JK+pUyBdjeDCdQy9KMv2eXhye6bQq7G\nepz5lW7dAgMBAAECggEABkix3btzQ9AdFFLl5MscDdt8F4sM3LgrUdbLUUA3/u1d\nC0ZbSowE5LRKcHAI0Z9xyeInukBBVn7eHN7tCwadeEEcqXsMlqHA92VS3r3iOz1z\nNRWfiKCSuChKZPQ5GumFT8/cldcY9AY1WMslgTh1xJKHT8x5xPHjM7zSNeFohg2Q\n/pjtvXxarHaO3EcVzDHw2vr/Y7TzYvbMmh1Y2hob8WWGtGyfDtzmtp9dfY6uxd5/\nRLL61fRqBDlpJUwHXTVPqcW1NnZUfIZOtgxoHKwFGCOEiph8z5Yj5RB8I5phwu3d\nqpBBcDiz/LhmwVnNUR7XKhFH49SjmpjpoiXsn2JEIQKBgQD6wtLhQnbxh6jicIkY\n+40lMARI/Fp0ZPV2Mmgn2aikL0z9ZZOG12bxN3vc+IlVLFDLG/Wh4KXj0BG+nmC+\nl7wiD6tNWbV0XZHeuBG9jyq5NVfgKV4yuzjc3Ze7VhLhmOLjnmBw/xNGCjTXln9T\nwZlg98CNAs7LfYPCqhQSLMLgkQKBgQD4EcM4e37ZVy033osiviz5STkEK1+LydHG\n6d0zczNrXZZyDhArGZhn9OOCvZ6Lt8/sopFEENaWQhZJZptqStr5RHDIlUxf5uV4\ndyQx1+XrxEnjm9ZOxmc53vTg6tTLiV3hxJiMUM5jMf3pHMRNZohnanTWgBf/QdGE\nQbnHWUNPjQKBgQDFeQtMrWSxzB1pRSoR7Hc4o9mcCG7LXn4W+JchWrz9nupIWueU\ntqiwqPr4BxlPY7i0Wm5Tbm/1OXPf4yVYsnFLeX9zSIQnAVDQTbBa0RXaCHINa0Zt\nORcMh8znkF8KHbX/fkeAdL8e1wbKCBB5SuqYfEK8SUvE4DEU6Y8oyOsmoQKBgQCt\n7s5hiP1s6Fn1JV2K86rW8wc+LCcm/U/P12PYUjrIWetFdyTRA3Y/1Y27urYyoqPv\n+CBAiEndOuMjfgUUZv3X7qvhiATv7RYR+/9tz0IPqCZip36A502zXud12FFxkJQ5\n2z1WjMXY+VFdpGTjHDQhxpu7Vj79I6oCwI7A/o5adQKBgG5CF0YkxZnRrtbzCN6E\nIphRvODg/D2zsXKtYUYPjNdi/EBkrQnp1BaZuFtu6nbSDoNmcDRozCHxbwWPxG1g\nH4qKz0II0lIRouqFgkRxMhD1FLtHGTVnZhy96ei0YqsM3/9Us+PvBYO9UhPDUsma\nqKmp+DqVPAgFRitkiSZJ8nQD\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@smartirrigation-1f48f.iam.gserviceaccount.com",
+  "client_id": "113335466631764247482",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40smartirrigation-1f48f.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
