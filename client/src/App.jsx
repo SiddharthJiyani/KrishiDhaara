@@ -36,12 +36,12 @@ function AppContent() {
         <Route path="*" element={<NotFound />} />
         <Route path="/report" element={<AgriReport />} />
         <Route element={<ProtectedRoute></ProtectedRoute>}>
-          <Route path="/predict-disease" element={<PredictDisease />} />
-          <Route path="/weather" element={<WeatherPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/stats" element={<StatsPage />} />
-          <Route path="/care-tips" element={<CareTips />} />
+          <Route path="/weather" element={<WeatherPage />} />
+          <Route path="/predict-disease" element={<PredictDisease />} />
           <Route path="/news" element={<NewsPage />} />
+          {/* <Route path="/stats" element={<StatsPage />} /> */}
+          {/* <Route path="/care-tips" element={<CareTips />} /> */}
         </Route>
       </Routes>
       {!isLandingPage && <Footer />}
@@ -53,7 +53,7 @@ function App() {
   return (
     <Router>
       <AppContent />
-      <Chatbot />
+      {/* <Chatbot /> */}
     </Router>
   );
 }

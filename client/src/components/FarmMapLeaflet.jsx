@@ -45,7 +45,8 @@ function MapUpdater({ center }) {
   
   useEffect(() => {
     if (center) {
-      map.flyTo(center, 16);
+      // Use setView instead of flyTo for immediate location jumps without animation
+      map.setView(center, 16, { animate: false });
     }
   }, [center, map]);
   
@@ -75,19 +76,14 @@ const generateFieldBoundary = (center, width, height) => {
 const getRandomColor = () => {
   const colors = [
     '#3388ff', // Blue
-    '#ff3838', // Red
     '#33ff88', // Green
-    '#ffff33', // Yellow
-    '#ff33ff', // Magenta
-    '#33ffff', // Cyan
-    '#ff8833', // Orange
-    '#8833ff'  // Purple
   ];
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
 const FarmMap = () => {
   const [userLocation, setUserLocation] = useState(null);
+  const [fieldCenter, setFieldCenter] = useState(null); // Store field center separately
   const [mapCenter, setMapCenter] = useState([0, 0]);
   const [isLocating, setIsLocating] = useState(false);
   const [showDimensionsModal, setShowDimensionsModal] = useState(false);
@@ -98,14 +94,61 @@ const FarmMap = () => {
   const [allSensorList, setAllSensorList] = useState([]);
   const [sensorData, setSensorData] = useState({});
   const [showSensorPanel, setShowSensorPanel] = useState(false);
-  const [selectedSensorForLocation, setSelectedSensorForLocation] = useState(null);
+  const [showResetButton, setShowResetButton] = useState(false);
+
+  // Load field dimensions from local storage
+  const loadFieldDimensions = () => {
+    const savedDimensions = localStorage.getItem('fieldDimensions');
+    if (savedDimensions) {
+      try {
+        const parsedDimensions = JSON.parse(savedDimensions);
+        setFieldWidth(parsedDimensions.width);
+        setFieldHeight(parsedDimensions.height);
+        if (parsedDimensions.center) {
+          setFieldCenter(parsedDimensions.center);
+        }
+        return true;
+      } catch (error) {
+        console.error("Error parsing saved field dimensions:", error);
+      }
+    }
+    return false;
+  };
+
+  // Save field dimensions to local storage
+  const saveFieldDimensions = (width, height, center) => {
+    localStorage.setItem('fieldDimensions', JSON.stringify({
+      width,
+      height,
+      center
+    }));
+    setShowResetButton(true);
+  };
 
   // Get current location on initial render
   useEffect(() => {
-    getCurrentLocation();
+    // First check if field dimensions are saved
+    const dimensionsExist = loadFieldDimensions();
+    
+    // If dimensions exist, don't show the modal on initial load
+    if (dimensionsExist) {
+      setShowResetButton(true);
+    }
+    
+    // Get user location regardless
+    getCurrentLocation(!dimensionsExist);
+    
     // Load saved sensor locations from local storage
     loadSensorLocations();
   }, []);
+
+  // Update field boundary when dimensions or field center changes
+  useEffect(() => {
+    if (fieldCenter) {
+      const boundary = generateFieldBoundary(fieldCenter, fieldWidth, fieldHeight);
+      setFieldBoundary(boundary);
+    }
+  }, [fieldWidth, fieldHeight, fieldCenter]);
 
   // Fetch sensor data when user location is available
   useEffect(() => {
@@ -135,14 +178,22 @@ const FarmMap = () => {
     localStorage.setItem('sensorLocations', JSON.stringify(locations));
   };
   
-  // Function to get user's current location
-  const getCurrentLocation = () => {
+  // Function to get user's current location with high precision
+  const getCurrentLocation = (showModal = false) => {
     setIsLocating(true);
     
     if (navigator.geolocation) {
+      const geoOptions = { 
+        enableHighAccuracy: true,  // Force high accuracy GPS reading
+        timeout: 10000,            // Increased timeout for better readings
+        maximumAge: 0              // Don't use cached position
+      };
+      
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const { latitude, longitude } = position.coords;
+          const { latitude, longitude, accuracy } = position.coords;
+          console.log(`Location accuracy: ${accuracy} meters`);
+          
           const newLocation = [latitude, longitude];
           
           // Set user location
@@ -151,17 +202,24 @@ const FarmMap = () => {
           // Set map center to user location
           setMapCenter(newLocation);
           
+          // Only set field center if it doesn't exist yet
+          if (!fieldCenter) {
+            setFieldCenter(newLocation);
+          }
+          
           setIsLocating(false);
           
-          // Show dimensions modal after getting location
-          setShowDimensionsModal(true);
+          // Show dimensions modal only if requested and no saved dimensions
+          if (showModal) {
+            setShowDimensionsModal(true);
+          }
         },
         (error) => {
           console.error("Error getting location:", error);
           setIsLocating(false);
           alert("Unable to get your location. Please make sure location services are enabled.");
         },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        geoOptions
       );
     } else {
       alert("Geolocation is not supported by this browser.");
@@ -173,10 +231,36 @@ const FarmMap = () => {
   const handleDimensionsSubmit = () => {
     if (!userLocation) return;
     
+    // Save field center as current user location if not set yet
+    const center = fieldCenter || userLocation;
+    
     // Generate field boundary based on dimensions
-    const boundary = generateFieldBoundary(userLocation, fieldWidth, fieldHeight);
+    const boundary = generateFieldBoundary(center, fieldWidth, fieldHeight);
     setFieldBoundary(boundary);
+    
+    // Save dimensions and center to local storage
+    saveFieldDimensions(fieldWidth, fieldHeight, center);
+    
+    // Hide modal
     setShowDimensionsModal(false);
+  };
+
+  // Function to reset field dimensions
+  const resetFieldDimensions = () => {
+    // Remove saved dimensions from local storage
+    localStorage.removeItem('fieldDimensions');
+    
+    // Reset field center
+    setFieldCenter(null);
+    
+    // Clear field boundary
+    setFieldBoundary([]);
+    
+    // Show dimensions modal
+    setShowDimensionsModal(true);
+    
+    // Hide reset button
+    setShowResetButton(false);
   };
 
   // Function to fetch sensor data
@@ -187,6 +271,7 @@ const FarmMap = () => {
       });
       const data = response.data.message;
       setSensorData(data);
+      console.log('Sensor Data:', data);
     } catch (error) {
       console.error("Error fetching sensor data:", error);
       // Use sample data if API fails
@@ -463,6 +548,32 @@ const FarmMap = () => {
         </button>
       </div>
 
+      {/* Reset Field Dimensions Button */}
+      {showResetButton && (
+        <div style={{
+          position: 'absolute',
+          bottom: '20px',
+          left: '165px',
+          zIndex: 1000
+        }}>
+          <button 
+            onClick={resetFieldDimensions}
+            style={{
+              backgroundColor: '#fff',
+              color: '#ff3838',
+              border: 'none',
+              borderRadius: '4px',
+              padding: '10px 15px',
+              boxShadow: '0 2px 5px rgba(0,0,0,0.3)',
+              cursor: 'pointer',
+              fontWeight: 'bold'
+            }}
+          >
+            Reset Field Dimensions
+          </button>
+        </div>
+      )}
+
       {/* Sensor Panel */}
       {showSensorPanel && (
         <div style={{
@@ -542,7 +653,7 @@ const FarmMap = () => {
         zIndex: 1000
       }}>
         <button 
-          onClick={getCurrentLocation}
+          onClick={() => getCurrentLocation(false)} // Don't show modal when updating location
           disabled={isLocating}
           style={{
             width: '50px',
@@ -600,7 +711,7 @@ const FarmMap = () => {
         </LayersControl>
         
         {/* Field boundary */}
-        {userLocation && fieldBoundary.length > 0 && (
+        {fieldBoundary.length > 0 && (
           <Polygon 
             positions={fieldBoundary}
             pathOptions={{ color: 'green', weight: 3, fillColor: 'green', fillOpacity: 0.1 }}
