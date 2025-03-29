@@ -5,6 +5,7 @@ numpy
 statsmodels
 tensorflow
 joblib
+matplotlib
 python-dotenv
 firebase_admin
 uvicorn
