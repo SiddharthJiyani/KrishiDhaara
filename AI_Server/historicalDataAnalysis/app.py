@@ -10,22 +10,35 @@ from Feature_Forecasting.forecasting_response import forecaster
 from datetime import datetime
 import firebase_admin
 from firebase_admin import credentials, db
+import time
+import pymongo
+
+mongo_client = pymongo.MongoClient("mongodb+srv://shivlumewada:b9EHHbCAVy8XUKq2@cluster0.6u346.mongodb.net")
+water_usage_db = mongo_client["test"]
+usage_collection = water_usage_db["waterusagedatas"]
+
+WATER_FLOW_RATE = 30 #litre/minutes
 
 app = Flask(__name__)
 
-cred = credentials.Certificate("firebase_config.json")
-firebase_admin.initialize_app(cred, {
+cred1 = credentials.Certificate("firebase_config.json")
+prim_app = firebase_admin.initialize_app(cred1, {
     'databaseURL': 'https://smartirrigation-1f48f-default-rtdb.asia-southeast1.firebasedatabase.app/' 
 })
 
+cred2 = credentials.Certificate("smart-irrigation-water-usage-firebase-config.json")
+sec_app = firebase_admin.initialize_app(cred2, {
+    'databaseURL': 'https://smart-irrigation-water-usage-default-rtdb.asia-southeast1.firebasedatabase.app/' 
+})
 
 @app.route("/")
 def hello_world():
     return f"Welcome to Krishi Dhara Smart Irrigration System AI!"
 
 @app.route('/predict_verdict', methods=['POST'])
-def verdict_endpoint():
+async def verdict_endpoint():
     try:
+        print("TEsting....")
         data = request.json
         result = predict_verdict(
             temperature=data['temperature'],
@@ -34,12 +47,44 @@ def verdict_endpoint():
         )
         
         relayNumber=data['relayNumber']
-        stats_ref = db.reference(f"relay-sensors-suggestion/{relayNumber}/state")
-     
-        if(result=="Off"):
+        stats_ref = db.reference(f"relay-sensors-suggestion/{relayNumber}/state",app=prim_app)
+        
+        water_usage_ref = db.reference(f"water-usage-stats/{relayNumber}",app=sec_app)
+        
+        current_data = water_usage_ref.get() or {"state": "off", "timestamp": 0}
+        current_state = current_data.get("state", "off")
+        start_timestamp = current_data.get("timestamp", 0)
+        print(current_data)
+        
+        if result=="Off":
             output="off"
         else:
             output="on"
+            
+        # Only calculate and store water usage when turning off an active relay
+        if current_state == "on" and output == "off":
+            end_timestamp = int(time.time())
+            duration_seconds = end_timestamp - start_timestamp
+            duration_minutes = duration_seconds / 60  # Convert to minutes
+            water_used = duration_minutes * WATER_FLOW_RATE  # Liters
+            
+            # Store water usage data in MongoDB only when we have usage to record
+            usage_record = {
+                "relayNumber": relayNumber,
+                "startTimestamp": start_timestamp,
+                "endTimestamp": end_timestamp,
+                "durationMinutes": duration_minutes,
+                "waterUsageLiters": water_used,
+                "recordedAt": datetime.now()
+            }
+            usage_collection.insert_one(usage_record)
+        
+        # Update Firebase with new state and timestamp
+        current_timestamp = int(time.time())
+        water_usage_ref.set({
+            "state": output,
+            "timestamp": current_timestamp if output == "on" else 0
+        })
         
         stats_ref.set(output)
         
@@ -79,4 +124,4 @@ if __name__ == '__main__':
     from asgiref.wsgi import WsgiToAsgi
     
     asgi_app = WsgiToAsgi(app)
-    uvicorn.run(asgi_app, host="0.0.0.0", port=7860)
+    uvicorn.run(app=app, host="0.0.0.0", port=7860)

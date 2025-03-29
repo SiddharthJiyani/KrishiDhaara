@@ -10,3 +10,4 @@ python-dotenv
 firebase_admin
 uvicorn
 asgiref
+pymongo
