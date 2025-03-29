@@ -1,9 +1,12 @@
 import { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Bell } from "lucide-react";
 import { database, secondaryDatabase } from "../lib/firebase";
 import { ref, onValue } from "firebase/database";
+import "../i18n";
 
 export default function NotificationBell() {
+  const { t } = useTranslation('notifications');
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const previousStatesRef = useRef({});
@@ -43,11 +46,11 @@ export default function NotificationBell() {
           if (anomalyData.soil_moisture) {
             newNotifications.push({
               id: "soil_moisture_" + Date.now(),
-              sensorNumber: "Soil Moisture Anomaly",
+              sensorNumber: t("notifications.anomalies.soilMoisture.title"),
               state: "alert",
               type: "error",
               timestamp: new Date().toISOString(),
-              message: "Abnormal soil moisture levels detected! Please check your irrigation system."
+              message: t("notifications.anomalies.soilMoisture.message")
             });
           }
           previousAnomalyRef.current.soil_moisture = anomalyData.soil_moisture;
@@ -59,11 +62,11 @@ export default function NotificationBell() {
           if (anomalyData.temperature) {
             newNotifications.push({
               id: "temperature_" + Date.now(),
-              sensorNumber: "Temperature Anomaly",
+              sensorNumber: t("notifications.anomalies.temperature.title"),
               state: "alert",
               type: "error",
               timestamp: new Date().toISOString(),
-              message: "Abnormal temperature detected! Plants may be at risk."
+              message: t("notifications.anomalies.temperature.message")
             });
           }
           previousAnomalyRef.current.temperature = anomalyData.temperature;
@@ -112,7 +115,7 @@ export default function NotificationBell() {
         }
       }
     });
-  }, []);
+  }, [t]);
 
   const getNotificationColor = (type) => {
     switch (type) {
@@ -125,6 +128,27 @@ export default function NotificationBell() {
       default:
         return "bg-blue-500";
     }
+  };
+
+  // Format notification message based on whether it's a system message or relay notification
+  const getNotificationMessage = (notification) => {
+    if (notification.message) {
+      return notification.message;
+    } else {
+      return t("notifications.relayMessage", { state: notification.state });
+    }
+  };
+
+  // Format timestamp with the current locale
+  const formatTimestamp = (timestamp) => {
+    //  i dont want seconds in the timestamp
+    const date = new Date(timestamp);
+    const options = { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" };
+    const formattedDate = date.toLocaleString(undefined, options);
+    const [datePart, timePart] = formattedDate.split(", ");
+    const [day, month, year] = datePart.split("/");
+    const [hour, minute] = timePart.split(":");
+    return `${day}/${month}/${year} ${hour}:${minute}`;
   };
 
   return (
@@ -148,11 +172,11 @@ export default function NotificationBell() {
             : "-translate-y-2 opacity-0 scale-95 pointer-events-none"
         }`}>
         <div className="flex items-center justify-between border-b border-gray-800 px-4 py-2">
-          <h3 className="text-lg font-semibold text-white">Notifications</h3>
+          <h3 className="text-lg font-semibold text-white">{t("notifications.title")}</h3>
           <button
             className="text-gray-400 rounded-lg p-2 hover:text-white hover:bg-[#28282f] cursor-pointer"
             onClick={handleMarkAllAsRead}>
-            Mark as read
+            {t("notifications.markAsRead")}
           </button>
         </div>
 
@@ -179,18 +203,18 @@ export default function NotificationBell() {
                       </div>
                       <div>
                         <span className="text-xs text-gray-400">
-                          {new Date(notification.timestamp).toLocaleString()}
+                          {formatTimestamp(notification.timestamp)}
                         </span>
                       </div>
                     </div>
                   </div>
-                  <p className="text-gray-400">{ notification.message || `Our AI suggests flipping this relay ${notification.state} for optimal performance! 🚀`}</p>
+                  <p className="text-gray-400">{getNotificationMessage(notification)}</p>
                 </div>
               ))}
             </div>
           ) : (
             <div className="p-4 text-center text-gray-500">
-              No notifications
+              {t("notifications.noNotifications")}
             </div>
           )}
         </div>
