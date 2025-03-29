@@ -10,7 +10,7 @@ import authRouter from "./routes/authRoute.js"
 // import generalRouter from "./routes/generalRoute.js"
 // import plantRouter from "./routes/plantRoute.js"
 import scrapeRouter from "./routes/scrapeRoute.js"
-// import reportRouter from "./routes/reportRoute.js"
+import reportRouter from "./routes/reportRoute.js"
 dotenv.config()
 
 const app = express();
@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: true }))
 // app.use('/SensorData',generalRouter)
 app.use('/auth',authRouter)
 // app.use('/PlantPrediction',plantRouter)
-// app.use('/report',reportRouter)
+app.use('/report',reportRouter)
 app.use('/', scrapeRouter);
 
 app.get('/', (req, res) => {
