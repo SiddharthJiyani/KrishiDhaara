@@ -100,6 +100,15 @@ def anomaly_endpoint():
             temperature=data['temperature'],
             humidity=data['humidity']
         )
+        
+        anomaly_ref = db.reference(f"anomaly",app=sec_app)
+        
+        anomaly_data = {
+            "soil_moisture": bool(anomalies["humidity"]),  
+            "temperature": bool(anomalies["temperature"])
+        }
+        anomaly_ref.set(anomaly_data)
+        
         return jsonify({
             "temperature_anomaly": bool(anomalies["temperature"]),
             "humidity_anomaly": bool(anomalies["humidity"])
