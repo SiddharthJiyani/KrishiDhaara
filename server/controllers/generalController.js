@@ -342,14 +342,16 @@ export const getReport = async (req, res) => {
         ];
         let result_humidity = await HumidityData.aggregate(aggregate_pipeline_humi);
 
-        const response_getInsights = await axios.get(`${NODE_BASE_URL}/SensorData/getInsights`);
-        let result_insight = response_getInsights.data.message;
+        const response_getInsights = await InsightFetcher();
+        let result_insight = response_getInsights;
+        // console.log(result_insight)
+        
+        const response_plant_stats = await PlantStatsFetcher();
+        let result_plantstats = response_plant_stats;
+        // console.log(result_plantstats)
 
-        const response_plant_stats = await axios.get(`${NODE_BASE_URL}/PlantPrediction/getDiseaseStats`);
-        let result_plantstats = response_plant_stats.data.message;
-
-        const response_soil_forecast = await axios.get(`${FORECAST_BASE_API}/forecast`);
-        let result_soil_forecast = response_soil_forecast.data.forecast;
+        // const response_soil_forecast = await axios.get(`${FORECAST_BASE_API}/forecast`);
+        // let result_soil_forecast = response_soil_forecast.data.forecast;
 
         const result_waterusage = [
             { month: "Jan", value: Math.floor(Math.random() * 101) + 50 },
@@ -384,9 +386,9 @@ export const getReport = async (req, res) => {
             plantHealth: {
                 diseaseStats: result_plantstats || {}
             },
-            forecast: {
-                soil: result_soil_forecast || []
-            },
+            // forecast: {
+            //     soil: result_soil_forecast || []
+            // },
             meta: {
                 generatedAt: new Date().toISOString(),
                 reportPeriod: `${monthsToSubtract} month(s)`,
@@ -404,3 +406,118 @@ export const getReport = async (req, res) => {
         return res.status(500).send({ "success": false, "message": "Internal server error" });
     }
 };
+
+const PlantStatsFetcher = async() => {
+    try {
+        
+        const sensorRef = ref(firebase_db, `/plant-disease-prediction_stats`);
+        const snapshot = await get(sensorRef);
+        const result = snapshot.val();
+        return result
+    } catch (error) {
+        console.log(error);
+        return "Couldn't generate the Insights Sorry :("
+    }
+}
+
+const InsightFetcher = async () => {
+    try {
+        const endStamp = Date.now();
+        const endDate = new Date(endStamp);
+
+        const startDate = new Date(endStamp);
+        startDate.setMonth(startDate.getMonth() - 6);
+
+        const formatDate = (date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        const formattedStartDate = formatDate(startDate);
+        const formattedEndDate = formatDate(endDate);
+
+        const dateFormat = "%Y-%m";
+
+        const aggregate_pipeline_1 = [
+            { $match: { timestamp: { $gte: startDate, $lte: endDate } } },
+            {
+                $group: {
+                    _id: { $dateToString: { format: dateFormat, date: "$timestamp" } },
+                    averageTemperature: { $avg: "$temperature" },
+                    stdDeviationTemperature: { $stdDevSamp: "$temperature" },
+                    medianTemperature: {
+                        $percentile: {
+                            input: "$temperature",
+                            p: [0.5],
+                            method: "approximate"
+                        }
+                    }
+                }
+            }
+        ];
+
+        const aggregate_pipeline_2 = [
+            { $match: { timestamp: { $gte: startDate, $lte: endDate } } },
+            {
+                $group: {
+                    _id: { $dateToString: { format: dateFormat, date: "$timestamp" } },
+                    averageSoilMoisture: { $avg: "$humidity" },
+                    stdDeviationSoilMoisture: { $stdDevSamp: "$humidity" },
+                    medianSoilMoisture: {
+                        $percentile: {
+                            input: "$humidity",
+                            p: [0.5],
+                            method: "approximate"
+                        }
+                    }
+                }
+            }
+        ];
+
+        const resultTemp = await TemperatureData.aggregate(aggregate_pipeline_1);
+        const resultSoilMoist = await HumidityData.aggregate(aggregate_pipeline_2);
+
+        const formattedTemp = JSON.stringify(resultTemp, null, 2);
+        const formattedMoisture = JSON.stringify(resultSoilMoist, null, 2);
+
+        const prompt = `You are an AI assistant that provides farmer-friendly insights on soil moisture (percentage) and temperature (Celsius).  
+The data provided are as follows:  
+- **Temperature:** ${formattedTemp}°C  
+- **Soil Moisture:** ${formattedMoisture}%  
+
+### 📊 **Insights on the Data:**  
+Explain what these values mean in **simple language** that a farmer can understand.  
+
+### 💧 **Practical Irrigation Advice:**  
+Provide actionable irrigation recommendations based on the given values.  
+
+### ⚠️ **Potential Issues:**  
+Detect any possible risks like overwatering, drought conditions, or extreme temperatures.  
+
+### 🌱 **Seasonal Patterns:**  
+Identify any trends or patterns in soil moisture and temperature based on typical seasonal variations.  
+
+Format the output in **proper markdown** for easy readability.`;
+
+        const generationConfig = {
+            temperature: 1,
+            topP: 0.95,
+            topK: 40,
+            maxOutputTokens: 8192,
+            // Remove the responseMimeType to get markdown text instead of JSON
+            // responseMimeType: "application/json",s
+        };
+        const genAI = new GeminiClientSingleton();
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-8b", generationConfig });
+
+        const result = await model.generateContent(prompt);
+
+        const text = result.response.text();
+        return text;
+    } catch (error) {
+        console.log(error);
+        return "Couldn't generate the Insights Sorry :("
+    }
+}
