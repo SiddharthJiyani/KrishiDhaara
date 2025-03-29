@@ -1,5 +1,5 @@
 import express from "express"
-import {getRelayState,changeRelayState} from '../controllers/relayController.js'
+import {getRelayState,changeRelayState,getWaterUsage} from '../controllers/relayController.js'
 const router=express.Router();
 import cors from "cors"
 
@@ -14,6 +14,7 @@ const allowAllOriginsPolicy = cors({
 
 
 router.post("/changeState/:sensorNumber",allowAllOriginsPolicy,changeRelayState)
+router.post("/getWaterUsage/:sensorNumber",getWaterUsage)
 router.get("/getState/",allowAllOriginsPolicy,getRelayState)
 
 export default router;
