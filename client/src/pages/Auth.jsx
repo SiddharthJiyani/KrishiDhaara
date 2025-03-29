@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs";
 import axios from "axios";
+import toast from "react-hot-toast";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 
@@ -199,18 +200,19 @@ const Login = () => {
         email: formData.email,
         password: formData.password,
       },{withCredentials:true});
-      // console.log(response.data)
       if (response.data.success===true) {
-        
         if (response.data.user && response.data.expiresAt) {
           localStorage.setItem("user", JSON.stringify(response.data.user));
           localStorage.setItem("tokenExpiresAt", JSON.stringify(response.data.expiresAt));
         }
+        toast.success("You are logged in!");
         navigate("/dashboard");
       } else {
         setApiError("Login failed. Please check your credentials.");
+        toast.error("Login failed!");
       }
     } catch (error) {
+      toast.error("Please try again!");
       setApiError(
         error.response?.data?.message ||
           "An error occurred during login. Please try again."
@@ -373,10 +375,12 @@ const Signup = ({ setActiveTab }) => {
       );
 
       // Redirect to login tab after a brief delay
+      toast.success("Registered Successfully!");
       setTimeout(() => {
         setActiveTab("login");
       }, 1500);
     } catch (error) {
+      toast.error("Server Error!");
       setApiError(
         error.response?.data?.message ||
           "An error occurred during registration. Please try again."

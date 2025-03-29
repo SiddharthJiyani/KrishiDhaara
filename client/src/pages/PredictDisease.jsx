@@ -4,6 +4,7 @@ import ModelDetails from "../components/DiseaseDetection/ModelDetails.jsx";
 import ImageUpload from "../components/DiseaseDetection/ImageUpload.jsx";
 import PredictionResult from "../components/DiseaseDetection/PredictionResult.jsx";
 import DiseaseLibrary from "../components/DiseaseDetection/DiseaseLibrary.jsx";
+import CropRecommendationForm from "../components/DiseaseDetection/CropRecommendationForm.jsx";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -32,19 +33,16 @@ export default function PredictDisease() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-black text-gray-100 transition-colors duration-300"
-    >
+      className="min-h-screen bg-black text-gray-100 transition-colors duration-300">
       <div className="container mx-auto p-6 max-w-7xl">
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="mb-6 flex items-center gap-4"
-        >
+          className="mb-6 flex items-center gap-4">
           <a
             href="/"
-            className="flex items-center gap-2 cursor-pointer text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-          >
+            className="flex items-center gap-2 cursor-pointer text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
             <ArrowLeft className="h-5 w-5" />
             <span>Back to Dashboard</span>
           </a>
@@ -54,8 +52,7 @@ export default function PredictDisease() {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="mb-8"
-        >
+          className="mb-8">
           <h1 className="text-4xl font-bold text-green-600 mb-2">
             Plant Disease Detection
           </h1>
@@ -70,28 +67,32 @@ export default function PredictDisease() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="lg:col-span-2"
-          >
+            className="lg:col-span-2">
             <ModelDetails />
             <ImageUpload onPrediction={setPredictedDisease} onCure={setCure} />
             {predictedDisease && (
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
+                transition={{ duration: 0.5 }}>
                 <PredictionResult
                   predictedDisease={predictedDisease}
                   cure={cure}
                 />
               </motion.div>
             )}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}>
+                <CropRecommendationForm />
+              </motion.div>
           </motion.div>
+
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
+            transition={{ duration: 0.5 }}>
             <DiseaseLibrary />
           </motion.div>
         </div>

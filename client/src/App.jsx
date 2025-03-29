@@ -5,16 +5,20 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
 import WeatherPage from "./pages/WeatherPage";
+import StatsPage from "./pages/StatsPage";
+import PredictDisease from "./pages/PredictDisease";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import PredictDisease from "./pages/PredictDisease";
-import ProtectedRoute from "./lib/ProtectedRoute";
 import NotFound from "./pages/NotFound";
+import CareTips from "./pages/CareTips";
 import LandingPage from "./pages/LandingPage";
 import Auth from "./pages/Auth";
+import ProtectedRoute from "./lib/ProtectedRoute";
+import NewsPage from "./pages/News";
+import Chatbot from "./components/Chatbot";
 import AgriReport from "./components/AgriReport";
-
 
 function AppContent() {
   const location = useLocation();
@@ -30,14 +34,15 @@ function AppContent() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="*" element={<NotFound />} />
-
+        <Route path="/report" element={<AgriReport />} />
         <Route element={<ProtectedRoute></ProtectedRoute>}>
-        <Route path="/predict-disease" element={<PredictDisease />} />
-        <Route path="/weather" element={<WeatherPage />} />
-        <Route path="/pdf" element={<AgriReport />} />
-        
+          <Route path="/predict-disease" element={<PredictDisease />} />
+          <Route path="/weather" element={<WeatherPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/stats" element={<StatsPage />} />
+          <Route path="/care-tips" element={<CareTips />} />
+          <Route path="/news" element={<NewsPage />} />
         </Route>
-
       </Routes>
       {!isLandingPage && <Footer />}
     </div>
@@ -48,6 +53,7 @@ function App() {
   return (
     <Router>
       <AppContent />
+      <Chatbot />
     </Router>
   );
 }

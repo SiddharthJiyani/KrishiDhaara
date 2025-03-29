@@ -24,6 +24,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ref, onValue, get, set } from "firebase/database";
 import { database } from "../lib/firebase";
+import FarmMap from "../components/FarmMapLeaflet";
 // import rehypeRaw from "rehype-raw";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -285,6 +286,12 @@ export default function Dashboard() {
               onClick={() => setActiveTab("automation")}>
               Automation
             </TabsTrigger>
+            <TabsTrigger
+              className="cursor-pointer hover:bg-zinc-600"
+              value="map"
+              onClick={() => setActiveTab("map")}>
+              View Field Map
+            </TabsTrigger>
           </TabsList>
         </Tabs>
 
@@ -358,6 +365,7 @@ export default function Dashboard() {
         )}
         {activeTab === "sensors" && <SensorsTab sensorData={allSensorList} />}
         {activeTab === "automation" && <AutomationTab />}
+        {activeTab === "map" && <FarmMap/>}
       </main>
     </motion.div>
   );
