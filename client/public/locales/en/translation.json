@@ -1,46 +1,46 @@
 {
-    "header": "Krishi Dhara",
-    "h1": "The intelligent solution for modern plant care, powered by IoT and AI technology",
-    "button1": "Explore Dashboard",
-    "button2": "Learn More",
-    "dsh": "Dashboard",
-    "signin": "Sign In",
-    "h2": "The Challenges of Modern Plant Care",
-    "h3": "Plant owners face numerous obstacles that can lead to unhealthy plants and wasted resources",
-    "h4": "Problem",
-    "c1": "Inconsistent watering leads to over or under-watered plants, causing stress and potential death",
-    "c2": "Difficulty in identifying plant diseases early, resulting in widespread damage before detection",
-    "c3": "Lack of real-time environmental data makes it challenging to create optimal growing conditions",
-    "c4": "Time-consuming manual monitoring and maintenance processes that are prone to human error",
-    "h5": "Introducing Krishi Dhaara",
-    "h6": "A comprehensive solution that transforms plant care through intelligent technology",
-    "h7": "Solution",
-    "c5": "Smart irrigation system that monitors soil moisture in real-time and waters plants precisely when needed",
-    "c6": "AI-powered disease detection that identifies plant health issues at the earliest stages through image analysis",
-    "c7": "Environmental monitoring with sensors that track temperature, humidity, and light conditions for optimal plant growth",
-    "c8": "Automated care system that reduces manual intervention while improving plant health through data-driven decisions",
-    "h8": "Key Features",
-    "h9": "Discover how Krishi Dhaara revolutionizes plant care with these powerful capabilities",
-    "h10": "Ready to Transform Your Plant Care?",
-    "h11": "Experience the future of intelligent plant management with Krishi Dhaara's comprehensive solution",
-    "realTimeMoistureMonitoringTitle": "Real-time Moisture Monitoring",
-    "realTimeMoistureMonitoringDesc": "Continuous tracking of soil moisture levels with precise sensors that ensure optimal watering conditions.",
-    
-    "aiDiseaseDetectionTitle": "AI Disease Detection",
-    "aiDiseaseDetectionDesc": "Advanced image recognition technology that identifies plant diseases with high accuracy.",
-    
-    "comprehensiveDiseaseLibraryTitle": "Comprehensive Disease Library",
-    "comprehensiveDiseaseLibraryDesc": "Extensive database of plant diseases with detailed information and treatment recommendations.",
-    
-    "dataVisualizationTitle": "Data Visualization",
-    "dataVisualizationDesc": "Interactive charts and graphs that make complex plant data easy to understand and act upon.",
-    
-    "weatherIntegrationTitle": "Weather Integration",
-    "weatherIntegrationDesc": "Local weather forecasting that helps optimize irrigation schedules based on upcoming conditions.",
-    
-    "responsiveDesignTitle": "Responsive Design",
-    "responsiveDesignDesc": "Access your plant care system from any device with a fully responsive interface that works everywhere.",
-    "dashboard": {
+  "header": "Krishi Dhara",
+  "h1": "The intelligent solution for modern plant care, powered by IoT and AI technology",
+  "button1": "Explore Dashboard",
+  "button2": "Learn More",
+  "dsh": "Dashboard",
+  "signin": "Sign In",
+  "h2": "The Challenges of Modern Plant Care",
+  "h3": "Plant owners face numerous obstacles that can lead to unhealthy plants and wasted resources",
+  "h4": "Problem",
+  "c1": "Inconsistent watering leads to over or under-watered plants, causing stress and potential death",
+  "c2": "Difficulty in identifying plant diseases early, resulting in widespread damage before detection",
+  "c3": "Lack of real-time environmental data makes it challenging to create optimal growing conditions",
+  "c4": "Time-consuming manual monitoring and maintenance processes that are prone to human error",
+  "h5": "Introducing Krishi Dhaara",
+  "h6": "A comprehensive solution that transforms plant care through intelligent technology",
+  "h7": "Solution",
+  "c5": "Smart irrigation system that monitors soil moisture in real-time and waters plants precisely when needed",
+  "c6": "AI-powered disease detection that identifies plant health issues at the earliest stages through image analysis",
+  "c7": "Environmental monitoring with sensors that track temperature, humidity, and light conditions for optimal plant growth",
+  "c8": "Automated care system that reduces manual intervention while improving plant health through data-driven decisions",
+  "h8": "Key Features",
+  "h9": "Discover how Krishi Dhaara revolutionizes plant care with these powerful capabilities",
+  "h10": "Ready to Transform Your Plant Care?",
+  "h11": "Experience the future of intelligent plant management with Krishi Dhaara's comprehensive solution",
+  "realTimeMoistureMonitoringTitle": "Real-time Moisture Monitoring",
+  "realTimeMoistureMonitoringDesc": "Continuous tracking of soil moisture levels with precise sensors that ensure optimal watering conditions.",
+
+  "aiDiseaseDetectionTitle": "AI Disease Detection",
+  "aiDiseaseDetectionDesc": "Advanced image recognition technology that identifies plant diseases with high accuracy.",
+
+  "comprehensiveDiseaseLibraryTitle": "Comprehensive Disease Library",
+  "comprehensiveDiseaseLibraryDesc": "Extensive database of plant diseases with detailed information and treatment recommendations.",
+
+  "dataVisualizationTitle": "Data Visualization",
+  "dataVisualizationDesc": "Interactive charts and graphs that make complex plant data easy to understand and act upon.",
+
+  "weatherIntegrationTitle": "Weather Integration",
+  "weatherIntegrationDesc": "Local weather forecasting that helps optimize irrigation schedules based on upcoming conditions.",
+
+  "responsiveDesignTitle": "Responsive Design",
+  "responsiveDesignDesc": "Access your plant care system from any device with a fully responsive interface that works everywhere.",
+  "dashboard": {
     "title": "Krishi Dhaara Dashboard",
     "subtitle": "Monitor and control your smart irrigation system with real-time insights",
     "tabs": {
@@ -102,6 +102,103 @@
     },
     "errors": {
       "fetchingInsights": "An error occurred while fetching insights. Please try again later."
+    }
+  },
+  "weather": {
+    "title": "Weather Prediction",
+    "subtitle": "7-day forecast to optimize your irrigation schedule",
+    "back": "Back to Dashboard",
+    "location": {
+      "searchPlaceholder": "Enter location",
+      "search": "Search",
+      "getPreciseLocation": "Get Precise Location",
+      "coordinates": "Coordinates not available",
+      "high": "H",
+      "low": "L"
+    },
+    "forecast": {
+      "temperature": "Temperature (°C)",
+      "sevenDay": "7-Day Forecast",
+      "hourlyForecast": "Hourly Forecast for",
+      "humidity": "Humidity",
+      "wind": "Wind",
+      "clearSkies": "Clear skies. Proceed with regular irrigation.",
+      "expectRain": "Expect rain. Adjust irrigation accordingly."
+    },
+    "errors": {
+      "locationPermission": "Could not get your precise location. Please check your location permissions.",
+      "geolocationNotSupported": "Geolocation is not supported by your browser. Please enter your location manually."
+    }
+  },
+  "careTips": {
+    "title": "Plant Care Tips",
+    "subtitle": "Expert advice for maintaining healthy plants and optimal growth",
+    "backToDashboard": "Back to Dashboard",
+    "searchPlaceholder": "Search for tips...",
+    "categories": {
+      "all": "All",
+      "watering": "Watering",
+      "sunlight": "Sunlight",
+      "soil": "Soil",
+      "seasonal": "Seasonal",
+      "climate": "Climate"
+    },
+    "tips": {
+      "watering": {
+        "title": "Proper Watering Techniques",
+        "description": "Learn how to water your plants effectively to promote healthy growth.",
+        "tips": [
+          "Water deeply and less frequently to encourage deep root growth",
+          "Water at the base of plants to avoid wetting the foliage",
+          "Water in the early morning to reduce evaporation",
+          "Use a moisture meter to determine when plants need water",
+          "Adjust watering frequency based on season, temperature, and humidity"
+        ]
+      },
+      "sunlight": {
+        "title": "Optimizing Sunlight Exposure",
+        "description": "Understand the light requirements for different types of plants.",
+        "tips": [
+          "Most vegetables need at least 6 hours of direct sunlight daily",
+          "Rotate potted plants regularly for even growth",
+          "Use shade cloth during intense summer heat",
+          "South-facing windows provide the most light for indoor plants",
+          "Consider supplemental grow lights for indoor plants during winter"
+        ]
+      },
+      "soil": {
+        "title": "Soil Health Management",
+        "description": "Maintain nutrient-rich soil for optimal plant growth.",
+        "tips": [
+          "Test soil pH and nutrient levels annually",
+          "Add organic matter like compost to improve soil structure",
+          "Use mulch to conserve moisture and suppress weeds",
+          "Rotate crops to prevent soil depletion",
+          "Avoid compacting soil around plant roots"
+        ]
+      },
+      "seasonal": {
+        "title": "Seasonal Care Guidelines",
+        "description": "Adjust your gardening practices with the changing seasons.",
+        "tips": [
+          "Prepare plants for winter by reducing fertilization in late summer",
+          "Protect sensitive plants from frost with covers or bring them indoors",
+          "Increase watering during hot summer months",
+          "Prune most plants during their dormant season",
+          "Apply fertilizer at the beginning of the growing season"
+        ]
+      },
+      "climate": {
+        "title": "Climate Adaptation Strategies",
+        "description": "Help your plants thrive in challenging climate conditions.",
+        "tips": [
+          "Group plants with similar water and light needs together",
+          "Create microclimates using structures, trees, or other plants",
+          "Use raised beds for better drainage in wet climates",
+          "Install drip irrigation for water conservation in dry climates",
+          "Choose native plants adapted to your local climate"
+        ]
+      }
     }
   }
 }

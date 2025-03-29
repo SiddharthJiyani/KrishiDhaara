@@ -10,6 +10,7 @@ import {
   Wind,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import useWeatherData from "../lib/useWeatherData";
 import useLocation from "../lib/useLocation";
 import WeatherDayCard from "../components/Weather/WeatherDayCard";
@@ -17,6 +18,7 @@ import HourlyWeatherCard from "../components/Weather/HourlyWeatherCard";
 import LocationSearch from "../components/Weather/LocationSearch";
 import { LineChart } from "../components/charts";
 import styled from "styled-components";
+import "../i18n";
 
 const renderWeatherIcon = (icon) => {
   switch (icon) {
@@ -34,6 +36,8 @@ const renderWeatherIcon = (icon) => {
 };
 
 const WeatherPage = () => {
+  const { t, i18n } = useTranslation();
+  
   const {
     location,
     setLocation,
@@ -58,6 +62,29 @@ const WeatherPage = () => {
     setSearchQuery(query);
     fetchPlaceSuggestions(query);
     setShowSuggestions(true);
+  };
+
+  const formatLocationName = (suggestion) => {
+    let displayName = suggestion.display_name;
+    const nameParts = suggestion.display_name.split(", ");
+
+    if (nameParts.includes("India")) {
+      const city =
+        suggestion.address?.city ||
+        suggestion.address?.town ||
+        suggestion.address?.village ||
+        nameParts[0];
+
+      const region =
+        suggestion.address?.state ||
+        suggestion.address?.state_district ||
+        (nameParts.length > 2 ? nameParts[nameParts.length - 3] : "");
+
+      if (city && region) {
+        displayName = `${city}, ${region}, India`;
+      }
+    }
+    return displayName;
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -87,7 +114,7 @@ const WeatherPage = () => {
         (error) => {
           console.error("Error getting location:", error);
           alert(
-            "Could not get your precise location. Please check your location permissions."
+            t("weather.errors.locationPermission")
           );
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
@@ -95,7 +122,7 @@ const WeatherPage = () => {
     } else {
       console.error("Geolocation not supported by this browser.");
       alert(
-        "Geolocation is not supported by your browser. Please enter your location manually."
+        t("weather.errors.geolocationNotSupported")
       );
     }
   };
@@ -119,6 +146,12 @@ const WeatherPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Toggle language
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'hi' : 'en';
+    i18n.changeLanguage(newLang);
+  };
 
   const StyledWrapper = styled.div`
     .loader {
@@ -184,17 +217,6 @@ const WeatherPage = () => {
   };
 
   if (!weatherData) {
-    // return (
-    //   <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-black to-gray-900 text-white">
-    //     <div className="text-center">
-    //       <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-    //       <p className="text-xl">Getting precise location data...</p>
-    //       <p className="text-sm text-gray-400 mt-2">
-    //         Please allow location access for best results
-    //       </p>
-    //     </div>
-    //   </div>
-    // );
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-black to-gray-900 text-white">
         <Loader />
@@ -208,12 +230,17 @@ const WeatherPage = () => {
   for (let i = 0; i < 7; i++) {
     const date = new Date(currentDate);
     date.setDate(currentDate.getDate() + i);
+    // Use the current locale for date formatting
+    const locale = i18n.language === 'hi' ? 'hi-IN' : 'en-US';
+    const day = date.toLocaleDateString(locale, { weekday: "long" });
+    const formattedDate = date.toLocaleDateString(locale, {
+      month: "short",
+      day: "numeric",
+    });
+    
     const dayData = {
-      day: date.toLocaleDateString("en-US", { weekday: "long" }),
-      date: date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      }),
+      day: day,
+      date: formattedDate,
       temp: "",
       low: "",
       high: "",
@@ -242,8 +269,8 @@ const WeatherPage = () => {
     dayData.high = Math.max(...dayData.hourly.map((hour) => hour.temp));
     dayData.details =
       dayData.icon === "cloud-rain"
-        ? "Expect rain. Adjust irrigation accordingly."
-        : "Clear skies. Proceed with regular irrigation.";
+        ? t("weather.forecast.expectRain")
+        : t("weather.forecast.clearSkies");
 
     weekDays.push(dayData);
   }
@@ -262,19 +289,22 @@ const WeatherPage = () => {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white">
       <main className="container mx-auto px-4 py-8">
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="mb-6 flex items-center gap-4">
-          <a
-            href="/"
-            className="flex items-center gap-2 cursor-pointer text-gray-400 hover:text-gray-200">
-            <ArrowLeft className="h-5 w-5" />
-            <span>Back to Dashboard</span>
-          </a>
-        </motion.div>
+        <div className="flex justify-between items-center mb-6">
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-4">
+            <a
+              href="/"
+              className="flex items-center gap-2 cursor-pointer text-gray-400 hover:text-gray-200">
+              <ArrowLeft className="h-5 w-5" />
+              <span>{t("weather.back")}</span>
+            </a>
+          </motion.div>
+
+        </div>
 
         <motion.div
           initial={{ y: -20, opacity: 0 }}
@@ -283,10 +313,10 @@ const WeatherPage = () => {
           viewport={{ once: true }}
           className="mb-8">
           <h1 className="text-3xl font-bold text-blue-400">
-            Weather Prediction
+            {t("weather.title")}
           </h1>
           <p className="text-gray-300">
-            7-day forecast to optimize your irrigation schedule
+            {t("weather.subtitle")}
           </p>
         </motion.div>
 
@@ -326,14 +356,14 @@ const WeatherPage = () => {
                 <div className="text-xs text-gray-400 mt-1">
                   {latitude && longitude
                     ? `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`
-                    : "Coordinates not available"}
+                    : t("weather.location.coordinates")}
                 </div>
                 <p className="text-gray-400">
                   {selectedDayData.day}, {selectedDayData.date}
                 </p>
                 <div className="text-5xl font-bold">{selectedDayData.temp}</div>
                 <p className="text-gray-400">
-                  H: {selectedDayData.high}° L: {selectedDayData.low}°
+                  {t("weather.location.high")}: {selectedDayData.high}° {t("weather.location.low")}: {selectedDayData.low}°
                 </p>
               </div>
             </div>
@@ -342,11 +372,11 @@ const WeatherPage = () => {
               <div className="mt-4 grid grid-cols-2 gap-4">
                 <div className="flex items-center">
                   <Droplets className="h-5 w-5 text-blue-400 mr-2" />
-                  <span>Humidity: {selectedDayData.hourly[2].humidity}%</span>
+                  <span>{t("weather.forecast.humidity")}: {selectedDayData.hourly[2].humidity}%</span>
                 </div>
                 <div className="flex items-center">
                   <Wind className="h-5 w-5 text-blue-400 mr-2" />
-                  <span>Wind: {selectedDayData.hourly[2].wind} km/h</span>
+                  <span>{t("weather.forecast.wind")}: {selectedDayData.hourly[2].wind} km/h</span>
                 </div>
               </div>
             </div>
@@ -357,7 +387,7 @@ const WeatherPage = () => {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
             className="bg-[#121215] p-6 rounded-lg shadow-lg backdrop-blur-sm">
-            <h3 className="font-medium mb-4">Temperature (°C)</h3>
+            <h3 className="font-medium mb-4">{t("weather.forecast.temperature")}</h3>
             <div className="h-52">
               <LineChart data={hourlyData} color="#3b82f6" />
             </div>
@@ -369,7 +399,7 @@ const WeatherPage = () => {
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}>
-          <h3 className="text-xl font-medium mb-4">7-Day Forecast</h3>
+          <h3 className="text-xl font-medium mb-4">{t("weather.forecast.sevenDay")}</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-8">
             {weekDays.map((day, index) => (
               <WeatherDayCard
@@ -390,7 +420,7 @@ const WeatherPage = () => {
           viewport={{ once: true }}
           className="bg-[#121215] p-6 rounded-lg shadow-lg backdrop-blur-sm mb-8">
           <h3 className="text-xl font-medium mb-4">
-            Hourly Forecast for {selectedDayData.day}
+            {t("weather.forecast.hourlyForecast")} {selectedDayData.day}
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {selectedDayData.hourly.map((hour, index) => (

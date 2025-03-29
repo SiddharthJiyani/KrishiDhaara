@@ -12,6 +12,7 @@ import {
   Thermometer,
   Sun,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Input } from "../components/ui/Input";
 import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs";
 import {
@@ -21,117 +22,79 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-
-const careTips = {
-  watering: {
-    icon: <Droplet className="h-8 w-8 text-blue-500" />,
-    title: "Proper Watering Techniques",
-    description:
-      "Learn how to water your plants effectively to promote healthy growth.",
-    tips: [
-      "Water deeply and less frequently to encourage deep root growth",
-      "Water at the base of plants to avoid wetting the foliage",
-      "Water in the early morning to reduce evaporation",
-      "Use a moisture meter to determine when plants need water",
-      "Adjust watering frequency based on season, temperature, and humidity",
-    ],
-  },
-  sunlight: {
-    icon: <Sun className="h-8 w-8 text-yellow-500" />,
-    title: "Optimizing Sunlight Exposure",
-    description:
-      "Understand the light requirements for different types of plants.",
-    tips: [
-      "Most vegetables need at least 6 hours of direct sunlight daily",
-      "Rotate potted plants regularly for even growth",
-      "Use shade cloth during intense summer heat",
-      "South-facing windows provide the most light for indoor plants",
-      "Consider supplemental grow lights for indoor plants during winter",
-    ],
-  },
-  soil: {
-    icon: <Leaf className="h-8 w-8 text-green-500" />,
-    title: "Soil Health Management",
-    description: "Maintain nutrient-rich soil for optimal plant growth.",
-    tips: [
-      "Test soil pH and nutrient levels annually",
-      "Add organic matter like compost to improve soil structure",
-      "Use mulch to conserve moisture and suppress weeds",
-      "Rotate crops to prevent soil depletion",
-      "Avoid compacting soil around plant roots",
-    ],
-  },
-  seasonal: {
-    icon: <Calendar className="h-8 w-8 text-purple-500" />,
-    title: "Seasonal Care Guidelines",
-    description: "Adjust your gardening practices with the changing seasons.",
-    tips: [
-      "Prepare plants for winter by reducing fertilization in late summer",
-      "Protect sensitive plants from frost with covers or bring them indoors",
-      "Increase watering during hot summer months",
-      "Prune most plants during their dormant season",
-      "Apply fertilizer at the beginning of the growing season",
-    ],
-  },
-  climate: {
-    icon: <Thermometer className="h-8 w-8 text-red-500" />,
-    title: "Climate Adaptation Strategies",
-    description: "Help your plants thrive in challenging climate conditions.",
-    tips: [
-      "Group plants with similar water and light needs together",
-      "Create microclimates using structures, trees, or other plants",
-      "Use raised beds for better drainage in wet climates",
-      "Install drip irrigation for water conservation in dry climates",
-      "Choose native plants adapted to your local climate",
-    ],
-  },
-};
+import "../i18n";
 
 export default function CareTips() {
+  const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
 
-  const filterTips = () => {
-    if (activeCategory === "all") {
-      return Object.entries(careTips);
-    }
-    return Object.entries(careTips).filter(([key]) => key === activeCategory);
+  // Define care tips with icons but get content from translations
+  const careTipsIcons = {
+    watering: <Droplet className="h-8 w-8 text-blue-500" />,
+    sunlight: <Sun className="h-8 w-8 text-yellow-500" />,
+    soil: <Leaf className="h-8 w-8 text-green-500" />,
+    seasonal: <Calendar className="h-8 w-8 text-purple-500" />,
+    climate: <Thermometer className="h-8 w-8 text-red-500" />,
   };
 
-    React.useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+  const filterTips = () => {
+    const categories = Object.keys(careTipsIcons);
+    if (activeCategory === "all") {
+      return categories;
+    }
+    return categories.filter((key) => key === activeCategory);
+  };
 
-  const filteredTips = filterTips().filter(
-    ([_, content]) =>
-      content.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      content.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      content.tips.some((tip) =>
-        tip.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-  );
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const filteredTips = filterTips().filter(category => {
+    const title = t(`careTips.tips.${category}.title`);
+    const description = t(`careTips.tips.${category}.description`);
+    const tips = [];
+    
+    // Get all tips for this category
+    for (let i = 0; i < 5; i++) {
+      tips.push(t(`careTips.tips.${category}.tips.${i}`));
+    }
+    
+    return (
+      title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tips.some(tip => tip.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  });
+
+  // Function to toggle language
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'hi' : 'en';
+    i18n.changeLanguage(newLang);
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-6 flex items-center gap-4">
+        <div className="flex justify-between items-center mb-6">
           <Link
             to="/"
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
             <ArrowLeft className="h-5 w-5" />
-            <span>Back to Dashboard</span>
+            <span>{t("careTips.backToDashboard")}</span>
           </Link>
+
         </div>
 
-        <h1 className="text-3xl font-bold text-green-500">Plant Care Tips</h1>
+        <h1 className="text-3xl font-bold text-green-500">{t("careTips.title")}</h1>
         <p className="text-muted-foreground">
-          Expert advice for maintaining healthy plants and optimal growth
+          {t("careTips.subtitle")}
         </p>
 
-        <div className="flex flex-col gap-4 sm:flex-row mb-8">
+        <div className="flex flex-col gap-4 sm:flex-row mb-8 mt-6">
           <Input
             type="text"
-            placeholder="Search for tips..."
+            placeholder={t("careTips.searchPlaceholder")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="flex-1"
@@ -144,9 +107,9 @@ export default function CareTips() {
                 className={
                   activeCategory === "all" ? "bg-white dark:bg-gray-100" : ""
                 }>
-                All
+                {t("careTips.categories.all")}
               </TabsTrigger>
-              {Object.keys(careTips).map((category) => (
+              {Object.keys(careTipsIcons).map((category) => (
                 <TabsTrigger
                   key={category}
                   value={category}
@@ -156,7 +119,7 @@ export default function CareTips() {
                       ? "bg-white dark:bg-gray-100"
                       : ""
                   }>
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                  {t(`careTips.categories.${category}`)}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -164,19 +127,19 @@ export default function CareTips() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredTips.map(([key, content]) => (
-            <Card key={key} className="fade-in">
+          {filteredTips.map((category) => (
+            <Card key={category} className="fade-in">
               <CardHeader>
-                <div className="mb-2">{content.icon}</div>
-                <CardTitle>{content.title}</CardTitle>
-                <CardDescription>{content.description}</CardDescription>
+                <div className="mb-2">{careTipsIcons[category]}</div>
+                <CardTitle>{t(`careTips.tips.${category}.title`)}</CardTitle>
+                <CardDescription>{t(`careTips.tips.${category}.description`)}</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
-                  {content.tips.map((tip, index) => (
+                  {[0, 1, 2, 3, 4].map((index) => (
                     <li key={index} className="flex items-start gap-2">
-                      <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                      <span className="text-sm">{tip}</span>
+                      <span className="h-1.5 w-1.5 rounded-full bg-green-500 mt-2" />
+                      <span className="text-sm">{t(`careTips.tips.${category}.tips.${index}`)}</span>
                     </li>
                   ))}
                 </ul>
