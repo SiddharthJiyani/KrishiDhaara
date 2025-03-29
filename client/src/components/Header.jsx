@@ -19,6 +19,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import '../i18n';
+import LanguageToggle from "./LanguageToggle";
 // import  NotificationBell  from "./NotificationBell";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -140,6 +142,16 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
                   <LogOut />
                 </span>
                 Logout
+              </button>
+            </div>
+
+            <div className="flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors">
+              <button
+                className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-400 hover:bg-gray-800 cursor-pointer hover:text-white `}>
+                <span className="mr-2">
+                  <LanguageToggle />
+                </span>
+                Language
               </button>
             </div>
           </nav>
