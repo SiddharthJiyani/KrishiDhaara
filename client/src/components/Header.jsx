@@ -1,10 +1,11 @@
-import React, { useState, useEffect, act } from "react";
+import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "../components/ui/button";
 import {
   Leaf,
   Home,
   Cloud,
-  ShieldPlus ,
+  ShieldPlus,
   BookOpen,
   BarChart2,
   Sun,
@@ -19,12 +20,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import '../i18n';
+import "../i18n";
 import LanguageToggle from "./LanguageToggle";
-import  NotificationBell  from "./NotificationBell";
+import NotificationBell from "./NotificationBell";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Header({ darkMode, toggleDarkMode, activeTab }) {
+  const { t } = useTranslation('navigation');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -58,10 +60,11 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
   const handleLogout = async () => {
     const response = await axios.delete(
       // "http://localhost:3000/auth/logout"
-      `${BACKEND_URL}/auth/logout`
-      , {
-      withCredentials: true,
-    });
+      `${BACKEND_URL}/auth/logout`,
+      {
+        withCredentials: true,
+      }
+    );
     if (response.data.success) {
       localStorage.setItem("user", "");
       localStorage.setItem("tokenExpiresAt", "");
@@ -86,54 +89,54 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
                 width={25}
               />
             </div>
-            <span className="text-xl font-bold text-white">Krishi Dhaara</span>
+            <span className="text-xl font-bold text-white">{t('navigation.brand')}</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex justify-between items-center space-x-1">
             <NavItem
               icon={<Home size={18} />}
-              label="Dashboard"
+              label={t('navigation.menu.dashboard')}
               to="/dashboard"
               active={activeTab === "/dashboard"}
             />
             <NavItem
               icon={<Cloud size={18} />}
-              label="Weather"
+              label={t('navigation.menu.weather')}
               to="/weather"
               active={activeTab === "/weather"}
             />
             <NavItem
-              icon={<ShieldPlus  size={18} />}
-              label="Plant Health"
+              icon={<ShieldPlus size={18} />}
+              label={t('navigation.menu.plantHealth')}
               to="/predict-disease"
               active={activeTab === "/predict-disease"}
             />
             <NavItem
               icon={<Newspaper size={18} />}
-              label="News"
+              label={t('navigation.menu.news')}
               to="/news"
               active={activeTab === "/news"}
             />
             <NavItem
               icon={<BookOpen size={18} />}
-              label="Care Tips"
+              label={t('navigation.menu.careTips')}
               to="/care-tips"
               active={activeTab === "/care-tips"}
             />
             <NavItem
               icon={<BarChart2 size={18} />}
-              label="Stats"
+              label={t('navigation.menu.stats')}
               to="/stats"
               active={activeTab === "/stats"}
             />
             {/* <NavItem
               icon={<LogIn size={18} />}
-              label="Login"
+              label={t('navigation.actions.login')}
               to="/auth"
               active={activeTab === "/auth"}
             /> */}
-            <NotificationBell /> 
+            <NotificationBell />
             <div className="flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors">
               <button
                 onClick={handleLogout}
@@ -141,14 +144,13 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
                 <span className="mr-2">
                   <LogOut />
                 </span>
-                Logout
+                {t('navigation.actions.logout')}
               </button>
             </div>
 
             <div className="flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors">
-              <button
-                className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-400 hover:bg-gray-800 cursor-pointer hover:text-white `}>
-                <span className="mr-2">
+              <button>
+                <span className="">
                   <LanguageToggle />
                 </span>
               </button>
@@ -158,7 +160,7 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
           <div className="flex items-center space-x-2">
             {/* Mobile Menu Toggle */}
             <div className="md:hidden">
-               <NotificationBell />
+              <NotificationBell />
             </div>
             <Button
               variant="ghost"
@@ -192,7 +194,7 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
                 transition={{ delay: 0.1 }}>
                 <MobileNavItem
                   icon={<Home size={24} />}
-                  label="Dashboard"
+                  label={t('navigation.menu.dashboard')}
                   to="/dashboard"
                   active={activeTab === "/dashboard"}
                   onClick={() => setIsMenuOpen(false)}
@@ -200,15 +202,15 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
                 />
                 <MobileNavItem
                   icon={<Cloud size={24} />}
-                  label="Weather"
+                  label={t('navigation.menu.weather')}
                   to="/weather"
                   active={activeTab === "/weather"}
                   onClick={() => setIsMenuOpen(false)}
                   delay={0.2}
                 />
                 <MobileNavItem
-                  icon={<ShieldPlus  size={24} />}
-                  label="Plant Health"
+                  icon={<ShieldPlus size={24} />}
+                  label={t('navigation.menu.plantHealth')}
                   to="/predict-disease"
                   active={activeTab === "/predict-disease"}
                   onClick={() => setIsMenuOpen(false)}
@@ -216,7 +218,7 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
                 />
                 <MobileNavItem
                   icon={<Newspaper size={24} />}
-                  label="News"
+                  label={t('navigation.menu.news')}
                   to="/news"
                   active={activeTab === "/news"}
                   onClick={() => setIsMenuOpen(false)}
@@ -224,7 +226,7 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
                 />
                 <MobileNavItem
                   icon={<BookOpen size={24} />}
-                  label="Care Tips"
+                  label={t('navigation.menu.careTips')}
                   active={false}
                   to={"/care-tips"}
                   onClick={() => setIsMenuOpen(false)}
@@ -232,7 +234,7 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
                 />
                 <MobileNavItem
                   icon={<BarChart2 size={24} />}
-                  label="Stats"
+                  label={t('navigation.menu.stats')}
                   to="/stats"
                   active={activeTab === "/stats"}
                   onClick={() => setIsMenuOpen(false)}
@@ -240,10 +242,10 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
                 />
                 <MobileNavItem
                   icon={<LogOut size={24} />}
-                  label="Logout"
+                  label={t('navigation.actions.logout')}
                   to="/auth"
                   active={activeTab === "/auth"}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={handleLogout}
                   delay={0.7}
                 />
               </motion.nav>
@@ -284,13 +286,6 @@ function MobileNavItem({ icon, label, active, to, onClick, delay }) {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          // Applying a glass green clip effect using a clip-path
-          // style={{
-          //   clipPath: "polygon(0 0, 100% 0, 100% 80%, 0 85%)",
-          //   backgroundColor: "rgba(0, 0, 0, 0.6)", // optional background color for the tab
-          //   borderRadius: "10px", // optional: soft rounded corners for the navbar
-          // }}
-
           style={{
             background:
               "linear-gradient(135deg, rgba(0, 50, 0, 0.9), rgba(34, 80, 34, 0.8))", // Deep green gradient

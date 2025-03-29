@@ -13,7 +13,9 @@ const LanguageToggle = () => {
 	};
 
 	return (
-		<button onClick={toggleLanguage}>
+		<button
+		className="px-2 py-1 bg-green-100 hover:bg-green-200 dark:bg-green-900 dark:hover:bg-green-800 text-green-800 dark:text-green-100 rounded-md text-sm"
+		onClick={toggleLanguage}>
 			{currentLang === "en" ? "हिंदी" : "English"}
 		</button>
 	);

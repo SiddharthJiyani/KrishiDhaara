@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   Card,
   CardContent,
@@ -45,6 +46,7 @@ const plantHealth = [
 ];
 
 export default function DiseaseLibrary() {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
 
   // Mapping plant names to image imports
@@ -219,15 +221,15 @@ export default function DiseaseLibrary() {
       <CardHeader className="pb-2">
         <CardTitle className="text-xl text-white flex items-center">
           <Leaf className="mr-2 h-5 w-5 text-green-400" />
-          Plant Disease Library
+          {t("diseasePage.diseaseLibrary.title")}
         </CardTitle>
-        <CardDescription>Find diseases by plant name or disease name</CardDescription>
+        <CardDescription>{t("diseasePage.diseaseLibrary.subtitle")}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="relative mb-4">
           <input
             type="text"
-            placeholder="Search for a plant or disease..."
+            placeholder={t("diseasePage.diseaseLibrary.searchPlaceholder")}
             className="w-full px-3 py-2 bg-zinc-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -255,7 +257,7 @@ export default function DiseaseLibrary() {
               </div>
             ))
           ) : (
-            <p className="text-gray-400 text-sm text-center">No diseases found</p>
+            <p className="text-gray-400 text-sm text-center">{t("diseasePage.diseaseLibrary.noDiseasesFound")}</p>
           )}
         </div>
       </CardContent>

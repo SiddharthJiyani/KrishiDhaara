@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Cloud, Leaf, BarChart2, ArrowLeft, Download, Calendar } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs";
@@ -7,21 +8,23 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { usePDF } from "react-to-pdf";
 import { useNavigate } from "react-router-dom";
+import "../i18n";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const AI_URL = import.meta.env.VITE_AI_URL;
 
 export default function StatsPage() {
+  const { t, i18n } = useTranslation('stats');
   const [theme, setTheme] = useState("light");
   const [activeTab, setActiveTab] = useState("water");
   const [healthData, setHealthData] = useState([
     {
-      label: "Excellent",
+      label: t("statsPage.plant.chartLabels.healthy"),
       value: Math.ceil(80),
       color: "#10b981",
     },
     {
-      label: "Poor",
+      label: t("statsPage.plant.chartLabels.unhealthy"),
       value: Math.floor(20),
       color: "#ef4444",
     },
@@ -41,6 +44,12 @@ export default function StatsPage() {
   });
   const reportRef = useRef(null);
   const navigate = useNavigate();
+
+  // Toggle language function
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'hi' : 'en';
+    i18n.changeLanguage(newLang);
+  };
 
   const fetchForecastData = async () => {
     try {
@@ -74,12 +83,12 @@ export default function StatsPage() {
         );
         const newHealthData = [
           {
-            label: "Healthy",
+            label: t("statsPage.plant.chartLabels.healthy"),
             value: Math.ceil(healthyPercent),
             color: "#10b981",
           },
           {
-            label: "Unhealthy",
+            label: t("statsPage.plant.chartLabels.unhealthy"),
             value: Math.floor(unhealthyPercent),
             color: "#ef4444",
           },
@@ -131,47 +140,33 @@ export default function StatsPage() {
       } else {
         console.log("Failed to fetch water usage data");
         // Set example data if API fails
-        setWaterUsageData(sampleWaterData);
+        setWaterUsageData([]);
       }
     } catch (error) {
       console.error("Error fetching water usage data:", error);
       // Set example data if API fails
-      setWaterUsageData(sampleWaterData);
+      setWaterUsageData([]);
     } finally {
       setIsLoadingWaterData(false);
     }
   };
 
-  // // Sample data as fallback
-  // const sampleWaterData = [
-  //   {
-  //     "_id": "67e809062ca3018a739c7e35",
-  //     "relayNumber": "relay1",
-  //     "startTimestamp": "2025-03-29T20:01",
-  //     "endTimestamp": "2025-03-29T20:21",
-  //     "durationMinutes": 20.3,
-  //     "waterUsageLiters": 60.9,
-  //     "recordedAt": "2025-03-29T20:21:50.787Z"
-  //   },
-  //   {
-  //     "_id": "67e803ec2ca3018a739c7e34",
-  //     "relayNumber": "relay1",
-  //     "startTimestamp": "2025-03-29T19:44",
-  //     "endTimestamp": "2025-03-29T20:00",
-  //     "durationMinutes": 15.37,
-  //     "waterUsageLiters": 46.1,
-  //     "recordedAt": "2025-03-29T20:00:04.707Z"
-  //   },
-  //   {
-  //     "_id": "67e7f80bf6e9bcc5d9d07ee2",
-  //     "relayNumber": "relay1",
-  //     "startTimestamp": "2025-03-29T19:05",
-  //     "endTimestamp": "2025-03-29T19:09",
-  //     "durationMinutes": 4.1,
-  //     "waterUsageLiters": 12.3,
-  //     "recordedAt": "2025-03-29T19:09:23.420Z"
-  //   }
-  // ];
+  // Update health data when language changes
+  useEffect(() => {
+    const updatedHealthData = [
+      {
+        label: t("statsPage.plant.chartLabels.healthy"),
+        value: healthData[0].value,
+        color: "#10b981",
+      },
+      {
+        label: t("statsPage.plant.chartLabels.unhealthy"),
+        value: healthData[1].value,
+        color: "#ef4444",
+      },
+    ];
+    setHealthData(updatedHealthData);
+  }, [i18n.language, t]);
 
   // Fetch data when component mounts or when date range changes
   useEffect(() => {
@@ -205,133 +200,6 @@ export default function StatsPage() {
     });
   };
 
-  const monthlyData = [
-    { month: "Jan", value: 120 },
-    { month: "Feb", value: 125 },
-    { month: "Mar", value: 110 },
-    { month: "Apr", value: 150 },
-    { month: "May", value: 180 },
-    { month: "Jun", value: 210 },
-    { month: "Jul", value: 235 },
-    { month: "Aug", value: 220 },
-    { month: "Sep", value: 170 },
-    { month: "Oct", value: 140 },
-    { month: "Nov", value: 125 },
-    { month: "Dec", value: 120 },
-  ];
-
-  const sensorData = [
-    { day: "Mon", soilMoisture: 85, temperature: 65, humidity: 72 },
-    { day: "Tue", soilMoisture: 83, temperature: 68, humidity: 74 },
-    { day: "Wed", soilMoisture: 78, temperature: 70, humidity: 76 },
-    { day: "Thu", soilMoisture: 80, temperature: 72, humidity: 73 },
-    { day: "Fri", soilMoisture: 82, temperature: 69, humidity: 71 },
-    { day: "Sat", soilMoisture: 88, temperature: 65, humidity: 73 },
-    { day: "Sun", soilMoisture: 84, temperature: 67, humidity: 74 },
-  ];
-
-  // Report data for PDF generation
-  const reportData = {
-    dateRange: {
-      start: "2025-02-28",
-      end: "2025-03-28",
-    },
-    temperature: {
-      analytics: [
-        {
-          _id: "2025-03",
-          totalDocuments: 47,
-          avgTemperature: 32.6,
-          minTemperature: 19.89,
-          maxTemperature: 100,
-        },
-      ],
-    },
-    humidity: {
-      analytics: [
-        {
-          _id: "2025-03",
-          totalDocuments: 46,
-          avgHumidity: 40.5,
-          minHumidity: 19.957,
-          maxHumidity: 96,
-        },
-      ],
-    },
-    waterUsage: monthlyData, // Using the same data from your stats page
-    plantHealth: {
-      diseaseStats: {
-        healthy_count: count.healthy || 13,
-        total_count: count.total || 42,
-        unhealthy_count: count.unhealthy || 29,
-      },
-    },
-    forecast: {
-      soil:
-        forecastData.length > 0
-          ? forecastData
-          : [
-              {
-                humidity: 55.28,
-                temperature: 28.5,
-                timestamp: "Fri, 28 Mar 2025 04:00:00 GMT",
-              },
-              {
-                humidity: 58.58,
-                temperature: 27.22,
-                timestamp: "Fri, 28 Mar 2025 08:00:00 GMT",
-              },
-              {
-                humidity: 59.85,
-                temperature: 26.28,
-                timestamp: "Fri, 28 Mar 2025 12:00:00 GMT",
-              },
-              {
-                humidity: 60.32,
-                temperature: 26.29,
-                timestamp: "Fri, 28 Mar 2025 16:00:00 GMT",
-              },
-              {
-                humidity: 60.49,
-                temperature: 26.44,
-                timestamp: "Fri, 28 Mar 2025 20:00:00 GMT",
-              },
-              {
-                humidity: 60.55,
-                temperature: 26.55,
-                timestamp: "Sat, 29 Mar 2025 00:00:00 GMT",
-              },
-            ],
-    },
-  };
-
-  const tempData = reportData.temperature.analytics[0];
-  const humidityData = reportData.humidity.analytics[0];
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
-
-  const formatTime = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString("en-IN", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
-  const getIndianSeason = (dateString) => {
-    const monthNum = new Date(dateString).getMonth();
-    if (monthNum >= 2 && monthNum <= 5) return "Grishma (Summer)";
-    if (monthNum >= 6 && monthNum <= 9) return "Varsha (Monsoon)";
-    return "Shishira (Winter)";
-  };
-
   // Calculate total water usage and duration
   const totalWaterUsage = waterUsageData.reduce((sum, item) => sum + item.waterUsageLiters, 0);
   const totalDuration = waterUsageData.reduce((sum, item) => sum + item.durationMinutes, 0);
@@ -346,19 +214,22 @@ export default function StatsPage() {
         theme === "dark" ? "dark" : ""
       } min-h-screen bg-white dark:bg-black`}>
       <main className="container mx-auto px-4 py-8">
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="mb-6 flex items-center gap-4">
-          <a
-            href="/"
-            className="flex items-center gap-2 text-zinc-600 cursor-pointer hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
-            <ArrowLeft className="h-5 w-5" />
-            <span>Back to Dashboard</span>
-          </a>
-        </motion.div>
+        <div className="flex justify-between items-center mb-6">
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-4">
+            <a
+              href="/"
+              className="flex items-center gap-2 text-zinc-600 cursor-pointer hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
+              <ArrowLeft className="h-5 w-5" />
+              <span>{t("statsPage.back")}</span>
+            </a>
+          </motion.div>
+          
+        </div>
 
         <motion.div
           initial={{ y: -20, opacity: 0 }}
@@ -367,10 +238,10 @@ export default function StatsPage() {
           viewport={{ once: true }}
           className="mb-8">
           <h1 className="text-3xl font-bold text-purple-500 dark:text-purple-400">
-            Statistics & Analytics
+            {t("statsPage.title")}
           </h1>
           <p className="text-zinc-600 dark:text-zinc-400">
-            Detailed insights and trends from your smart irrigation system
+            {t("statsPage.subtitle")}
           </p>
         </motion.div>
 
@@ -387,7 +258,7 @@ export default function StatsPage() {
                   : "cursor-pointer"
               }>
               <BarChart2 className="mr-2 h-4 w-4" />
-              Water Usage
+              {t("statsPage.tabs.water")}
             </TabsTrigger>
             <TabsTrigger
               value="plant"
@@ -398,7 +269,7 @@ export default function StatsPage() {
                   : "cursor-pointer"
               }>
               <Leaf className="mr-2 h-4 w-4" />
-              Plant Health
+              {t("statsPage.tabs.plant")}
             </TabsTrigger>
             <TabsTrigger
               value="forecast"
@@ -409,7 +280,7 @@ export default function StatsPage() {
                   : "cursor-pointer"
               }>
               <Cloud className="mr-2 h-4 w-4" />
-              Soil Condition Forecast
+              {t("statsPage.tabs.forecast")}
             </TabsTrigger>
           </TabsList>
           <div className="flex flex-col justify-end gap-4 md:flex-row md:items-center">
@@ -420,7 +291,7 @@ export default function StatsPage() {
                 onClick={() => navigate("/report")}
                 >
                 <Download className="h-4 w-4" />
-                Preview Report
+                {t("statsPage.buttons.previewReport")}
               </Button>
             </div>
           </div>
@@ -437,17 +308,17 @@ export default function StatsPage() {
             <div>
               <h2 className="text-xl font-medium dark:text-white">
                 {activeTab === "water"
-                  ? "Water Usage Analysis"
+                  ? t("statsPage.water.title")
                   : activeTab === "plant"
-                  ? "Plant Health Analysis"
-                  : "Soil Condition Forecast Analysis"}
+                  ? t("statsPage.plant.title")
+                  : t("statsPage.forecast.title")}
               </h2>
               <p className="text-sm text-zinc-500 dark:text-zinc-400">
                 {activeTab === "water"
-                  ? "Water consumption data from your irrigation system"
+                  ? t("statsPage.water.description")
                   : activeTab === "plant"
-                  ? "Distribution of plant health metrics based on predictions being done by the farmer for his field"
-                  : "Temperature and moisture predictions for the next 24 hours coming from our trained AI model"}
+                  ? t("statsPage.plant.description")
+                  : t("statsPage.forecast.description")}
               </p>
             </div>
             
@@ -455,7 +326,7 @@ export default function StatsPage() {
             {activeTab === "water" && (
               <div className="mt-4 md:mt-0 flex flex-col sm:flex-row gap-3 bg-zinc-50 dark:bg-zinc-800 p-3 rounded-md">
                 <div className="flex flex-col">
-                  <label className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Start Date</label>
+                  <label className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{t("statsPage.water.date.startDate")}</label>
                   <div className="flex">
                     <span className="inline-flex items-center px-3 text-sm text-zinc-900 bg-zinc-200 border border-r-0 border-zinc-300 rounded-l-md dark:bg-zinc-600 dark:text-zinc-400 dark:border-zinc-600">
                       <Calendar className="w-4 h-4" />
@@ -469,7 +340,7 @@ export default function StatsPage() {
                   </div>
                 </div>
                 <div className="flex flex-col">
-                  <label className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">End Date</label>
+                  <label className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{t("statsPage.water.date.endDate")}</label>
                   <div className="flex">
                     <span className="inline-flex items-center px-3 text-sm text-zinc-900 bg-zinc-200 border border-r-0 border-zinc-300 rounded-l-md dark:bg-zinc-600 dark:text-zinc-400 dark:border-zinc-600">
                       <Calendar className="w-4 h-4" />
@@ -493,13 +364,13 @@ export default function StatsPage() {
                   {isLoadingWaterData ? (
                     <div className="flex flex-col items-center justify-center h-full">
                       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-                      <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">Loading water usage data...</p>
+                      <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">{t("statsPage.water.loading")}</p>
                     </div>
                   ) : waterUsageData.length > 0 ? (
                     <WaterUsageChart data={waterUsageData} isLoading={isLoadingWaterData} />
                   ) : (
                     <div className="flex flex-col items-center justify-center h-full">
-                      <p className="text-lg text-zinc-500 dark:text-zinc-400">No water usage data available for the selected period</p>
+                      <p className="text-lg text-zinc-500 dark:text-zinc-400">{t("statsPage.water.noData")}</p>
                     </div>
                   )}
                 </div>
@@ -512,10 +383,10 @@ export default function StatsPage() {
                     viewport={{ once: true }}
                     className="rounded-lg bg-blue-50 dark:bg-[#121215] border border-[#414142] p-4 shadow">
                     <h3 className="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                      Total Water Usage
+                      {t("statsPage.water.metrics.totalUsage")}
                     </h3>
                     <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      {totalWaterUsage.toFixed(1)} L
+                      {totalWaterUsage.toFixed(1)} {t("statsPage.water.metrics.liters")}
                     </p>
                   </motion.div>
                   
@@ -526,10 +397,10 @@ export default function StatsPage() {
                     viewport={{ once: true }}
                     className="rounded-lg bg-green-50 dark:bg-[#121215] border border-[#414142]  p-4 shadow">
                     <h3 className="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                      Total Duration
+                      {t("statsPage.water.metrics.totalDuration")}
                     </h3>
                     <p className="text-2xl font-bold text-green-600 dark:text-green-400">
-                      {totalDuration.toFixed(1)} min
+                      {totalDuration.toFixed(1)} {t("statsPage.water.metrics.minutes")}
                     </p>
                   </motion.div>
                   
@@ -540,10 +411,10 @@ export default function StatsPage() {
                     viewport={{ once: true }}
                     className="rounded-lg bg-amber-50 dark:bg-[#121215] border border-[#414142] p-4 shadow">
                     <h3 className="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                      Average Efficiency
+                      {t("statsPage.water.metrics.avgEfficiency")}
                     </h3>
                     <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
-                      {avgEfficiency} L/min
+                      {avgEfficiency} {t("statsPage.water.metrics.litersPerMin")}
                     </p>
                   </motion.div>
                 </div>
@@ -564,7 +435,7 @@ export default function StatsPage() {
                     viewport={{ once: true }}
                     className="rounded-lg bg-zinc-50 p-4 dark:bg-[#121215] dark:border dark:border-[#414142]">
                     <h3 className="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                      Healthy Predictions
+                      {t("statsPage.plant.metrics.healthy")}
                     </h3>
                     <p className="text-2xl font-bold  text-[#00b579]">
                       {count?.healthy}
@@ -577,7 +448,7 @@ export default function StatsPage() {
                     viewport={{ once: true }}
                     className="rounded-lg bg-zinc-50 p-4 dark:bg-[#121215] dark:border dark:border-[#414142]">
                     <h3 className="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                      Unhealthy Predictions
+                      {t("statsPage.plant.metrics.unhealthy")}
                     </h3>
                     <p className="text-2xl font-bold  text-[#ef4444]">
                       {count.unhealthy}
@@ -590,7 +461,7 @@ export default function StatsPage() {
                     viewport={{ once: true }}
                     className="rounded-lg bg-zinc-50 p-4 dark:bg-[#121215] dark:border dark:border-[#414142]">
                     <h3 className="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                      Total Predictions
+                      {t("statsPage.plant.metrics.total")}
                     </h3>
                     <p className="text-2xl font-bold text-white">
                       {count.total}
@@ -610,7 +481,7 @@ export default function StatsPage() {
                 ) : (
                   <div className="flex justify-center items-center h-60">
                     <p className="text-zinc-500 dark:text-zinc-400">
-                      Loading forecast data...
+                      {t("statsPage.forecast.loading")}
                     </p>
                   </div>
                 )}

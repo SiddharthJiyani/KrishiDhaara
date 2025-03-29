@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import Groq from "groq-sdk";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -7,6 +8,7 @@ const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 const groq = new Groq({ apiKey: GROQ_API_KEY, dangerouslyAllowBrowser: true });
 
 const CropRecommendationForm = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     nitrogen: "",
     phosphorus: "",
@@ -32,7 +34,7 @@ const CropRecommendationForm = () => {
       // Validate inputs
       const values = Object.values(formData);
       if (values.some((val) => val === "" || isNaN(val))) {
-        throw new Error("Please fill all fields with valid numbers");
+        throw new Error(t("diseasePage.cropRecommendation.fillAllFields"));
       }
 
       setIsLoading(true);
@@ -74,7 +76,7 @@ const CropRecommendationForm = () => {
 
       
       if (!response?.choices?.[0]?.message?.content) {
-        throw new Error("Invalid response format from API");
+        throw new Error(t("diseasePage.cropRecommendation.invalidResponse"));
       }
 
       const content = response.choices[0].message.content;
@@ -109,7 +111,7 @@ const CropRecommendationForm = () => {
       
     } catch (error) {
       setError(
-        error.message || "Failed to get recommendation. Please try again."
+        error.message || t("diseasePage.cropRecommendation.failedRecommendation")
       );
     } finally {
       setIsLoading(false);
@@ -124,31 +126,37 @@ const CropRecommendationForm = () => {
     }));
   };
 
-  // Add a debug effect to track recommendation state changes
-  useEffect(() => {
-  }, [recommendation]);
+  // Get placeholder text based on field name
+  const getPlaceholder = (field) => {
+    const fieldLabel = t(`diseasePage.cropRecommendation.${field}`);
+    let unit = "";
+    
+    if (field === "moisture") {
+      unit = t("diseasePage.cropRecommendation.percent");
+    } else if (field === "temperature") {
+      unit = t("diseasePage.cropRecommendation.celsius");
+    } else {
+      unit = t("diseasePage.cropRecommendation.ppm");
+    }
+    
+    return `${fieldLabel} (${unit})`;
+  };
 
   return (
     <div className="mb-8 p-6 bg-[#09090b] border border-[#27272a] rounded-xl shadow-lg">
       <h2 className="text-2xl font-bold mb-4 text-green-400">
-        Crop Recommendation
+        {t("diseasePage.cropRecommendation.title")}
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
-          {Object.entries(formData).map(([key, value]) => (
+          {Object.keys(formData).map((key) => (
             <input
               key={key}
               type="number"
               name={key}
-              value={value}
+              value={formData[key]}
               onChange={handleInputChange}
-              placeholder={`${key.charAt(0).toUpperCase() + key.slice(1)}${
-                key === "moisture"
-                  ? " (%)"
-                  : key === "temperature"
-                  ? " (°C)"
-                  : " (ppm)"
-              }`}
+              placeholder={getPlaceholder(key)}
               className="p-3 bg-[#1c1c20] rounded-lg focus:ring-2 focus:ring-green-500 border-none"
               min="0"
               step="0.1"
@@ -171,7 +179,7 @@ const CropRecommendationForm = () => {
               <span className="animate-spin">🔄</span>
             </span>
           )}
-          {isLoading ? "Analyzing Soil Data..." : "Get Smart Recommendation"}
+          {isLoading ? t("diseasePage.cropRecommendation.analyzing") : t("diseasePage.cropRecommendation.submitButton")}
         </button>
       </form>
 
@@ -184,18 +192,18 @@ const CropRecommendationForm = () => {
         }`}>
           <div className="flex items-center gap-3 mb-4">
             <h3 className="text-xl font-bold text-green-400">
-              Recommendation Result
+              {t("diseasePage.cropRecommendation.recommendationResult")}
             </h3>
             {validation.requiresReview && (
               <span className="px-2 py-1 text-sm bg-amber-500/20 text-amber-300 rounded-full">
-                Expert Review Recommended
+                {t("diseasePage.cropRecommendation.expertReview")}
               </span>
             )}
           </div>
           
           {validation.warnings.missingData && (
             <div className="mb-4 p-3 bg-red-500/20 rounded-lg">
-              ⚠️ Incomplete analysis detected - verify with soil testing
+              ⚠️ {t("diseasePage.cropRecommendation.incompleteAnalysis")}
             </div>
           )}
 

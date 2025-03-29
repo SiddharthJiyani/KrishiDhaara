@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Upload, Camera, Loader2 } from "lucide-react";
 import axios from "axios";
 
-export default function ImageUpload({ onPrediction , onCure}) {
+export default function ImageUpload({ onPrediction, onCure }) {
+  const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -56,7 +58,7 @@ export default function ImageUpload({ onPrediction , onCure}) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedFile) {
-      alert("Please select or capture an image.");
+      alert(t("diseasePage.imageUpload.selectImage"));
       return;
     }
   
@@ -72,12 +74,12 @@ export default function ImageUpload({ onPrediction , onCure}) {
       const { predicted_disease, cure } = response.data;
   
       // Pass both disease prediction and cure information to parent component
-      onPrediction(predicted_disease );
+      onPrediction(predicted_disease);
       onCure(cure);
   
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred during prediction.");
+      alert(t("diseasePage.imageUpload.errorOccurred"));
     } finally {
       setLoading(false);
     }
@@ -95,7 +97,7 @@ export default function ImageUpload({ onPrediction , onCure}) {
                 className="flex-1 bg-gray-800 border-gray-700 cursor-pointer hover:bg-gray-700 hover:text-green-400"
                 onClick={() => document.getElementById("file-upload")?.click()}>
                 <Upload className="mr-2 h-4 w-4" />
-                Upload Image
+                {t("diseasePage.imageUpload.uploadImage")}
               </Button>
               <Button
                 variant="outline"
@@ -104,7 +106,7 @@ export default function ImageUpload({ onPrediction , onCure}) {
                   document.getElementById("camera-capture")?.click()
                 }>
                 <Camera className="mr-2 h-4 w-4" />
-                Use Camera
+                {t("diseasePage.imageUpload.useCamera")}
               </Button>
             </div>
 
@@ -145,7 +147,7 @@ export default function ImageUpload({ onPrediction , onCure}) {
                   <>
                     <Upload className="h-10 w-10 text-gray-500 mb-2" />
                     <p className="text-sm text-gray-400 text-center">
-                      Drag and drop an image file, or click to browse
+                      {t("diseasePage.imageUpload.dragDropText")}
                     </p>
                   </>
                 )}
@@ -158,10 +160,10 @@ export default function ImageUpload({ onPrediction , onCure}) {
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Analyzing...
+                    {t("diseasePage.imageUpload.analyzing")}
                   </>
                 ) : (
-                  "Analyze Plant"
+                  t("diseasePage.imageUpload.analyzePlant")
                 )}
               </Button>
             </form>

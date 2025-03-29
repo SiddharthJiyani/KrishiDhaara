@@ -200,5 +200,145 @@
         ]
       }
     }
+  },
+  "diseasePage": {
+    "title": "Plant Disease Detection",
+    "subtitle": "AI-powered analysis to identify plant diseases and get treatment recommendations",
+    "backToDashboard": "Back to Dashboard",
+    "modelDetails": {
+      "title": "Analyze Plant Health",
+      "subtitle": "Upload or take a photo of your plant to detect diseases",
+      "aiPowered": "AI-Powered",
+      "aiPoweredDesc": "Advanced neural networks for accurate detection",
+      "fastResults": "Fast Results",
+      "fastResultsDesc": "Get disease identification in seconds",
+      "extensiveDb": "Extensive Database",
+      "extensiveDbDesc": "Trained on 85,000+ plant disease images"
+    },
+    "imageUpload": {
+      "uploadImage": "Upload Image",
+      "useCamera": "Use Camera",
+      "dragDropText": "Drag and drop an image file, or click to browse",
+      "analyzePlant": "Analyze Plant",
+      "analyzing": "Analyzing...",
+      "selectImage": "Please select or capture an image.",
+      "errorOccurred": "An error occurred during prediction."
+    },
+    "diseaseLibrary": {
+      "title": "Plant Disease Library",
+      "subtitle": "Find diseases by plant name or disease name",
+      "searchPlaceholder": "Search for a plant or disease...",
+      "noDiseasesFound": "No diseases found"
+    },
+    "cropRecommendation": {
+      "title": "Crop Recommendation",
+      "nitrogen": "Nitrogen",
+      "phosphorus": "Phosphorus",
+      "potassium": "Potassium",
+      "moisture": "Moisture",
+      "temperature": "Temperature",
+      "ppm": "ppm",
+      "celsius": "°C",
+      "percent": "%",
+      "submitButton": "Get Smart Recommendation",
+      "analyzing": "Analyzing Soil Data...",
+      "fillAllFields": "Please fill all fields with valid numbers",
+      "invalidResponse": "Invalid response format from API",
+      "failedRecommendation": "Failed to get recommendation. Please try again.",
+      "recommendationResult": "Recommendation Result",
+      "expertReview": "Expert Review Recommended",
+      "incompleteAnalysis": "Incomplete analysis detected - verify with soil testing"
+    },
+    "predictionResult": {
+      "diseaseDetected": "Disease Detected",
+      "cureSuggestion": "Cure Suggestion",
+      "noDisease": "No disease detected",
+      "healthyPlant": "Your plant appears to be healthy!",
+      "preventiveMeasures": "Preventive Measures",
+      "maintainHealthy": "To maintain plant health, consider these preventive measures:"
+    }
+  },
+  "statsPage": {
+    "back": "Back to Dashboard",
+    "title": "Statistics & Analytics",
+    "subtitle": "Detailed insights and trends from your smart irrigation system",
+    "tabs": {
+      "water": "Water Usage",
+      "plant": "Plant Health",
+      "forecast": "Soil Condition Forecast"
+    },
+    "buttons": {
+      "previewReport": "Preview Report"
+    },
+    "water": {
+      "title": "Water Usage Analysis",
+      "description": "Water consumption data from your irrigation system",
+      "date": {
+        "startDate": "Start Date",
+        "endDate": "End Date"
+      },
+      "loading": "Loading water usage data...",
+      "noData": "No water usage data available for the selected period",
+      "metrics": {
+        "totalUsage": "Total Water Usage",
+        "totalDuration": "Total Duration",
+        "avgEfficiency": "Average Efficiency",
+        "liters": "L",
+        "minutes": "min",
+        "litersPerMin": "L/min"
+      }
+    },
+    "plant": {
+      "title": "Plant Health Analysis",
+      "description": "Distribution of plant health metrics based on predictions being done by the farmer for his field",
+      "metrics": {
+        "healthy": "Healthy Predictions",
+        "unhealthy": "Unhealthy Predictions",
+        "total": "Total Predictions"
+      },
+      "chartLabels": {
+        "healthy": "Healthy",
+        "unhealthy": "Unhealthy"
+      }
+    },
+    "forecast": {
+      "title": "Soil Condition Forecast Analysis",
+      "description": "Temperature and moisture predictions for the next 24 hours coming from our trained AI model",
+      "loading": "Loading forecast data..."
+    },
+    "success": {
+      "reportGenerated": "Report generated successfully!"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAsRead": "Mark as read",
+    "noNotifications": "No notifications",
+    "relayMessage": "Our AI suggests flipping this relay {{state}} for optimal performance! 🚀",
+    "anomalies": {
+      "soilMoisture": {
+        "title": "Soil Moisture Anomaly",
+        "message": "Abnormal soil moisture levels detected! Please check your irrigation system."
+      },
+      "temperature": {
+        "title": "Temperature Anomaly",
+        "message": "Abnormal temperature detected! Plants may be at risk."
+      }
+    }
+  },
+  "navigation": {
+    "brand": "Krishi Dhaara",
+    "menu": {
+      "dashboard": "Dashboard",
+      "weather": "Weather",
+      "plantHealth": "Plant Health",
+      "news": "News",
+      "careTips": "Care Tips",
+      "stats": "Stats"
+    },
+    "actions": {
+      "login": "Login",
+      "logout": "Logout"
+    }
   }
 }
