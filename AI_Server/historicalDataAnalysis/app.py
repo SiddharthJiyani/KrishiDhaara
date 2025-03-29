@@ -17,7 +17,7 @@ mongo_client = pymongo.MongoClient("mongodb+srv://shivlumewada:b9EHHbCAVy8XUKq2@
 water_usage_db = mongo_client["test"]
 usage_collection = water_usage_db["waterusagedatas"]
 
-WATER_FLOW_RATE = 30 #litre/minutes
+WATER_FLOW_RATE = 3 #litre/minutes
 
 app = Flask(__name__)
 
@@ -29,7 +29,7 @@ prim_app = firebase_admin.initialize_app(cred1, {
 cred2 = credentials.Certificate("smart-irrigation-water-usage-firebase-config.json")
 sec_app = firebase_admin.initialize_app(cred2, {
     'databaseURL': 'https://smart-irrigation-water-usage-default-rtdb.asia-southeast1.firebasedatabase.app/' 
-})
+},name='secondary')
 
 @app.route("/")
 def hello_world():
@@ -38,7 +38,6 @@ def hello_world():
 @app.route('/predict_verdict', methods=['POST'])
 async def verdict_endpoint():
     try:
-        print("TEsting....")
         data = request.json
         result = predict_verdict(
             temperature=data['temperature'],
@@ -54,7 +53,7 @@ async def verdict_endpoint():
         current_data = water_usage_ref.get() or {"state": "off", "timestamp": 0}
         current_state = current_data.get("state", "off")
         start_timestamp = current_data.get("timestamp", 0)
-        print(current_data)
+        # print(current_data)
         
         if result=="Off":
             output="off"
@@ -83,7 +82,7 @@ async def verdict_endpoint():
         current_timestamp = int(time.time())
         water_usage_ref.set({
             "state": output,
-            "timestamp": current_timestamp if output == "on" else 0
+            "timestamp": current_timestamp #if output == "on" else start_timestamp
         })
         
         stats_ref.set(output)
@@ -124,4 +123,4 @@ if __name__ == '__main__':
     from asgiref.wsgi import WsgiToAsgi
     
     asgi_app = WsgiToAsgi(app)
-    uvicorn.run(app=app, host="0.0.0.0", port=7860)
+    uvicorn.run(asgi_app, host="0.0.0.0", port=7860)

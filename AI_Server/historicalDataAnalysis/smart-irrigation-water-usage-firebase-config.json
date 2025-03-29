@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "smart-irrigation-water-usage",
+  "private_key_id": "e215ada212f201c46ffb129264a73f9cb25f5e74",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEugIBADANBgkqhkiG9w0BAQEFAASCBKQwggSgAgEAAoIBAQCJ8Um5woF4Eiie\nW9ZepKNa6DAFdUWlSqB4oddN3sj09sPV63P99LiF77CbkitPzS7CW3g4SlY2bvb1\nzbt4J8OmGhiilmdCnYdurscqC+nalUhHZ/A1IKadlcMLxJ4ubLHqsZobfZoWnkB1\n98BvLQTeB76mGkNNJruCDzdAHW/607i9o3TvW+T28L1SIaRIirdGwRvOjIFdAzgt\nyPjbwddOrPMr7VtyLOvXxosq2xVboHjUVlgEsP3uMatyZ7H4L8hKP9gh1es0Q7SI\n7eubSJuOqEvnkctCYXw9rSRl/buZoA0luRPvG1Z7aVgYGii2oXyqVRoOb0hQmy8Z\nS2GXDj1NAgMBAAECggEAGhwu/Vdg1E5zm838XLvDI/DxLgdNoITorQzNSTMTTLLs\nzLAdq4NH7io5fqkDQ76tzCIuNlFz0ifc3RgNFShJs0YbRaM8dnKE8SFqF35bzIEX\nRlTZNeUxRIDVg4O7AUSXxLnLVsrGgOOBhhLYPPMDiddjceNku9TKB0tEBQHNcWec\n2zMws6RUHOtY9oq+YhJpt+N7Z+vqNL/+ZIx80R6X8MRBmdLe1oxu+keSFCEXUMhN\n5JMwmr5lJiy0UnED/o+jr1UqkzhjWcGP/mo6yycfD4GbOv1rQfDZ8eu6xppF1Nrc\nNBan7XAgktPf0kviIbpaQdNkhGte4aBe3B10fG2IbQKBgQC86D1HJWITG6w5KrPM\nJtiHq2IK80Jiu/pNNPqEi/YJg4VrzXME/4SgsrHlI9BOQvNdFIGw0o7Z+jnBE+Fo\nu/Z3j4Zr4KgUvtJcW56QdIVS5bZsdDMBWAF0YgOTDep9XUTvpFdMrCSxRxOWWQHD\neiq6dGgP+rNcHeQDqb+OVYdkRwKBgQC670GSNhd1lYa4vS0RF9X5fau5wsQvFWGX\nZvKfiIn4m4qJaRNTV/0uwSVQ0v4TrqwvunFYTXTgMMR/twy0mMmk8uvnCSvi1n/m\nCPwKdBdAL5YgfFV59gMVsH8vmeKSjiVld5UUytCMqwyrGrVUbNjoYpdeZzEXqMtX\nq8yczDn/ywKBgAuA/RJTFXjia4eDsTVSfEcuyaavD7Dhj6mZ+1ONDmuf5cUd2s5I\nHTSIDUtN9gZ+D0Hw2MEC4Y4mrdOzOTvejnDTfbUeFj5FLJxRPAPCBMh6krRiEyUW\nzefffCY9Z7VAs80ALgzOQuHE2U2DmBbmXqnCIwAuHTQT4enTMYYicT9LAoGAM++F\nKDofCmwgofLtMnKM4GQp8dJK70nhc08G2Yv1yTxtoP+wftdTYEoJNAtqy80byabj\nFsVuU1s5PMJ+pS5N16YmJGpH5x3xKtgULlNSomKWMzBYDypqcPw4WeFHMbCMc0Rm\nBwDSMELVojQpbOtQ2D+MDo5c9VXQKOtyTZ3v/0ECf2xXwMnNLR7FaCXKz+yB1HGO\nUaj6VwmSPteJ9j1E/vmdBLSJDTGndVAqia3JmgpNerq5vRvQvXXE3Ks7auVAN8Pp\nEy/aisxo/rV8f5Hs1oZHGBmCpY0swbG+08nfBvlGGp+dkKHdE2EZs8X6vXd+mUq9\n3X9ELf5Q0AhNfCSymnw=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@smart-irrigation-water-usage.iam.gserviceaccount.com",
+  "client_id": "113744059319671497579",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40smart-irrigation-water-usage.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
