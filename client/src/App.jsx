@@ -5,10 +5,11 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import NotFound from "./pages/NotFound";
+import LandingPage from "./pages/LandingPage";
+import Auth from "./pages/Auth";
 
 
 function AppContent() {
@@ -23,8 +24,9 @@ function AppContent() {
       {!isLandingPage && !isAuthPage && <Header activeTab={activeTab} />}
       <Routes>
         <Route path="/" element={<LandingPage />} />
-
+        <Route path="/auth" element={<Auth />} />
         <Route path="*" element={<NotFound />} />
+
       </Routes>
       {!isLandingPage && <Footer />}
     </div>
@@ -35,7 +37,6 @@ function App() {
   return (
     <Router>
       <AppContent />
-      {/* <Chatbot /> */}
     </Router>
   );
 }
