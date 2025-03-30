@@ -44,7 +44,7 @@ const AgriReport = ({ onReportGenerated }) => {
       try {
         setFetchingData(true);
         // Fetch data based on selected months
-        const response = await axios.get(`http://localhost:3000/report/getReport?month=${months}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/report/getReport?month=${months}`);
         if (response.data.success) {
           setReportData(response.data.message);
         } else {
