@@ -23,6 +23,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "../i18n";
+import useAuth from "../lib/useAuth";
 
 const fadeIn = {
 	hidden: { opacity: 0, y: 20 },
@@ -149,6 +150,8 @@ export default function LandingPage() {
 		window.scrollTo(0, 0);
 	}, []);
 
+	const isAuthenticated = useAuth();
+
 	return (
 		<div className="min-h-screen bg-[] text-white">
 			{/* Navigation */}
@@ -177,9 +180,9 @@ export default function LandingPage() {
 							</Button>
 						</Link>
 						<Link to="/auth">
-							<Button className="bg-[#00FF9D] text-[#001810] hover:bg-[#00FF9D]/90">
+							{!isAuthenticated && <Button className="bg-[#00FF9D] text-[#001810] hover:bg-[#00FF9D]/90">
 								{t("signin")}
-							</Button>
+							</Button>}
 						</Link>
 					</div>
 				</div>
