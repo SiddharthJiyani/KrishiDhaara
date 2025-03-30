@@ -204,6 +204,7 @@ const Login = () => {
         if (response.data.user && response.data.expiresAt) {
           localStorage.setItem("user", JSON.stringify(response.data.user));
           localStorage.setItem("tokenExpiresAt", JSON.stringify(response.data.expiresAt));
+          localStorage.setItem("token",JSON.stringify(response.data.token))
         }
         toast.success("You are logged in!");
         navigate("/dashboard");

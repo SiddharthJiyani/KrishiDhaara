@@ -59,19 +59,38 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
   }, [isMenuOpen]);
 
   const handleLogout = async () => {
-    const response = await axios.delete(
-      // "http://localhost:3000/auth/logout"
-      `${BACKEND_URL}/auth/logout`,
-      {
-        withCredentials: true,
-      }
-    );
-    if (response.data.success) {
-      localStorage.setItem("user", "");
-      localStorage.setItem("tokenExpiresAt", "");
-      removeCookie("token", { path: "/", sameSite: "lax" });
+    try {
+      // Get token from localStorage to include in the request header
+      const token = localStorage.getItem("token");
+      
+      // Change from DELETE to POST and include Authorization header
+      const response = await axios.delete(
+        `${BACKEND_URL}/auth/logout`,
+        {}, // Empty body
+        {
+          headers: {
+            Authorization: `Bearer `+token // Send token in header
+          }
+        }
+      );
+      
+      // Clean up localStorage properly
+      localStorage.removeItem("user");
+      localStorage.removeItem("tokenExpiresAt");
+      localStorage.removeItem("token");
+      
       navigate("/auth");
-      toast.success("Logged out!");
+      toast.success("Logged out successfully!");
+    } catch (error) {
+      console.error("Logout error:", error);
+      
+      // Still clear localStorage even if there's an error
+      localStorage.removeItem("user");
+      localStorage.removeItem("tokenExpiresAt");
+      localStorage.removeItem("token");
+      
+      navigate("/auth");
+      toast.error("Error during logout, but session cleared");
     }
   };
 

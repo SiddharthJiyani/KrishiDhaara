@@ -72,13 +72,13 @@ export const login = async(req,res) => {
         const expiresAt = new Date(Date.now() + expiryTime);
         const token = generateToken({ id: user._id });
 
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none',
-            path:'/',
-            maxAge: expiryTime 
-        });
+        // res.cookie('token', token, {
+        //     httpOnly: true,
+        //     secure: process.env.NODE_ENV === 'production',
+        //     sameSite: 'none',
+        //     path:'/',
+        //     maxAge: expiryTime 
+        // });
 
         return res.status(200).send({
             success: true,
@@ -88,7 +88,8 @@ export const login = async(req,res) => {
                 id: user._id,
                 fullName: user.fullName,
                 email: user.email
-            }
+            },
+            token
         });
     } catch (error) {
         console.log(error)
@@ -98,12 +99,12 @@ export const login = async(req,res) => {
 
 export const logout = async(req,res) => {
     try {
-        res.clearCookie('token', {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none'
-        });
-        const token = req.cookies.token;
+        // res.clearCookie('token', {
+        //     httpOnly: true,
+        //     secure: process.env.NODE_ENV === 'production',
+        //     sameSite: 'none'
+        // });
+        // const token = req.cookies.token;
         return res.status(200).send({
             success: true,
             message: "Logged out successfully"
@@ -116,13 +117,28 @@ export const logout = async(req,res) => {
 
 export const checkIsLoggedIn = async(req,res) => {
     try {
-        const token = req.cookies.token;
+
+        let token;
+        if (req.headers.authorization) {
+            // Extract token from "Bearer <token>" format
+            const authHeader = req.headers.authorization;
+            // console.log(authHeader)
+            if (authHeader.startsWith('Bearer ')) {
+                // Get token part and remove any quotes if present
+                token = authHeader.substring(7).replace(/^"(.*)"$/, '$1');
+            } else {
+                // Remove quotes if present
+                token = authHeader.replace(/^"(.*)"$/, '$1');
+            }
+        }
+
         if(!token) {
             return res.status(400).send({"success":false,"message":"Authentication token not found"});
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
         const user = await UserData.findById(decoded.id.id);
+        console.log(user)
         if(!user) {
             return res.status(400).send({"success":false,"message":"Invalid Token"});
         }

@@ -7,9 +7,20 @@ const useAuth = () => {
 
     const verifyAuth = async() => {
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setIsAuthenticated(false);
+                return;
+            }
+
             const response = await axios.get(
                 // "http://localhost:3000/auth/checkToken"
-                `${BACKEND_URL}/auth/checkToken`
+                `${BACKEND_URL}/auth/checkToken`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
                 ,{withCredentials:true})
             // console.log(response)
             if(response.data.success===true) setIsAuthenticated(true);
