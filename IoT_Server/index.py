@@ -39,8 +39,8 @@ firebase_admin.initialize_app(cred, {
 print('Firebase initialized successfully')
 
 # Server URLs
-TEMPERATURE_URL = "https://irrigation-node-backend.vercel.app/SensorData/temperature/upload"
-MOISTURE_URL = "https://irrigation-node-backend.vercel.app/SensorData/humidity/upload"
+TEMPERATURE_URL = "https://node-irrigation-backend.vercel.app/SensorData/temperature/upload"
+MOISTURE_URL = "https://node-irrigation-backend.vercel.app/SensorData/humidity/upload"
 VERDICT_URL= "https://shivang24-soil-prediction-api.hf.space/predict_verdict"
 ANOMALY_URL= "https://shivang24-soil-prediction-api.hf.space/detect_anomaly"
 
