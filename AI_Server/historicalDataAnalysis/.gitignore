@@ -1,2 +1,4 @@
 /venv
 __pycache__/
+firebase_config.json
+smart-irrigation-water-usage-firebase-config.json
