@@ -1,0 +1,606 @@
+[
+    {
+        "label": "JSONResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "CORSMiddleware",
+        "importPath": "fastapi.middleware.cors",
+        "description": "fastapi.middleware.cors",
+        "isExtraImport": true,
+        "detail": "fastapi.middleware.cors",
+        "documentation": {}
+    },
+    {
+        "label": "Image",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "torch",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch",
+        "description": "torch",
+        "detail": "torch",
+        "documentation": {}
+    },
+    {
+        "label": "torchvision.models",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torchvision.models",
+        "description": "torchvision.models",
+        "detail": "torchvision.models",
+        "documentation": {}
+    },
+    {
+        "label": "torchvision.transforms",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torchvision.transforms",
+        "description": "torchvision.transforms",
+        "detail": "torchvision.transforms",
+        "documentation": {}
+    },
+    {
+        "label": "io",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "io",
+        "description": "io",
+        "detail": "io",
+        "documentation": {}
+    },
+    {
+        "label": "google.generativeai",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "google.generativeai",
+        "description": "google.generativeai",
+        "detail": "google.generativeai",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "pyrebase",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pyrebase",
+        "description": "pyrebase",
+        "detail": "pyrebase",
+        "documentation": {}
+    },
+    {
+        "label": "firebase_admin",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "firebase_admin",
+        "description": "firebase_admin",
+        "detail": "firebase_admin",
+        "documentation": {}
+    },
+    {
+        "label": "credentials",
+        "importPath": "firebase_admin",
+        "description": "firebase_admin",
+        "isExtraImport": true,
+        "detail": "firebase_admin",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "firebase_admin",
+        "description": "firebase_admin",
+        "isExtraImport": true,
+        "detail": "firebase_admin",
+        "documentation": {}
+    },
+    {
+        "label": "credentials",
+        "importPath": "firebase_admin",
+        "description": "firebase_admin",
+        "isExtraImport": true,
+        "detail": "firebase_admin",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "firebase_admin",
+        "description": "firebase_admin",
+        "isExtraImport": true,
+        "detail": "firebase_admin",
+        "documentation": {}
+    },
+    {
+        "label": "os;",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os;",
+        "description": "os;",
+        "detail": "os;",
+        "documentation": {}
+    },
+    {
+        "label": "pandas",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pandas",
+        "description": "pandas",
+        "detail": "pandas",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonal_decompose",
+        "importPath": "statsmodels.tsa.seasonal",
+        "description": "statsmodels.tsa.seasonal",
+        "isExtraImport": true,
+        "detail": "statsmodels.tsa.seasonal",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "load_model",
+        "importPath": "tensorflow.keras.models",
+        "description": "tensorflow.keras.models",
+        "isExtraImport": true,
+        "detail": "tensorflow.keras.models",
+        "documentation": {}
+    },
+    {
+        "label": "joblib",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "joblib",
+        "description": "joblib",
+        "detail": "joblib",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "warnings",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "warnings",
+        "description": "warnings",
+        "detail": "warnings",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "predict_verdict",
+        "importPath": "Verdict_Prediction.verdict_response",
+        "description": "Verdict_Prediction.verdict_response",
+        "isExtraImport": true,
+        "detail": "Verdict_Prediction.verdict_response",
+        "documentation": {}
+    },
+    {
+        "label": "detector",
+        "importPath": "Anomaly_Detection.anomaly_detection",
+        "description": "Anomaly_Detection.anomaly_detection",
+        "isExtraImport": true,
+        "detail": "Anomaly_Detection.anomaly_detection",
+        "documentation": {}
+    },
+    {
+        "label": "forecaster",
+        "importPath": "Feature_Forecasting.forecasting_response",
+        "description": "Feature_Forecasting.forecasting_response",
+        "isExtraImport": true,
+        "detail": "Feature_Forecasting.forecasting_response",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "pymongo",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "AI_Server.diseaseDetectionServer.main",
+        "description": "AI_Server.diseaseDetectionServer.main",
+        "peekOfCode": "app = FastAPI()\n# Enable CORS for frontend access\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n)\ncred = credentials.Certificate(\"firebase_config.json\")",
+        "detail": "AI_Server.diseaseDetectionServer.main",
+        "documentation": {}
+    },
+    {
+        "label": "cred",
+        "kind": 5,
+        "importPath": "AI_Server.diseaseDetectionServer.main",
+        "description": "AI_Server.diseaseDetectionServer.main",
+        "peekOfCode": "cred = credentials.Certificate(\"firebase_config.json\")\nfirebase_admin.initialize_app(cred, {\n    'databaseURL': 'https://smartirrigation-1f48f-default-rtdb.asia-southeast1.firebasedatabase.app/' \n})\nstats_ref = db.reference(\"plant-disease-prediction_stats\")\n# Load the trained model\nMODEL_PATH = \"./plant_disease_classification_model_resnet50.pth\"\nmodel = models.resnet50(weights=None)\nmodel.fc = torch.nn.Linear(model.fc.in_features, 38)\nmodel.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device(\"cpu\")))",
+        "detail": "AI_Server.diseaseDetectionServer.main",
+        "documentation": {}
+    },
+    {
+        "label": "stats_ref",
+        "kind": 5,
+        "importPath": "AI_Server.diseaseDetectionServer.main",
+        "description": "AI_Server.diseaseDetectionServer.main",
+        "peekOfCode": "stats_ref = db.reference(\"plant-disease-prediction_stats\")\n# Load the trained model\nMODEL_PATH = \"./plant_disease_classification_model_resnet50.pth\"\nmodel = models.resnet50(weights=None)\nmodel.fc = torch.nn.Linear(model.fc.in_features, 38)\nmodel.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device(\"cpu\")))\nmodel.eval()\n# Define disease classes\nCLASS_NAMES = [\n    'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',",
+        "detail": "AI_Server.diseaseDetectionServer.main",
+        "documentation": {}
+    },
+    {
+        "label": "MODEL_PATH",
+        "kind": 5,
+        "importPath": "AI_Server.diseaseDetectionServer.main",
+        "description": "AI_Server.diseaseDetectionServer.main",
+        "peekOfCode": "MODEL_PATH = \"./plant_disease_classification_model_resnet50.pth\"\nmodel = models.resnet50(weights=None)\nmodel.fc = torch.nn.Linear(model.fc.in_features, 38)\nmodel.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device(\"cpu\")))\nmodel.eval()\n# Define disease classes\nCLASS_NAMES = [\n    'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',\n    'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew', 'Cherry_(including_sour)___healthy',\n    'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_',",
+        "detail": "AI_Server.diseaseDetectionServer.main",
+        "documentation": {}
+    },
+    {
+        "label": "model",
+        "kind": 5,
+        "importPath": "AI_Server.diseaseDetectionServer.main",
+        "description": "AI_Server.diseaseDetectionServer.main",
+        "peekOfCode": "model = models.resnet50(weights=None)\nmodel.fc = torch.nn.Linear(model.fc.in_features, 38)\nmodel.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device(\"cpu\")))\nmodel.eval()\n# Define disease classes\nCLASS_NAMES = [\n    'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',\n    'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew', 'Cherry_(including_sour)___healthy',\n    'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_',\n    'Corn_(maize)___Northern_Leaf_Blight', 'Corn_(maize)___healthy', 'Grape___Black_rot',",
+        "detail": "AI_Server.diseaseDetectionServer.main",
+        "documentation": {}
+    },
+    {
+        "label": "model.fc",
+        "kind": 5,
+        "importPath": "AI_Server.diseaseDetectionServer.main",
+        "description": "AI_Server.diseaseDetectionServer.main",
+        "peekOfCode": "model.fc = torch.nn.Linear(model.fc.in_features, 38)\nmodel.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device(\"cpu\")))\nmodel.eval()\n# Define disease classes\nCLASS_NAMES = [\n    'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',\n    'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew', 'Cherry_(including_sour)___healthy',\n    'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_',\n    'Corn_(maize)___Northern_Leaf_Blight', 'Corn_(maize)___healthy', 'Grape___Black_rot',\n    'Grape___Esca_(Black_Measles)', 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)', 'Grape___healthy',",
+        "detail": "AI_Server.diseaseDetectionServer.main",
+        "documentation": {}
+    },
+    {
+        "label": "CLASS_NAMES",
+        "kind": 5,
+        "importPath": "AI_Server.diseaseDetectionServer.main",
+        "description": "AI_Server.diseaseDetectionServer.main",
+        "peekOfCode": "CLASS_NAMES = [\n    'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',\n    'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew', 'Cherry_(including_sour)___healthy',\n    'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_',\n    'Corn_(maize)___Northern_Leaf_Blight', 'Corn_(maize)___healthy', 'Grape___Black_rot',\n    'Grape___Esca_(Black_Measles)', 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)', 'Grape___healthy',\n    'Orange___Haunglongbing_(Citrus_greening)', 'Peach___Bacterial_spot', 'Peach___healthy',\n    'Pepper,_bell___Bacterial_spot', 'Pepper,_bell___healthy', 'Potato___Early_blight',\n    'Potato___Late_blight', 'Potato___healthy', 'Raspberry___healthy', 'Soybean___healthy',\n    'Squash___Powdery_mildew', 'Strawberry___Leaf_scorch', 'Strawberry___healthy',",
+        "detail": "AI_Server.diseaseDetectionServer.main",
+        "documentation": {}
+    },
+    {
+        "label": "gemini_model",
+        "kind": 5,
+        "importPath": "AI_Server.diseaseDetectionServer.main",
+        "description": "AI_Server.diseaseDetectionServer.main",
+        "peekOfCode": "gemini_model = genai.GenerativeModel(\"gemini-2.0-flash\")\n# Define image transformation\ntransform = transforms.Compose([\n    transforms.Resize((224, 224)),\n    transforms.ToTensor(),\n    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])\n])\nasync def get_disease_treatment(disease_name):\n    \"\"\"Generate AI response for disease treatment using Google Gemini AI.\"\"\"\n    prompt = f\"Create a structured, easy-to-read guide on treating and preventing {disease_name} in plants. Format it with clear headings and subheadings so it prints well. Use bullet points for practical implementation, keeping explanations brief and jargon-free. Include relevant emojis for readability.Sections: Prevention Tips, Organic/Natural Remedies, Chemical Treatments, Cultural, Practices. At the end, include: Disclaimer: Always consult with local agricultural experts or extension services for the most appropriate and up-to-date recommendations for your region. Regulations and best practices can vary. Keep it concise, practical, and farmer-friendly—avoid unnecessary technical details\"",
+        "detail": "AI_Server.diseaseDetectionServer.main",
+        "documentation": {}
+    },
+    {
+        "label": "transform",
+        "kind": 5,
+        "importPath": "AI_Server.diseaseDetectionServer.main",
+        "description": "AI_Server.diseaseDetectionServer.main",
+        "peekOfCode": "transform = transforms.Compose([\n    transforms.Resize((224, 224)),\n    transforms.ToTensor(),\n    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])\n])\nasync def get_disease_treatment(disease_name):\n    \"\"\"Generate AI response for disease treatment using Google Gemini AI.\"\"\"\n    prompt = f\"Create a structured, easy-to-read guide on treating and preventing {disease_name} in plants. Format it with clear headings and subheadings so it prints well. Use bullet points for practical implementation, keeping explanations brief and jargon-free. Include relevant emojis for readability.Sections: Prevention Tips, Organic/Natural Remedies, Chemical Treatments, Cultural, Practices. At the end, include: Disclaimer: Always consult with local agricultural experts or extension services for the most appropriate and up-to-date recommendations for your region. Regulations and best practices can vary. Keep it concise, practical, and farmer-friendly—avoid unnecessary technical details\"\n    try:\n        response = gemini_model.generate_content(prompt)",
+        "detail": "AI_Server.diseaseDetectionServer.main",
+        "documentation": {}
+    },
+    {
+        "label": "AnomalyDetector",
+        "kind": 6,
+        "importPath": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "description": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "peekOfCode": "class AnomalyDetector:\n    def __init__(self, seasonal_means, residual_stats, window_size=6):\n        self.seasonal_means = seasonal_means\n        self.residual_stats = residual_stats\n        self.window_size = window_size  # 24-hour window (6 readings)\n        # Initialize history with dummy data (mean values)\n        self.history = {\n            \"temperature\": [self.residual_stats[\"temperature\"][\"mu\"]] * self.window_size,\n            \"humidity\": [self.residual_stats[\"humidity\"][\"mu\"]] * self.window_size,\n        }",
+        "detail": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "documentation": {}
+    },
+    {
+        "label": "decompose_sensor_data",
+        "kind": 2,
+        "importPath": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "description": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "peekOfCode": "def decompose_sensor_data(data, column, period=6):\n    \"\"\"Decompose sensor data into trend, seasonal, and residual components.\"\"\"\n    decomposition = seasonal_decompose(\n        data[column], \n        model=\"additive\",  \n        period=period      # Daily seasonality (6 readings/day)\n    )\n    data[f\"{column}_trend\"] = decomposition.trend\n    data[f\"{column}_seasonal\"] = decomposition.seasonal\n    data[f\"{column}_resid\"] = decomposition.resid",
+        "detail": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "documentation": {}
+    },
+    {
+        "label": "df",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "description": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "peekOfCode": "df = pd.read_csv(\"Dataset/Better_Dataset.csv\", parse_dates=[\"date\"])\ndf = df.set_index(\"date\")\ndef decompose_sensor_data(data, column, period=6):\n    \"\"\"Decompose sensor data into trend, seasonal, and residual components.\"\"\"\n    decomposition = seasonal_decompose(\n        data[column], \n        model=\"additive\",  \n        period=period      # Daily seasonality (6 readings/day)\n    )\n    data[f\"{column}_trend\"] = decomposition.trend",
+        "detail": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "documentation": {}
+    },
+    {
+        "label": "df",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "description": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "peekOfCode": "df = df.set_index(\"date\")\ndef decompose_sensor_data(data, column, period=6):\n    \"\"\"Decompose sensor data into trend, seasonal, and residual components.\"\"\"\n    decomposition = seasonal_decompose(\n        data[column], \n        model=\"additive\",  \n        period=period      # Daily seasonality (6 readings/day)\n    )\n    data[f\"{column}_trend\"] = decomposition.trend\n    data[f\"{column}_seasonal\"] = decomposition.seasonal",
+        "detail": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "documentation": {}
+    },
+    {
+        "label": "df",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "description": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "peekOfCode": "df = decompose_sensor_data(df, \"temperature\")\ndf = decompose_sensor_data(df, \"humidity\")\n# Extract time slot (0-5) for each 4-hour interval\ndf[\"time_slot\"] = (df.index.hour // 4) % 6\n# Compute average seasonal component for each time slot\nseasonal_means = {\n    \"temperature\": df.groupby(\"time_slot\")[\"temperature_seasonal\"].mean(),\n    \"humidity\": df.groupby(\"time_slot\")[\"humidity_seasonal\"].mean(),\n}\n# Compute historical residuals' mean and std",
+        "detail": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "documentation": {}
+    },
+    {
+        "label": "df",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "description": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "peekOfCode": "df = decompose_sensor_data(df, \"humidity\")\n# Extract time slot (0-5) for each 4-hour interval\ndf[\"time_slot\"] = (df.index.hour // 4) % 6\n# Compute average seasonal component for each time slot\nseasonal_means = {\n    \"temperature\": df.groupby(\"time_slot\")[\"temperature_seasonal\"].mean(),\n    \"humidity\": df.groupby(\"time_slot\")[\"humidity_seasonal\"].mean(),\n}\n# Compute historical residuals' mean and std\nresidual_stats = {",
+        "detail": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "documentation": {}
+    },
+    {
+        "label": "df[\"time_slot\"]",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "description": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "peekOfCode": "df[\"time_slot\"] = (df.index.hour // 4) % 6\n# Compute average seasonal component for each time slot\nseasonal_means = {\n    \"temperature\": df.groupby(\"time_slot\")[\"temperature_seasonal\"].mean(),\n    \"humidity\": df.groupby(\"time_slot\")[\"humidity_seasonal\"].mean(),\n}\n# Compute historical residuals' mean and std\nresidual_stats = {\n    \"temperature\": {\n        \"mu\": df[\"temperature_resid\"].mean(),",
+        "detail": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "documentation": {}
+    },
+    {
+        "label": "seasonal_means",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "description": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "peekOfCode": "seasonal_means = {\n    \"temperature\": df.groupby(\"time_slot\")[\"temperature_seasonal\"].mean(),\n    \"humidity\": df.groupby(\"time_slot\")[\"humidity_seasonal\"].mean(),\n}\n# Compute historical residuals' mean and std\nresidual_stats = {\n    \"temperature\": {\n        \"mu\": df[\"temperature_resid\"].mean(),\n        \"sigma\": df[\"temperature_resid\"].std()\n    },",
+        "detail": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "documentation": {}
+    },
+    {
+        "label": "residual_stats",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "description": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "peekOfCode": "residual_stats = {\n    \"temperature\": {\n        \"mu\": df[\"temperature_resid\"].mean(),\n        \"sigma\": df[\"temperature_resid\"].std()\n    },\n    \"humidity\": {\n        \"mu\": df[\"humidity_resid\"].mean(),\n        \"sigma\": df[\"humidity_resid\"].std()\n    }\n}",
+        "detail": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "documentation": {}
+    },
+    {
+        "label": "detector",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "description": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "peekOfCode": "detector = AnomalyDetector(seasonal_means, residual_stats)",
+        "detail": "AI_Server.historicalDataAnalysis.Anomaly_Detection.anomaly_detection",
+        "documentation": {}
+    },
+    {
+        "label": "TimeSeriesForecaster",
+        "kind": 6,
+        "importPath": "AI_Server.historicalDataAnalysis.Feature_Forecasting.forecasting_response",
+        "description": "AI_Server.historicalDataAnalysis.Feature_Forecasting.forecasting_response",
+        "peekOfCode": "class TimeSeriesForecaster:\n    def __init__(self, data_path=\"Dataset/Better_Dataset.csv\"):\n        # Configuration\n        self.look_back = 18\n        self.forecast_horizon = 6\n        self.data_path = data_path\n        # Load artifacts\n        self.models = {\n            'temperature': load_model('Feature_Forecasting/temperature_model.h5', compile=False),\n            'humidity': load_model('Feature_Forecasting/humidity_model.h5', compile=False)",
+        "detail": "AI_Server.historicalDataAnalysis.Feature_Forecasting.forecasting_response",
+        "documentation": {}
+    },
+    {
+        "label": "forecaster",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.Feature_Forecasting.forecasting_response",
+        "description": "AI_Server.historicalDataAnalysis.Feature_Forecasting.forecasting_response",
+        "peekOfCode": "forecaster = TimeSeriesForecaster()",
+        "detail": "AI_Server.historicalDataAnalysis.Feature_Forecasting.forecasting_response",
+        "documentation": {}
+    },
+    {
+        "label": "predict_verdict",
+        "kind": 2,
+        "importPath": "AI_Server.historicalDataAnalysis.Verdict_Prediction.verdict_response",
+        "description": "AI_Server.historicalDataAnalysis.Verdict_Prediction.verdict_response",
+        "peekOfCode": "def predict_verdict(temperature, humidity, hour):\n    # Preprocess hour into cyclic features\n    hour_sin = np.sin(2 * np.pi * hour / 24)\n    hour_cos = np.cos(2 * np.pi * hour / 24)\n    # Create input array\n    input_data = [[temperature, humidity, hour_sin, hour_cos]]\n    # Predict\n    prediction = model.predict(input_data)\n    return \"On\" if prediction[0] == 1 else \"Off\"",
+        "detail": "AI_Server.historicalDataAnalysis.Verdict_Prediction.verdict_response",
+        "documentation": {}
+    },
+    {
+        "label": "model",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.Verdict_Prediction.verdict_response",
+        "description": "AI_Server.historicalDataAnalysis.Verdict_Prediction.verdict_response",
+        "peekOfCode": "model = joblib.load('Verdict_Prediction/verdict.pkl')\ndef predict_verdict(temperature, humidity, hour):\n    # Preprocess hour into cyclic features\n    hour_sin = np.sin(2 * np.pi * hour / 24)\n    hour_cos = np.cos(2 * np.pi * hour / 24)\n    # Create input array\n    input_data = [[temperature, humidity, hour_sin, hour_cos]]\n    # Predict\n    prediction = model.predict(input_data)\n    return \"On\" if prediction[0] == 1 else \"Off\"",
+        "detail": "AI_Server.historicalDataAnalysis.Verdict_Prediction.verdict_response",
+        "documentation": {}
+    },
+    {
+        "label": "hello_world",
+        "kind": 2,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "def hello_world():\n    return f\"Welcome to Krishi Dhara Smart Irrigration System AI!\"\n@app.route('/predict_verdict', methods=['POST'])\nasync def verdict_endpoint():\n    try:\n        data = request.json\n        result = predict_verdict(\n            temperature=data['temperature'],\n            humidity=data['humidity'],\n            hour=data['hour'],",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "anomaly_endpoint",
+        "kind": 2,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "def anomaly_endpoint():\n    try:\n        data = request.json\n        anomalies = detector.detect(\n            hour=data['hour'],\n            temperature=data['temperature'],\n            humidity=data['humidity']\n        )\n        anomaly_ref = db.reference(f\"anomaly\",app=sec_app)\n        anomaly_data = {",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "get_forecast",
+        "kind": 2,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "def get_forecast():\n    try:\n        forecast_data = forecaster.generate_forecast()\n        return jsonify({\n            \"forecast\": forecast_data.to_dict(orient='records'),\n            \"generated_at\": datetime.now().isoformat()\n        })\n    except Exception as e:\n        return jsonify({\"error\": str(e)}), 500\nif __name__ == '__main__':",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "os.environ['TF_CPP_MIN_LOG_LEVEL']",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'\nfrom flask import Flask, request, jsonify\nfrom Verdict_Prediction.verdict_response import predict_verdict\nfrom Anomaly_Detection.anomaly_detection import detector\nfrom Feature_Forecasting.forecasting_response import forecaster\nfrom datetime import datetime\nimport firebase_admin\nfrom firebase_admin import credentials, db\nimport time\nimport pymongo",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "mongo_client",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "mongo_client = pymongo.MongoClient(\"mongodb+srv://shivlumewada:b9EHHbCAVy8XUKq2@cluster0.6u346.mongodb.net\")\nwater_usage_db = mongo_client[\"test\"]\nusage_collection = water_usage_db[\"waterusagedatas\"]\nWATER_FLOW_RATE = 3 #litre/minutes\napp = Flask(__name__)\ncred1 = credentials.Certificate(\"firebase_config.json\")\nprim_app = firebase_admin.initialize_app(cred1, {\n    'databaseURL': 'https://smartirrigation-1f48f-default-rtdb.asia-southeast1.firebasedatabase.app/' \n})\ncred2 = credentials.Certificate(\"smart-irrigation-water-usage-firebase-config.json\")",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "water_usage_db",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "water_usage_db = mongo_client[\"test\"]\nusage_collection = water_usage_db[\"waterusagedatas\"]\nWATER_FLOW_RATE = 3 #litre/minutes\napp = Flask(__name__)\ncred1 = credentials.Certificate(\"firebase_config.json\")\nprim_app = firebase_admin.initialize_app(cred1, {\n    'databaseURL': 'https://smartirrigation-1f48f-default-rtdb.asia-southeast1.firebasedatabase.app/' \n})\ncred2 = credentials.Certificate(\"smart-irrigation-water-usage-firebase-config.json\")\nsec_app = firebase_admin.initialize_app(cred2, {",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "usage_collection",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "usage_collection = water_usage_db[\"waterusagedatas\"]\nWATER_FLOW_RATE = 3 #litre/minutes\napp = Flask(__name__)\ncred1 = credentials.Certificate(\"firebase_config.json\")\nprim_app = firebase_admin.initialize_app(cred1, {\n    'databaseURL': 'https://smartirrigation-1f48f-default-rtdb.asia-southeast1.firebasedatabase.app/' \n})\ncred2 = credentials.Certificate(\"smart-irrigation-water-usage-firebase-config.json\")\nsec_app = firebase_admin.initialize_app(cred2, {\n    'databaseURL': 'https://smart-irrigation-water-usage-default-rtdb.asia-southeast1.firebasedatabase.app/' ",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "WATER_FLOW_RATE",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "WATER_FLOW_RATE = 3 #litre/minutes\napp = Flask(__name__)\ncred1 = credentials.Certificate(\"firebase_config.json\")\nprim_app = firebase_admin.initialize_app(cred1, {\n    'databaseURL': 'https://smartirrigation-1f48f-default-rtdb.asia-southeast1.firebasedatabase.app/' \n})\ncred2 = credentials.Certificate(\"smart-irrigation-water-usage-firebase-config.json\")\nsec_app = firebase_admin.initialize_app(cred2, {\n    'databaseURL': 'https://smart-irrigation-water-usage-default-rtdb.asia-southeast1.firebasedatabase.app/' \n},name='secondary')",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "app = Flask(__name__)\ncred1 = credentials.Certificate(\"firebase_config.json\")\nprim_app = firebase_admin.initialize_app(cred1, {\n    'databaseURL': 'https://smartirrigation-1f48f-default-rtdb.asia-southeast1.firebasedatabase.app/' \n})\ncred2 = credentials.Certificate(\"smart-irrigation-water-usage-firebase-config.json\")\nsec_app = firebase_admin.initialize_app(cred2, {\n    'databaseURL': 'https://smart-irrigation-water-usage-default-rtdb.asia-southeast1.firebasedatabase.app/' \n},name='secondary')\n@app.route(\"/\")",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "cred1",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "cred1 = credentials.Certificate(\"firebase_config.json\")\nprim_app = firebase_admin.initialize_app(cred1, {\n    'databaseURL': 'https://smartirrigation-1f48f-default-rtdb.asia-southeast1.firebasedatabase.app/' \n})\ncred2 = credentials.Certificate(\"smart-irrigation-water-usage-firebase-config.json\")\nsec_app = firebase_admin.initialize_app(cred2, {\n    'databaseURL': 'https://smart-irrigation-water-usage-default-rtdb.asia-southeast1.firebasedatabase.app/' \n},name='secondary')\n@app.route(\"/\")\ndef hello_world():",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "prim_app",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "prim_app = firebase_admin.initialize_app(cred1, {\n    'databaseURL': 'https://smartirrigation-1f48f-default-rtdb.asia-southeast1.firebasedatabase.app/' \n})\ncred2 = credentials.Certificate(\"smart-irrigation-water-usage-firebase-config.json\")\nsec_app = firebase_admin.initialize_app(cred2, {\n    'databaseURL': 'https://smart-irrigation-water-usage-default-rtdb.asia-southeast1.firebasedatabase.app/' \n},name='secondary')\n@app.route(\"/\")\ndef hello_world():\n    return f\"Welcome to Krishi Dhara Smart Irrigration System AI!\"",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "cred2",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "cred2 = credentials.Certificate(\"smart-irrigation-water-usage-firebase-config.json\")\nsec_app = firebase_admin.initialize_app(cred2, {\n    'databaseURL': 'https://smart-irrigation-water-usage-default-rtdb.asia-southeast1.firebasedatabase.app/' \n},name='secondary')\n@app.route(\"/\")\ndef hello_world():\n    return f\"Welcome to Krishi Dhara Smart Irrigration System AI!\"\n@app.route('/predict_verdict', methods=['POST'])\nasync def verdict_endpoint():\n    try:",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "sec_app",
+        "kind": 5,
+        "importPath": "AI_Server.historicalDataAnalysis.app",
+        "description": "AI_Server.historicalDataAnalysis.app",
+        "peekOfCode": "sec_app = firebase_admin.initialize_app(cred2, {\n    'databaseURL': 'https://smart-irrigation-water-usage-default-rtdb.asia-southeast1.firebasedatabase.app/' \n},name='secondary')\n@app.route(\"/\")\ndef hello_world():\n    return f\"Welcome to Krishi Dhara Smart Irrigration System AI!\"\n@app.route('/predict_verdict', methods=['POST'])\nasync def verdict_endpoint():\n    try:\n        data = request.json",
+        "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    }
+]
