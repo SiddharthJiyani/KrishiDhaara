@@ -819,7 +819,7 @@ const FarmMap = () => {
   };
 
   return (
-    <div style={{ height: '80vh', width: '100%', position: 'relative', zIndex: 10 }}>
+    <div style={{ height: '80vh', width: '100%', position: 'relative', zIndex: 220 }}>
       {/* Dimensions Modal */}
       {showDimensionsModal && (
         <div style={{
@@ -832,7 +832,7 @@ const FarmMap = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          zIndex: 10
+          zIndex: 1000
         }}>
           <div style={{
             backgroundColor: 'white',

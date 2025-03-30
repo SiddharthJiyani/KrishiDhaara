@@ -53,7 +53,7 @@ function App() {
   return (
     <Router>
       <AppContent />
-      {/* <Chatbot /> */}
+      <Chatbot />
     </Router>
   );
 }
