@@ -453,7 +453,7 @@ const FarmMap = () => {
         };
         console.log(`Humidity sensor (${sensorId}) data processed:`, formattedData[sensorId]);
       }
-      
+      console.log('Formatted sensor data:', formattedData);
       setSensorData(formattedData);
       console.log('All formatted sensor data:', formattedData);
       
@@ -819,7 +819,7 @@ const FarmMap = () => {
   };
 
   return (
-    <div style={{ height: '80vh', width: '100%', position: 'relative', zIndex: 200 }}>
+    <div style={{ height: '80vh', width: '100%', position: 'relative', zIndex: 10 }}>
       {/* Dimensions Modal */}
       {showDimensionsModal && (
         <div style={{
@@ -832,7 +832,7 @@ const FarmMap = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          zIndex: 1100
+          zIndex: 10
         }}>
           <div style={{
             backgroundColor: 'white',

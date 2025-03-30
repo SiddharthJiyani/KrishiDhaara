@@ -202,7 +202,7 @@
     }
   },
   "diseasePage": {
-    "title": "Plant Disease Detection",
+    "title": "Plant Health Analysis",
     "subtitle": "AI-powered analysis to identify plant diseases and get treatment recommendations",
     "backToDashboard": "Back to Dashboard",
     "tabs": {
