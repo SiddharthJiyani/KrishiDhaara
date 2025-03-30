@@ -128,6 +128,22 @@
         "documentation": {}
     },
     {
+        "label": "credentials",
+        "importPath": "firebase_admin",
+        "description": "firebase_admin",
+        "isExtraImport": true,
+        "detail": "firebase_admin",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "firebase_admin",
+        "description": "firebase_admin",
+        "isExtraImport": true,
+        "detail": "firebase_admin",
+        "documentation": {}
+    },
+    {
         "label": "os;",
         "kind": 6,
         "isExtraImport": true,
@@ -160,6 +176,14 @@
         "description": "statsmodels.tsa.seasonal",
         "isExtraImport": true,
         "detail": "statsmodels.tsa.seasonal",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
         "documentation": {}
     },
     {
@@ -277,6 +301,60 @@
         "importPath": "pymongo",
         "description": "pymongo",
         "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "board",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "board",
+        "description": "board",
+        "detail": "board",
+        "documentation": {}
+    },
+    {
+        "label": "adafruit_dht",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "adafruit_dht",
+        "description": "adafruit_dht",
+        "detail": "adafruit_dht",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "RPi.GPIO",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "RPi.GPIO",
+        "description": "RPi.GPIO",
+        "detail": "RPi.GPIO",
+        "documentation": {}
+    },
+    {
+        "label": "threading",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "threading",
+        "description": "threading",
+        "detail": "threading",
         "documentation": {}
     },
     {
@@ -601,6 +679,303 @@
         "description": "AI_Server.historicalDataAnalysis.app",
         "peekOfCode": "sec_app = firebase_admin.initialize_app(cred2, {\n    'databaseURL': 'https://smart-irrigation-water-usage-default-rtdb.asia-southeast1.firebasedatabase.app/' \n},name='secondary')\n@app.route(\"/\")\ndef hello_world():\n    return f\"Welcome to Krishi Dhara Smart Irrigration System AI!\"\n@app.route('/predict_verdict', methods=['POST'])\nasync def verdict_endpoint():\n    try:\n        data = request.json",
         "detail": "AI_Server.historicalDataAnalysis.app",
+        "documentation": {}
+    },
+    {
+        "label": "pump_on",
+        "kind": 2,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "def pump_on():\n    GPIO.output(RELAY_PIN, GPIO.LOW)  # Activate Relay\n    print(\"Pump turned ON\")\ndef pump_off():\n    GPIO.output(RELAY_PIN, GPIO.HIGH)   # Deactivate Relay\n    print(\"Pump turned OFF\")\n# Function to handle Firebase data changes\ndef on_relay_change(event):\n    global pump_state\n    if event.data:  # Check if data exists",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "pump_off",
+        "kind": 2,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "def pump_off():\n    GPIO.output(RELAY_PIN, GPIO.HIGH)   # Deactivate Relay\n    print(\"Pump turned OFF\")\n# Function to handle Firebase data changes\ndef on_relay_change(event):\n    global pump_state\n    if event.data:  # Check if data exists\n        print(f\"Relay1 current state from Firebase: {event.data}\")\n        pump_state = event.data\n        # Control pump based on Firebase state",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "on_relay_change",
+        "kind": 2,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "def on_relay_change(event):\n    global pump_state\n    if event.data:  # Check if data exists\n        print(f\"Relay1 current state from Firebase: {event.data}\")\n        pump_state = event.data\n        # Control pump based on Firebase state\n        if event.data == \"on\":\n            pump_on()\n        else:\n            pump_off()",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "read_soil_moisture",
+        "kind": 2,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "def read_soil_moisture():\n    moisture = GPIO.input(SOIL_MOISTURE_PIN)\n    moisture_status = \"dry\" if moisture == 1 else \"moist\"\n    print(f'Soil is {moisture_status}')\n    return moisture\n# Function to get temperature and humidity with retry mechanism\ndef get_sensor_readings():\n    for attempt in range(MAX_RETRIES):\n        try:\n            temperature = dht_sensor.temperature",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "get_sensor_readings",
+        "kind": 2,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "def get_sensor_readings():\n    for attempt in range(MAX_RETRIES):\n        try:\n            temperature = dht_sensor.temperature\n            humidity = dht_sensor.humidity\n            return temperature, humidity\n        except RuntimeError as error:\n            # This is the common error - just retry after delay\n            print(f\"Temperature reading failed (attempt {attempt+1}/{MAX_RETRIES}): {error}\")\n            time.sleep(RETRY_DELAY)",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "post_temperature",
+        "kind": 2,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "def post_temperature(sensor_number, temperature, units=\"celsius\"):\n    url = TEMPERATURE_URL\n    payload = {\n        \"sensorNumber\": sensor_number,\n        \"units\": units,\n        \"temperature\": temperature\n    }\n    try:\n        response = requests.post(url, json=payload)\n        print(f\"Temperature data posted: {temperature}°C - Response: {response.status_code}\")",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "post_moisture",
+        "kind": 2,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "def post_moisture(sensor_number, humidity, units=\"percent\"):\n    url = MOISTURE_URL\n    payload = {\n        \"sensorNumber\": sensor_number,\n        \"units\": units,\n        \"humidity\": humidity\n    }\n    try:\n        response = requests.post(url, json=payload)\n        print(f\"Humidity data posted: {humidity}% - Response: {response.status_code}\")",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "post_relay",
+        "kind": 2,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "def post_relay(temperature, humidity):\n    url = VERDICT_URL\n    curHour = datetime.now().hour\n    payload = {\n        \"relayNumber\": \"relay1\",\n        \"temperature\": temperature,\n        \"humidity\": humidity,\n        \"hour\": curHour\n    }\n    try:",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "post_anomaly",
+        "kind": 2,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "def post_anomaly(temperature, humidity):\n    url = ANOMALY_URL\n    curHour = datetime.now().hour\n    payload = {\n        \"temperature\": temperature,\n        \"humidity\": humidity,\n        \"hour\": curHour\n    }\n    try:\n        response = requests.post(url, json=payload)",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "check_irrigation_needs",
+        "kind": 2,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "def check_irrigation_needs():\n    global pump_state\n    soil_moisture = read_soil_moisture()\n    # If soil is dry (reading=1) and pump is not already on, request pump on via Firebase\n    if soil_moisture == 1 and pump_state != \"on\":\n        print(\"Soil is dry - requesting irrigation via Firebase\")\n        try:\n            relay_ref.set(\"on\")  # This will trigger the Firebase listener\n        except Exception as e:\n            print(f\"Error updating Firebase: {e}\")",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "read_all_sensors",
+        "kind": 2,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "def read_all_sensors():\n    global current_temperature, current_humidity, current_soil_moisture, last_server_post_time\n    while True:\n        try:\n            # Read temperature and humidity\n            temp, humidity = get_sensor_readings()\n            if temp is not None and humidity is not None:\n                current_temperature = temp\n                current_humidity = humidity\n                print(f'Temperature: {temp}°C, Humidity: {humidity}%')",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "def main():\n    try:\n        # Set up reference to the specific relay node in Firebase\n        global relay_ref\n        relay_ref = db.reference(path=ref_path, url=databaseURL)\n        # Attach the listener to Firebase - this is now the ONLY way to control the pump\n        relay_ref.listen(on_relay_change)\n        print(\"Listening for changes to relay1 from Firebase...\")\n        # Get initial pump state from Firebase and force an update to ensure listener handles it\n        try:",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "RELAY_PIN",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "RELAY_PIN = 22\nSOIL_MOISTURE_PIN = 27\n# Initialize GPIO\nGPIO.setmode(GPIO.BCM)\nGPIO.setup(RELAY_PIN, GPIO.OUT)\nGPIO.setup(SOIL_MOISTURE_PIN, GPIO.IN)\n# Initialize DHT11 temperature/humidity sensor\ndht_sensor = adafruit_dht.DHT11(board.D17)\nprint('Temperature sensor initialized:', dht_sensor)\n# Firebase Configuration",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "SOIL_MOISTURE_PIN",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "SOIL_MOISTURE_PIN = 27\n# Initialize GPIO\nGPIO.setmode(GPIO.BCM)\nGPIO.setup(RELAY_PIN, GPIO.OUT)\nGPIO.setup(SOIL_MOISTURE_PIN, GPIO.IN)\n# Initialize DHT11 temperature/humidity sensor\ndht_sensor = adafruit_dht.DHT11(board.D17)\nprint('Temperature sensor initialized:', dht_sensor)\n# Firebase Configuration\nauthDomain = \"smartirrigation-1f48f.firebaseapp.com\"",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "dht_sensor",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "dht_sensor = adafruit_dht.DHT11(board.D17)\nprint('Temperature sensor initialized:', dht_sensor)\n# Firebase Configuration\nauthDomain = \"smartirrigation-1f48f.firebaseapp.com\"\ndatabaseURL = \"https://smartirrigation-1f48f-default-rtdb.asia-southeast1.firebasedatabase.app\"\nprojectId = \"smartirrigation-1f48f\"\nstorageBucket = \"smartirrigation-1f48f.firebasestorage.app\"\nappId = \"1:859711317799:web:8f9f696e5fe0ecd6766b02\"\nref_path = 'relay-sensors/relay1/state'\n# Initialize Firebase",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "authDomain",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "authDomain = \"smartirrigation-1f48f.firebaseapp.com\"\ndatabaseURL = \"https://smartirrigation-1f48f-default-rtdb.asia-southeast1.firebasedatabase.app\"\nprojectId = \"smartirrigation-1f48f\"\nstorageBucket = \"smartirrigation-1f48f.firebasestorage.app\"\nappId = \"1:859711317799:web:8f9f696e5fe0ecd6766b02\"\nref_path = 'relay-sensors/relay1/state'\n# Initialize Firebase\ncred = credentials.Certificate('firebase_config.json')\nfirebase_admin.initialize_app(cred, {\n    'database': f'https://{projectId}.firebaseio.com/'",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "databaseURL",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "databaseURL = \"https://smartirrigation-1f48f-default-rtdb.asia-southeast1.firebasedatabase.app\"\nprojectId = \"smartirrigation-1f48f\"\nstorageBucket = \"smartirrigation-1f48f.firebasestorage.app\"\nappId = \"1:859711317799:web:8f9f696e5fe0ecd6766b02\"\nref_path = 'relay-sensors/relay1/state'\n# Initialize Firebase\ncred = credentials.Certificate('firebase_config.json')\nfirebase_admin.initialize_app(cred, {\n    'database': f'https://{projectId}.firebaseio.com/'\n})",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "projectId",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "projectId = \"smartirrigation-1f48f\"\nstorageBucket = \"smartirrigation-1f48f.firebasestorage.app\"\nappId = \"1:859711317799:web:8f9f696e5fe0ecd6766b02\"\nref_path = 'relay-sensors/relay1/state'\n# Initialize Firebase\ncred = credentials.Certificate('firebase_config.json')\nfirebase_admin.initialize_app(cred, {\n    'database': f'https://{projectId}.firebaseio.com/'\n})\nprint('Firebase initialized successfully')",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "storageBucket",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "storageBucket = \"smartirrigation-1f48f.firebasestorage.app\"\nappId = \"1:859711317799:web:8f9f696e5fe0ecd6766b02\"\nref_path = 'relay-sensors/relay1/state'\n# Initialize Firebase\ncred = credentials.Certificate('firebase_config.json')\nfirebase_admin.initialize_app(cred, {\n    'database': f'https://{projectId}.firebaseio.com/'\n})\nprint('Firebase initialized successfully')\n# Server URLs",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "appId",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "appId = \"1:859711317799:web:8f9f696e5fe0ecd6766b02\"\nref_path = 'relay-sensors/relay1/state'\n# Initialize Firebase\ncred = credentials.Certificate('firebase_config.json')\nfirebase_admin.initialize_app(cred, {\n    'database': f'https://{projectId}.firebaseio.com/'\n})\nprint('Firebase initialized successfully')\n# Server URLs\nTEMPERATURE_URL = \"https://irrigation-node-backend.vercel.app/SensorData/temperature/upload\"",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "ref_path",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "ref_path = 'relay-sensors/relay1/state'\n# Initialize Firebase\ncred = credentials.Certificate('firebase_config.json')\nfirebase_admin.initialize_app(cred, {\n    'database': f'https://{projectId}.firebaseio.com/'\n})\nprint('Firebase initialized successfully')\n# Server URLs\nTEMPERATURE_URL = \"https://irrigation-node-backend.vercel.app/SensorData/temperature/upload\"\nMOISTURE_URL = \"https://irrigation-node-backend.vercel.app/SensorData/humidity/upload\"",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "cred",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "cred = credentials.Certificate('firebase_config.json')\nfirebase_admin.initialize_app(cred, {\n    'database': f'https://{projectId}.firebaseio.com/'\n})\nprint('Firebase initialized successfully')\n# Server URLs\nTEMPERATURE_URL = \"https://irrigation-node-backend.vercel.app/SensorData/temperature/upload\"\nMOISTURE_URL = \"https://irrigation-node-backend.vercel.app/SensorData/humidity/upload\"\nVERDICT_URL= \"https://shivang24-soil-prediction-api.hf.space/predict_verdict\"\nANOMALY_URL= \"https://shivang24-soil-prediction-api.hf.space/detect_anomaly\"",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "TEMPERATURE_URL",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "TEMPERATURE_URL = \"https://irrigation-node-backend.vercel.app/SensorData/temperature/upload\"\nMOISTURE_URL = \"https://irrigation-node-backend.vercel.app/SensorData/humidity/upload\"\nVERDICT_URL= \"https://shivang24-soil-prediction-api.hf.space/predict_verdict\"\nANOMALY_URL= \"https://shivang24-soil-prediction-api.hf.space/detect_anomaly\"\n# Configuration for sensor readings\nMAX_RETRIES = 10\nRETRY_DELAY = 2  # seconds \nSERVER_POST_INTERVAL = 30  # seconds - post to server every minute\nSENSOR_READ_INTERVAL = 10   # seconds - read sensors every 5 seconds\n# Global variables to store the latest readings",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "MOISTURE_URL",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "MOISTURE_URL = \"https://irrigation-node-backend.vercel.app/SensorData/humidity/upload\"\nVERDICT_URL= \"https://shivang24-soil-prediction-api.hf.space/predict_verdict\"\nANOMALY_URL= \"https://shivang24-soil-prediction-api.hf.space/detect_anomaly\"\n# Configuration for sensor readings\nMAX_RETRIES = 10\nRETRY_DELAY = 2  # seconds \nSERVER_POST_INTERVAL = 30  # seconds - post to server every minute\nSENSOR_READ_INTERVAL = 10   # seconds - read sensors every 5 seconds\n# Global variables to store the latest readings\ncurrent_temperature = None",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_RETRIES",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "MAX_RETRIES = 10\nRETRY_DELAY = 2  # seconds \nSERVER_POST_INTERVAL = 30  # seconds - post to server every minute\nSENSOR_READ_INTERVAL = 10   # seconds - read sensors every 5 seconds\n# Global variables to store the latest readings\ncurrent_temperature = None\ncurrent_humidity = None\ncurrent_soil_moisture = None\npump_state = \"off\"  # Initialize pump as off\nlast_server_post_time = 0",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "RETRY_DELAY",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "RETRY_DELAY = 2  # seconds \nSERVER_POST_INTERVAL = 30  # seconds - post to server every minute\nSENSOR_READ_INTERVAL = 10   # seconds - read sensors every 5 seconds\n# Global variables to store the latest readings\ncurrent_temperature = None\ncurrent_humidity = None\ncurrent_soil_moisture = None\npump_state = \"off\"  # Initialize pump as off\nlast_server_post_time = 0\n# Function to control relay/pump",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "SERVER_POST_INTERVAL",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "SERVER_POST_INTERVAL = 30  # seconds - post to server every minute\nSENSOR_READ_INTERVAL = 10   # seconds - read sensors every 5 seconds\n# Global variables to store the latest readings\ncurrent_temperature = None\ncurrent_humidity = None\ncurrent_soil_moisture = None\npump_state = \"off\"  # Initialize pump as off\nlast_server_post_time = 0\n# Function to control relay/pump\ndef pump_on():",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "SENSOR_READ_INTERVAL",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "SENSOR_READ_INTERVAL = 10   # seconds - read sensors every 5 seconds\n# Global variables to store the latest readings\ncurrent_temperature = None\ncurrent_humidity = None\ncurrent_soil_moisture = None\npump_state = \"off\"  # Initialize pump as off\nlast_server_post_time = 0\n# Function to control relay/pump\ndef pump_on():\n    GPIO.output(RELAY_PIN, GPIO.LOW)  # Activate Relay",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "current_temperature",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "current_temperature = None\ncurrent_humidity = None\ncurrent_soil_moisture = None\npump_state = \"off\"  # Initialize pump as off\nlast_server_post_time = 0\n# Function to control relay/pump\ndef pump_on():\n    GPIO.output(RELAY_PIN, GPIO.LOW)  # Activate Relay\n    print(\"Pump turned ON\")\ndef pump_off():",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "current_humidity",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "current_humidity = None\ncurrent_soil_moisture = None\npump_state = \"off\"  # Initialize pump as off\nlast_server_post_time = 0\n# Function to control relay/pump\ndef pump_on():\n    GPIO.output(RELAY_PIN, GPIO.LOW)  # Activate Relay\n    print(\"Pump turned ON\")\ndef pump_off():\n    GPIO.output(RELAY_PIN, GPIO.HIGH)   # Deactivate Relay",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "current_soil_moisture",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "current_soil_moisture = None\npump_state = \"off\"  # Initialize pump as off\nlast_server_post_time = 0\n# Function to control relay/pump\ndef pump_on():\n    GPIO.output(RELAY_PIN, GPIO.LOW)  # Activate Relay\n    print(\"Pump turned ON\")\ndef pump_off():\n    GPIO.output(RELAY_PIN, GPIO.HIGH)   # Deactivate Relay\n    print(\"Pump turned OFF\")",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "pump_state",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "pump_state = \"off\"  # Initialize pump as off\nlast_server_post_time = 0\n# Function to control relay/pump\ndef pump_on():\n    GPIO.output(RELAY_PIN, GPIO.LOW)  # Activate Relay\n    print(\"Pump turned ON\")\ndef pump_off():\n    GPIO.output(RELAY_PIN, GPIO.HIGH)   # Deactivate Relay\n    print(\"Pump turned OFF\")\n# Function to handle Firebase data changes",
+        "detail": "IoT_Server.index",
+        "documentation": {}
+    },
+    {
+        "label": "last_server_post_time",
+        "kind": 5,
+        "importPath": "IoT_Server.index",
+        "description": "IoT_Server.index",
+        "peekOfCode": "last_server_post_time = 0\n# Function to control relay/pump\ndef pump_on():\n    GPIO.output(RELAY_PIN, GPIO.LOW)  # Activate Relay\n    print(\"Pump turned ON\")\ndef pump_off():\n    GPIO.output(RELAY_PIN, GPIO.HIGH)   # Deactivate Relay\n    print(\"Pump turned OFF\")\n# Function to handle Firebase data changes\ndef on_relay_change(event):",
+        "detail": "IoT_Server.index",
         "documentation": {}
     }
 ]
