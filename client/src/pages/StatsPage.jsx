@@ -116,7 +116,7 @@ export default function StatsPage() {
       console.log(`Fetching water usage data from ${startStamp} to ${endStamp}`);
       
       // Make the API call with query parameters
-      const url =  `http://localhost:3000/SensorData/relay/getWaterUsage/relay1`;
+      const url =  `${BACKEND_URL}/SensorData/relay/getWaterUsage/relay1`;
       console.log("API URL:", url);
       
       const response = await axios.post(url, { 

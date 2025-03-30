@@ -23,6 +23,7 @@ import { useCookies } from "react-cookie";
 import "../i18n";
 import LanguageToggle from "./LanguageToggle";
 import NotificationBell from "./NotificationBell";
+import toast from "react-hot-toast";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Header({ darkMode, toggleDarkMode, activeTab }) {
@@ -70,6 +71,7 @@ export default function Header({ darkMode, toggleDarkMode, activeTab }) {
       localStorage.setItem("tokenExpiresAt", "");
       removeCookie("token", { path: "/", sameSite: "lax" });
       navigate("/auth");
+      toast.success("Logged out!");
     }
   };
 

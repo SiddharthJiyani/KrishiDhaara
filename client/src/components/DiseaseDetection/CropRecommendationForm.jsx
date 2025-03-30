@@ -144,9 +144,6 @@ const CropRecommendationForm = () => {
 
   return (
     <div className="mb-8 p-6 bg-[#09090b] border border-[#27272a] rounded-xl shadow-lg">
-      <h2 className="text-2xl font-bold mb-4 text-green-400">
-        {t("diseasePage.cropRecommendation.title")}
-      </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           {Object.keys(formData).map((key) => (
