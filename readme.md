@@ -141,23 +141,10 @@ This architecture ensures scalability, maintainability, and fault tolerance acro
 
 ## 🎥 Demo
 <div align="center">
-    <iframe 
-        width="700" 
-        height="400" 
-        src="https://www.youtube.com/embed/s2302dVRVlo" 
-        title="KrishiDhaara Demo Video" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-    </iframe>
-    <p><em>Watch our comprehensive demonstration video</em></p>
-</div>
-
-<div align="center">
     <a href="https://youtu.be/s2302dVRVlo">
         <img src="https://img.youtube.com/vi/s2302dVRVlo/maxresdefault.jpg" alt="KrishiDhaara Demo Video" width="600" />
     </a>
-    <p><em>Click the image if the embedded player doesn't work</em></p>
+    <p><em>Click the image to watch our comprehensive demonstration video</em></p>
 </div>
 
 ## 📲 Installation
