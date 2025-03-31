@@ -85,7 +85,7 @@ Our platform bridges the technology gap in agriculture, making sophisticated too
 - **Yield prediction** based on historical data and conditions
 
 ### 📰 Agricultural News & Resources
-- **Krishi Jagran integration** via web scraping
+- **Krishi Jagran integration** via web scraping using <a href="https://www.npmjs.com/package/cheerio" target="_blank">cheerio</a>
 - **Categorized agricultural news** with custom filtering
 - **Featured articles** highlighting important developments
 - **Pagination system** for easy content browsing
