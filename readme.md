@@ -92,7 +92,6 @@ Our platform bridges the technology gap in agriculture, making sophisticated too
 
 ### 🔮 Additional Smart Features
 - **Hindi <-> English translation** throughout the entire platform
-- **QR-accessible care tips** for in-field reference
 - **Report generation** for comprehensive farm analysis
 - **Responsive design** for all devices and screen sizes
 
@@ -125,8 +124,7 @@ Our platform bridges the technology gap in agriculture, making sophisticated too
 ![GROQ](https://img.shields.io/badge/GROQ-01A9DB?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Raspberry Pi](https://img.shields.io/badge/Raspberry_Pi-A22846?style=for-the-badge&logo=raspberry-pi&logoColor=white)
-![Arduino](https://img.shields.io/badge/Arduino-00979D?style=for-the-badge&logo=arduino&logoColor=white)
-
+![IoT Sensors](https://img.shields.io/badge/IoT_Sensors-FFCC00?style=for-the-badge&logo=raspberry-pi&logoColor=white)
 </div>
 
 ## 🏗️ Architecture
@@ -143,10 +141,23 @@ This architecture ensures scalability, maintainability, and fault tolerance acro
 
 ## 🎥 Demo
 <div align="center">
+    <iframe 
+        width="700" 
+        height="400" 
+        src="https://www.youtube.com/embed/s2302dVRVlo" 
+        title="KrishiDhaara Demo Video" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+    </iframe>
+    <p><em>Watch our comprehensive demonstration video</em></p>
+</div>
+
+<div align="center">
     <a href="https://youtu.be/s2302dVRVlo">
         <img src="https://img.youtube.com/vi/s2302dVRVlo/maxresdefault.jpg" alt="KrishiDhaara Demo Video" width="600" />
     </a>
-    <p><em>Check out our comprehensive demonstration video on YouTube</em></p>
+    <p><em>Click the image if the embedded player doesn't work</em></p>
 </div>
 
 ## 📲 Installation
