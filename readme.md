@@ -4,7 +4,6 @@
 
 ### _Revolutionizing Agriculture with AI, IoT, and Data Analytics_
 
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 [![YouTube Demo](https://img.shields.io/badge/YouTube-Demo-red?style=for-the-badge&logo=youtube)](https://youtu.be/s2302dVRVlo)
 
 </div>
@@ -17,8 +16,6 @@
   <a href="#-demo">Demo</a> •
   <a href="#-installation">Installation</a> •
   <a href="#-usage">Usage</a> •
-  <a href="#-contributing">Contributing</a> •
-  <a href="#-license">License</a>
 </p>
 
 ## 🌾 Overview
@@ -259,21 +256,7 @@ cd mobileApp
    - Use crop recommendation system for planting decisions
    - Leverage chatbot for farming advice and troubleshooting
 
-## 🤝 Contributing
 
-We welcome contributions from the community! Whether it's adding new features, fixing bugs, improving documentation, or sharing ideas, your input is valuable.
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-Please check out our [Contributing Guidelines](CONTRIBUTING.md) for more details.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 👏 Acknowledgements
 
@@ -293,6 +276,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <p>KrishiDhaara - Where Technology Meets Agriculture</p>
 
-[Report Bug](https://github.com/SiddharthJiyani/KrishiDhaara/issues) · [Request Feature](https://github.com/SiddharthJiyani/KrishiDhaara/issues)
 
 </div>
